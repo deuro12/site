@@ -2,67 +2,160 @@
 
 <html>
 <head>
-<title>Mon Shop</title>
+<title>Deuro.tn</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+
 body{
 font-family:Arial;
-background:#f2f2f2;
-text-align:center;
+background:#f5f6fa;
 margin:0;
 }
 
-h1{
-background:#27ae60;
+header{
+background:#111;
 color:white;
 padding:20px;
-margin:0;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:25px;
+padding:30px;
 }
 
 .product{
 background:white;
-width:200px;
-margin:20px auto;
+width:220px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
 padding:20px;
+text-align:center;
+transition:0.3s;
+}
+
+.product:hover{
+transform:scale(1.05);
+}
+
+.product img{
+width:100%;
 border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
 button{
-padding:10px;
 background:#27ae60;
-color:white;
 border:none;
-border-radius:5px;
+color:white;
+padding:10px 15px;
+border-radius:8px;
 cursor:pointer;
+margin-top:10px;
 }
+
+#cart{
+position:fixed;
+right:20px;
+top:100px;
+background:white;
+width:260px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+padding:15px;
+}
+
+.remove{
+background:red;
+margin-left:8px;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>Mon Shop 🔥</h1>
+<header>Deuro.tn 🛒</header>
+
+<div class="container">
 
 <div class="product">
-<h3>Article 1 (10€)</h3>
-<input type="number" id="q1" value="0">
+<img src="https://via.placeholder.com/200">
+<h3>T-shirt</h3>
+<p>25 TND</p>
+<input type="number" id="p1" value="0">
+<button onclick="add('T-shirt',25,p1.value)">Ajouter</button>
 </div>
 
 <div class="product">
-<h3>Article 2 (20€)</h3>
-<input type="number" id="q2" value="0">
+<img src="https://via.placeholder.com/200">
+<h3>Chaussures</h3>
+<p>80 TND</p>
+<input type="number" id="p2" value="0">
+<button onclick="add('Chaussures',80,p2.value)">Ajouter</button>
 </div>
 
-<button onclick="commander()">Commander</button>
+<div class="product">
+<img src="https://via.placeholder.com/200">
+<h3>Casquette</h3>
+<p>20 TND</p>
+<input type="number" id="p3" value="0">
+<button onclick="add('Casquette',20,p3.value)">Ajouter</button>
+</div>
+
+</div>
+
+<div id="cart">
+<h3>Panier</h3>
+<ul id="list"></ul>
+<h4>Total : <span id="total">0</span> TND</h4>
+<button onclick="send()">Commander</button>
+</div>
 
 <script>
-function commander(){
-let a=document.getElementById("q1").value
-let b=document.getElementById("q2").value
-alert("Commande : Article1 x"+a+" , Article2 x"+b)
+
+let panier=[]
+let total=0
+
+function add(name,price,q){
+q=parseInt(q)
+if(q>0){
+panier.push({name,price,q})
+total+=price*q
+display()
 }
+}
+
+function removeItem(i){
+total-=panier[i].price*panier[i].q
+panier.splice(i,1)
+display()
+}
+
+function display(){
+let html=""
+panier.forEach((p,i)=>{
+html+=`<li>${p.name} x${p.q}
+<button class="remove" onclick="removeItem(${i})">X</button></li>`
+})
+document.getElementById("list").innerHTML=html
+document.getElementById("total").innerText=total
+}
+
+function send(){
+let msg="Commande Deuro.tn : "
+panier.forEach(p=>{
+msg+=p.name+" x"+p.q+" , "
+})
+window.open("https://wa.me/0754436855?text="+msg)
+}
+
 </script>
 
 </body>
