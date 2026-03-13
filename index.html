@@ -1,29 +1,108 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-<title>Mon site de réservation</title>
+<title>Mon Shop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+font-family:Arial;
+background:#f4f4f4;
+margin:0;
+text-align:center;
+}
+
+h1{
+background:#2ecc71;
+color:white;
+padding:20px;
+margin:0;
+}
+
+.container{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+padding:20px;
+}
+
+.product{
+background:white;
+padding:20px;
+border-radius:12px;
+width:220px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px;
+background:#2ecc71;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+#panier{
+background:white;
+width:300px;
+margin:20px auto;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+</style>
+
 </head>
 
-<body style="font-family:Arial;text-align:center">
+<body>
 
 <h1>Mon Shop 🔥</h1>
 
+<div class="container">
+
+<div class="product">
 <h3>Article 1</h3>
-<input type="number" id="q1" value="0">
+<input type="number" id="a1" value="0">
+<button onclick="add('Article 1',a1.value)">Ajouter</button>
+</div>
 
+<div class="product">
 <h3>Article 2</h3>
-<input type="number" id="q2" value="0">
+<input type="number" id="a2" value="0">
+<button onclick="add('Article 2',a2.value)">Ajouter</button>
+</div>
 
-<br><br>
+</div>
 
-<button onclick="commander()">Valider la commande</button>
+<div id="panier">
+<h2>Panier</h2>
+<ul id="list"></ul>
+</div>
+
+<button onclick="send()">Valider la commande</button>
 
 <script>
-function commander(){
-let q1=document.getElementById("q1").value
-let q2=document.getElementById("q2").value
+let panier=[]
 
-alert("Commande envoyée : Article1 x"+q1+" , Article2 x"+q2)
+function add(name,q){
+if(q>0){
+panier.push(name+" x"+q)
+display()
+}
+}
+
+function display(){
+list.innerHTML=""
+panier.forEach(p=>{
+list.innerHTML+="<li>"+p+"</li>"
+})
+}
+
+function send(){
+alert("Commande envoyée : "+panier.join(", "))
 }
 </script>
 
