@@ -1,160 +1,91 @@
 <!DOCTYPE html>
-<!-- saved from url=(0030)https://notepad-online.com/fr/ -->
-<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+<head>
+<title>Mon Shop</title>
 
-<title>Un bloc-notes en ligne gratuit pour faire des notes textuelles</title>
-<meta name="keywords" content="">
-<meta name="description" content="«Bloc-notes en ligne» est un outil gratuit pour une sauvegarde rapide des notes textuelles. Les notes sont conservées en sécurité dans votre navigateur. Il n’y a pas d’inscription.">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="alternate" hreflang="en" href="https://notepad-online.com/en/">
-<link rel="alternate" hreflang="fr" href="https://notepad-online.com/fr/">
-<link rel="alternate" hreflang="ru" href="https://online-bloknot.ru/">
-<link href="https://notepad-online.com/fr/img/favicon.ico" rel="shortcut icon">
-<link href="./html.site_files/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="./html.site_files/default.css" rel="stylesheet">
-<script type="text/javascript" async="" src="./html.site_files/watch.js.télécharger"></script><script src="./html.site_files/jquery-1.12.4.min.js.télécharger"></script>
-<script src="./html.site_files/bootstrap.min.js.télécharger"></script>
-<script src="./html.site_files/jstorage.js.télécharger"></script>
-<script src="./html.site_files/Blob.js.télécharger"></script>
-<script src="./html.site_files/FileSaver.js.télécharger"></script>
-<script src="./html.site_files/jquery.wordexport.js.télécharger"></script>
-<script src="./html.site_files/ckeditor.js.télécharger"></script><style>.cke{visibility:hidden;}</style>
-<script src="./html.site_files/config.js.télécharger"></script>
-<script src="./html.site_files/default.js.télécharger"></script>
-<script type="text/javascript" src="./html.site_files/config(1).js.télécharger"></script><link rel="stylesheet" type="text/css" href="./html.site_files/editor.css"><script type="text/javascript" src="./html.site_files/fr.js.télécharger"></script><script type="text/javascript" src="./html.site_files/styles.js.télécharger"></script><script type="text/javascript" src="./html.site_files/plugin.js.télécharger"></script><script type="text/javascript" src="./html.site_files/plugin(1).js.télécharger"></script><script type="text/javascript" src="./html.site_files/plugin(2).js.télécharger"></script><script type="text/javascript" src="./html.site_files/fr(1).js.télécharger"></script><script type="text/javascript" src="./html.site_files/fr(2).js.télécharger"></script><script type="text/javascript" src="./html.site_files/link.js.télécharger"></script><link rel="stylesheet" type="text/css" href="./html.site_files/dialog.css"></head>
+<style>
+body{
+font-family:Arial;
+background:#f2f2f2;
+text-align:center;
+}
 
+.container{
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.product{
+background:white;
+padding:20px;
+border-radius:10px;
+width:200px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px;
+background:#2ecc71;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+</style>
+</head>
 
 <body>
 
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function (d, w, c) {
-        (w[c] = w[c] || []).push(function() {
-            try {
-                w.yaCounter42758819 = new Ya.Metrika({
-                    id:42758819,
-                    clickmap:true,
-                    trackLinks:true,
-                    accurateTrackBounce:true
-                });
-            } catch(e) { }
-        });
+<h1>Mon Site de Réservation</h1>
 
-        var n = d.getElementsByTagName("script")[0],
-            s = d.createElement("script"),
-            f = function () { n.parentNode.insertBefore(s, n); };
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = "https://mc.yandex.ru/metrika/watch.js";
+<div class="container">
 
-        if (w.opera == "[object Opera]") {
-            d.addEventListener("DOMContentLoaded", f, false);
-        } else { f(); }
-    })(document, window, "yandex_metrika_callbacks");
+<div class="product">
+<h3>Article 1</h3>
+<input type="number" id="q1" value="0">
+<button onclick="add('Article 1',q1.value)">Ajouter</button>
+</div>
+
+<div class="product">
+<h3>Article 2</h3>
+<input type="number" id="q2" value="0">
+<button onclick="add('Article 2',q2.value)">Ajouter</button>
+</div>
+
+</div>
+
+<h2>Panier</h2>
+<ul id="cart"></ul>
+
+<button onclick="send()">Valider la commande</button>
+
+<script>
+
+let panier=[]
+
+function add(name,q){
+if(q>0){
+panier.push(name+" x"+q)
+display()
+}
+}
+
+function display(){
+cart.innerHTML=""
+panier.forEach(p=>{
+cart.innerHTML+="<li>"+p+"</li>"
+})
+}
+
+function send(){
+let msg="Commande : "+panier.join(", ")
+window.location.href="mailto:tonmail@gmail.com?subject=Commande&body="+msg
+}
+
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/42758819" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
 
-
-<div id="wrap">
-  <div id="header">
-    <div class="container-fluid text-center">
-      <div class="row">
-        <div class="col-xs-12">
-        
-          <div class="k1">
-            <h1>Bloc-notes en ligne</h1>
-          </div>
-          
-          <div class="k2">
-            <a href="https://notepad-online.com/v2/fr" target="_blank">Nouvelle version →</a>
-          </div>
-          
-          <style>
-          .k1 {display: inline-block; margin-left: 115px;}
-          .k2 {display: inline-block; margin-left: 10px;}
-          </style>
-        
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-12">
-          <textarea id="note" class="form-control" style="visibility: hidden; display: none;"></textarea><div id="cke_note" class="cke_1 cke cke_reset cke_chrome cke_editor_note cke_ltr cke_browser_webkit cke_focus" dir="ltr" lang="fr" role="application" aria-labelledby="cke_note_arialbl"><span id="cke_note_arialbl" class="cke_voice_label">Éditeur de Texte Enrichi, note</span><div class="cke_inner cke_reset" role="presentation"><span id="cke_1_top" class="cke_top cke_reset_all" role="presentation" style="height: auto; user-select: none;"><span id="cke_7" class="cke_voice_label">Barre d'outils de l'éditeur</span><span id="cke_1_toolbox" class="cke_toolbox" role="group" aria-labelledby="cke_7" onmousedown="return false;"><span id="cke_8" class="cke_toolbar" aria-labelledby="cke_8_label" role="toolbar"><span id="cke_8_label" class="cke_voice_label">global</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_9" class="cke_button cke_button__bold  cke_button_off" href="javascript:void(&#39;Gras&#39;)" title="Gras" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_9_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(0,event);" onfocus="return CKEDITOR.tools.callFunction(1,event);" onclick="CKEDITOR.tools.callFunction(2,this);return false;"><span class="cke_button_icon cke_button__bold_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 0px;background-size:auto;">&nbsp;</span><span id="cke_9_label" class="cke_button_label cke_button__bold_label" aria-hidden="false">Gras</span></a><a id="cke_10" class="cke_button cke_button__italic  cke_button_off" href="javascript:void(&#39;Italique&#39;)" title="Italique" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_10_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(3,event);" onfocus="return CKEDITOR.tools.callFunction(4,event);" onclick="CKEDITOR.tools.callFunction(5,this);return false;"><span class="cke_button_icon cke_button__italic_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -24px;background-size:auto;">&nbsp;</span><span id="cke_10_label" class="cke_button_label cke_button__italic_label" aria-hidden="false">Italique</span></a><a id="cke_11" class="cke_button cke_button__underline  cke_button_off" href="javascript:void(&#39;Souligné&#39;)" title="Souligné" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_11_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(6,event);" onfocus="return CKEDITOR.tools.callFunction(7,event);" onclick="CKEDITOR.tools.callFunction(8,this);return false;"><span class="cke_button_icon cke_button__underline_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -120px;background-size:auto;">&nbsp;</span><span id="cke_11_label" class="cke_button_label cke_button__underline_label" aria-hidden="false">Souligné</span></a><a id="cke_12" class="cke_button cke_button__strike  cke_button_off" href="javascript:void(&#39;Barré&#39;)" title="Barré" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_12_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(9,event);" onfocus="return CKEDITOR.tools.callFunction(10,event);" onclick="CKEDITOR.tools.callFunction(11,this);return false;"><span class="cke_button_icon cke_button__strike_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -48px;background-size:auto;">&nbsp;</span><span id="cke_12_label" class="cke_button_label cke_button__strike_label" aria-hidden="false">Barré</span></a><a id="cke_13" class="cke_button cke_button__bgcolor cke_button_off " href="javascript:void(&#39;Couleur darrière plan&#39;)" title="Couleur d&#39;arrière plan" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_13_label" aria-haspopup="true" onkeydown="return CKEDITOR.tools.callFunction(12,event);" onfocus="return CKEDITOR.tools.callFunction(13,event);" onclick="CKEDITOR.tools.callFunction(14,this);return false;"><span class="cke_button_icon cke_button__bgcolor_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -672px;background-size:auto;">&nbsp;</span><span id="cke_13_label" class="cke_button_label cke_button__bgcolor_label" aria-hidden="false">Couleur d'arrière plan</span><span class="cke_button_arrow"></span></a><a id="cke_14" class="cke_button cke_button__textcolor cke_button_off " href="javascript:void(&#39;Couleur de texte&#39;)" title="Couleur de texte" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_14_label" aria-haspopup="true" onkeydown="return CKEDITOR.tools.callFunction(15,event);" onfocus="return CKEDITOR.tools.callFunction(16,event);" onclick="CKEDITOR.tools.callFunction(17,this);return false;"><span class="cke_button_icon cke_button__textcolor_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -696px;background-size:auto;">&nbsp;</span><span id="cke_14_label" class="cke_button_label cke_button__textcolor_label" aria-hidden="false">Couleur de texte</span><span class="cke_button_arrow"></span></a><a id="cke_15" class="cke_button cke_button__bulletedlist  cke_button_off" href="javascript:void(&#39;Insérer/Supprimer la liste à puces&#39;)" title="Insérer/Supprimer la liste à puces" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_15_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(18,event);" onfocus="return CKEDITOR.tools.callFunction(19,event);" onclick="CKEDITOR.tools.callFunction(20,this);return false;"><span class="cke_button_icon cke_button__bulletedlist_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -504px;background-size:auto;">&nbsp;</span><span id="cke_15_label" class="cke_button_label cke_button__bulletedlist_label" aria-hidden="false">Insérer/Supprimer la liste à puces</span></a><a id="cke_16" class="cke_button cke_button__numberedlist  cke_button_off" href="javascript:void(&#39;Insérer/Supprimer la liste numérotée&#39;)" title="Insérer/Supprimer la liste numérotée" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_16_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(21,event);" onfocus="return CKEDITOR.tools.callFunction(22,event);" onclick="CKEDITOR.tools.callFunction(23,this);return false;"><span class="cke_button_icon cke_button__numberedlist_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -552px;background-size:auto;">&nbsp;</span><span id="cke_16_label" class="cke_button_label cke_button__numberedlist_label" aria-hidden="false">Insérer/Supprimer la liste numérotée</span></a><a id="cke_17" class="cke_button cke_button__link  cke_button_off" href="javascript:void(&#39;Lien&#39;)" title="Lien" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_17_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(24,event);" onfocus="return CKEDITOR.tools.callFunction(25,event);" onclick="CKEDITOR.tools.callFunction(26,this);return false;"><span class="cke_button_icon cke_button__link_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -432px;background-size:auto;">&nbsp;</span><span id="cke_17_label" class="cke_button_label cke_button__link_label" aria-hidden="false">Lien</span></a><a id="cke_18" class="cke_button cke_button__print  cke_button_off" href="javascript:void(&#39;Impression&#39;)" title="Impression" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_18_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(27,event);" onfocus="return CKEDITOR.tools.callFunction(28,event);" onclick="CKEDITOR.tools.callFunction(29,this);return false;"><span class="cke_button_icon cke_button__print_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/icons.png?t=E7KD);background-position:0 -720px;background-size:auto;">&nbsp;</span><span id="cke_18_label" class="cke_button_label cke_button__print_label" aria-hidden="false">Impression</span></a><a id="cke_19" class="cke_button cke_button__save  cke_button_off" href="javascript:void(&#39;Télécharger&#39;)" title="Télécharger" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_19_label" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(30,event);" onfocus="return CKEDITOR.tools.callFunction(31,event);" onclick="CKEDITOR.tools.callFunction(32,this);return false;"><span class="cke_button_icon cke_button__save_icon" style="background-image:url(https://notepad-online.com/fr/ckeditor/plugins/save/icons/save.png?t=E7KD);background-position:0 0px;background-size:16px;">&nbsp;</span><span id="cke_19_label" class="cke_button_label cke_button__save_label" aria-hidden="false">Télécharger</span></a></span><span class="cke_toolbar_end"></span></span></span></span><div id="cke_1_contents" class="cke_contents cke_reset cke_active" role="presentation" style="height: 893.4px;"><iframe src="./html.site_files/saved_resource.html" frameborder="0" class="cke_wysiwyg_frame cke_reset" style="width: 100%; height: 100%;" title="Éditeur de Texte Enrichi, note" tabindex="0" allowtransparency="true"></iframe></div></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Caramel -->
-<noindex>
-<div class="ovs1">
-  <div class="container-fluid text-center">
-    <div class="row">
-      <div class="col-xs-12">
- 
-      <script async="" src="./html.site_files/f.txt" crossorigin="anonymous"></script>
-      <!-- notepad-online.com_horizontal -->
-      <ins class="adsbygoogle" style="display:block; width:100%; height:auto;" data-ad-client="ca-pub-5739592199182283" data-ad-slot="5379116505" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-
-      <style>
-      .ovs1 {margin-top: 90px; border: 0px solid #000000; width: 100%; margin-left: auto; margin-right: auto;}
-      </style>
-
-      </div>
-    </div>    
-  </div>
-</div>
-</noindex>
-<!-- /Caramel -->
-
-
-<div id="footer">
-  <div class="container-fluid text-center">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="text-muted tac copyright">© 2026 Bloc-notes en ligne est un carnet gratuit pour faire des notes rapidement. La langue: 
-          <div class="selector__language">
-            <div class="dropup"><button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Français<span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><a href="https://notepad-online.com/en/">English (Anglais)</a></li>
-                <li><a href="https://notepad-online.com/fr/">Français</a></li>
-                <li><a href="https://online-bloknot.ru/">Русский (Russe)</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>    
-    
-    <div class="row">
-      <div class="col-xs-12">
-        <a href="https://notepad-online.com/fr/">Bloc-notes</a>
-        <a href="https://notepad-online.com/v2/fr" target="_blank">Nouvelle version</a>
-        <a href="https://notepad-online.com/fr/info">Comment cela marche</a>
-        <a href="https://notepad-online.com/fr/help">Soutenir le projet</a>
-        <a href="https://notepad-online.com/fr/contacts">Contacts</a>
-        <span>Partager:</span>
-        <div class="ya-share2 addthis_inline_share_toolbox" data-curtain="" data-size="s" data-shape="round" data-limit="0" data-services="vkontakte,odnoklassniki,telegram,twitter,viber,whatsapp,skype,linkedin,reddit" data-lang="en" data-popup-direction="top"></div>
-      </div>
-    </div>
-    <br>
-
-  </div>
-</div>
-
-
-<script src="./html.site_files/share.js.télécharger" async=""></script>
-
-
-
-<div class="tab-ext-injectable-popup" style="width: 420px; height: 500px; position: fixed; top: -550px; right: 15px; z-index: 2147483647; background: none; border-radius: 10px; overflow: hidden; transition-duration: 0.3s; transition-timing-function: ease-in-out;"><iframe allowtransparency="true" style="width: 100%; height: 100%; border: none; color-scheme: light;" src="./html.site_files/saved_resource(1).html"></iframe></div><div tabindex="-1" style="position: fixed; z-index: 10000; top: 0px; left: 0px; background-color: white; opacity: 0.5; width: 1513px; height: 732px; display: none;" class="cke_dialog_background_cover"></div><div class="cke_reset_all cke_1 cke_editor_note_dialog " dir="ltr" lang="fr" role="dialog" aria-labelledby="cke_dialog_title_38" style="display: none;"><table class="cke_dialog cke_browser_webkit cke_ltr cke_single_page" style="position: fixed; top: 305.5px; left: 565.5px; z-index: 10010; visibility: hidden;" role="presentation"><tbody><tr><td role="presentation"><div class="cke_dialog_body" role="presentation"><div id="cke_dialog_title_38" class="cke_dialog_title" role="presentation" style="user-select: none;">Lien</div><a id="cke_dialog_close_button_38" class="cke_dialog_close_button" href="javascript:void(0)" title="Fermer" role="button" style="user-select: none;"><span class="cke_label">X</span></a><div id="cke_dialog_tabs_38" class="cke_dialog_tabs" role="tablist"><a class="cke_dialog_tab cke_dialog_tab_selected" cke_first="" title="Infos sur le lien" id="cke_info_73" href="javascript:void(0)" tabindex="-1" hidefocus="true" role="tab" style="user-select: none;">Infos sur le lien</a><a class="cke_dialog_tab" cke_last="" title="Envoyer" style="display: none; user-select: none;" id="cke_upload_80" href="javascript:void(0)" tabindex="-1" hidefocus="true" role="tab">Envoyer</a></div><table class="cke_dialog_contents" role="presentation"><tbody><tr><td id="cke_dialog_contents_38" class="cke_dialog_contents_body" role="presentation" style="width: 350px; height: 230px;"><div role="tabpanel" id="cke_72_uiElement" class="cke_dialog_ui_vbox cke_dialog_page_contents" style="width: 100%" aria-labelledby="cke_info_73" name="info" aria-hidden="false"><table role="presentation" cellspacing="0" border="0" style="width:100%;float:none;" align="left"><tbody><tr><td role="presentation" class="cke_dialog_ui_vbox_child"><div role="presentation" id="cke_44_uiElement" class="cke_dialog_ui_select" style="display:none"><label class="cke_dialog_ui_labeled_label" id="cke_43_label" for="cke_42_select">Type de lien</label><div class="cke_dialog_ui_labeled_content" role="presentation"><div class="cke_dialog_ui_input_select" role="presentation"><select id="cke_42_select" class="cke_dialog_ui_input_select" aria-labelledby="cke_43_label" style="display:none"><option value="url"> URL</option><option value="anchor"> Transformer le lien en ancre dans le texte</option><option value="email"> E-mail</option></select></div></div></div></td></tr><tr><td role="presentation" class="cke_dialog_ui_vbox_child"><div role="presentation" id="cke_51_uiElement" class="cke_dialog_ui_vbox"><table role="presentation" cellspacing="0" border="0" style="width:100%;float:none;" align="left"><tbody><tr><td role="presentation" class="cke_dialog_ui_vbox_child"><table role="presentation" id="cke_48_uiElement" class="cke_dialog_ui_hbox"><tbody><tr class="cke_dialog_ui_hbox"><td class="cke_dialog_ui_hbox_last" role="presentation" style="width:25%"><div role="presentation" id="cke_47_uiElement" class="cke_dialog_ui_text"><label class="cke_dialog_ui_labeled_label cke_required" id="cke_46_label" for="cke_45_textInput">Insérer le lien</label><div class="cke_dialog_ui_labeled_content" role="presentation"><div class="cke_dialog_ui_input_text" role="presentation"><input class="cke_dialog_ui_input_text" id="cke_45_textInput" type="text" aria-labelledby="cke_46_label" aria-required="true"></div></div></div></td></tr></tbody></table></td></tr><tr><td role="presentation" class="cke_dialog_ui_vbox_child"><a style="display: none; user-select: none;" href="javascript:void(0)" title="Explorer le serveur" hidefocus="true" class="cke_dialog_ui_button" role="button" aria-labelledby="cke_49_label" id="cke_50_uiElement"><span id="cke_49_label" class="cke_dialog_ui_button">Explorer le serveur</span></a></td></tr></tbody></table></div></td></tr><tr style="display: none;"><td role="presentation" class="cke_dialog_ui_vbox_child"><div role="presentation" id="cke_61_uiElement" class="cke_dialog_ui_vbox" style="margin-left:auto; margin-right:auto"><table role="presentation" cellspacing="0" border="0" style="width:260px;float:none;" align="center"><tbody><tr><td role="presentation" style="width:260px; padding:0px" class="cke_dialog_ui_vbox_child"><fieldset id="cke_59_uiElement" class="cke_dialog_ui_fieldset" style="display: none;"><legend>Sélectionner l'ancre</legend><table role="presentation" id="cke_58_uiElement" class="cke_dialog_ui_hbox" style="display: none;"><tbody><tr class="cke_dialog_ui_hbox"><td class="cke_dialog_ui_hbox_first" role="presentation" style="width:50%"><div role="presentation" id="cke_54_uiElement" class="cke_dialog_ui_select" style="width: 100%"><label class="cke_dialog_ui_labeled_label" id="cke_53_label" for="cke_52_select">Par nom d'ancre</label><div class="cke_dialog_ui_labeled_content" role="presentation"><div class="cke_dialog_ui_input_select" role="presentation"><select id="cke_52_select" class="cke_dialog_ui_input_select" aria-labelledby="cke_53_label" style="width: 100%"><option value=""></option></select></div></div></div></td><td class="cke_dialog_ui_hbox_last" role="presentation" style="width:50%"><div role="presentation" id="cke_57_uiElement" class="cke_dialog_ui_select" style="width: 100%"><label class="cke_dialog_ui_labeled_label" id="cke_56_label" for="cke_55_select">Par ID d'élément</label><div class="cke_dialog_ui_labeled_content" role="presentation"><div class="cke_dialog_ui_input_select" role="presentation"><select id="cke_55_select" class="cke_dialog_ui_input_select" aria-labelledby="cke_56_label" style="width: 100%"><option value=""></option></select></div></div></div></td></tr></tbody></table></fieldset></td></tr><tr><td role="presentation" style="width:260px; padding:0px" class="cke_dialog_ui_vbox_child"><div role="note" tabindex="-1" id="cke_60_uiElement" class="cke_dialog_ui_html" style="text-align: center">(Aucune ancre disponible dans ce document)</div></td></tr></tbody></table></div></td></tr><tr style="display: none;"><td role="presentation" class="cke_dialog_ui_vbox_child"><div role="presentation" id="cke_71_uiElement" class="cke_dialog_ui_vbox"><table role="presentation" cellspacing="0" border="0" style="width:100%;float:none;" align="left"><tbody><tr><td role="presentation" style="padding:1px" class="cke_dialog_ui_vbox_child"><div role="presentation" id="cke_64_uiElement" class="cke_dialog_ui_text"><label class="cke_dialog_ui_labeled_label cke_required" id="cke_63_label" for="cke_62_textInput">Adresse E-Mail</label><div class="cke_dialog_ui_labeled_content" role="presentation"><div class="cke_dialog_ui_input_text" role="presentation"><input class="cke_dialog_ui_input_text" id="cke_62_textInput" type="text" aria-labelledby="cke_63_label" aria-required="true"></div></div></div></td></tr><tr><td role="presentation" style="padding:1px" class="cke_dialog_ui_vbox_child"><div role="presentation" id="cke_67_uiElement" class="cke_dialog_ui_text"><label class="cke_dialog_ui_labeled_label" id="cke_66_label" for="cke_65_textInput">Sujet du message</label><div class="cke_dialog_ui_labeled_content" role="presentation"><div class="cke_dialog_ui_input_text" role="presentation"><input class="cke_dialog_ui_input_text" id="cke_65_textInput" type="text" aria-labelledby="cke_66_label"></div></div></div></td></tr><tr><td role="presentation" style="padding:1px" class="cke_dialog_ui_vbox_child"><div role="presentation" id="cke_70_uiElement" class="cke_dialog_ui_textarea"><label class="cke_dialog_ui_labeled_label" id="cke_69_label" for="cke_68_textarea">Corps du message</label><div class="cke_dialog_ui_labeled_content" role="presentation"><div class="cke_dialog_ui_input_textarea" role="presentation"><textarea id="cke_68_textarea" rows="3" cols="20" class="cke_dialog_ui_input_textarea " aria-labelledby="cke_69_label"></textarea></div></div></div></td></tr></tbody></table></div></td></tr></tbody></table></div><div role="tabpanel" id="cke_79_uiElement" class="cke_dialog_ui_vbox cke_dialog_page_contents" style="width: 100%; display: none;" aria-labelledby="cke_upload_80" name="upload" aria-hidden="true"><table role="presentation" cellspacing="0" border="0" style="width:100%;float:none;" align="left"><tbody><tr><td role="presentation" class="cke_dialog_ui_vbox_child"><div role="presentation" id="cke_76_uiElement" class="cke_dialog_ui_file" style="height:40px"><label class="cke_dialog_ui_labeled_label" id="cke_74_label">Envoyer</label><div class="cke_dialog_ui_labeled_content cke_dialog_ui_input_file" role="presentation"><iframe frameborder="0" allowtransparency="0" class="cke_dialog_ui_input_file" role="presentation" id="cke_75_fileInput" title="Envoyer" src="javascript:void(0)" src="./html.site_files/saved_resource(2).html"></iframe></div></div></td></tr><tr><td role="presentation" class="cke_dialog_ui_vbox_child"><a style="user-select: none;" href="javascript:void(0)" title="Envoyer sur le serveur" hidefocus="true" class="cke_dialog_ui_fileButton cke_dialog_ui_button" role="button" aria-labelledby="cke_77_label" id="cke_78_uiElement"><span id="cke_77_label" class="cke_dialog_ui_button">Envoyer sur le serveur</span></a></td></tr></tbody></table></div></td></tr><tr><td id="cke_dialog_footer_38" class="cke_dialog_footer" role="presentation"><div class="cke_resizer cke_resizer_ltr" title="Déplacer pour modifier la taille" onmousedown="CKEDITOR.tools.callFunction(34, event )">◢</div><table role="presentation" id="cke_86_uiElement" class="cke_dialog_ui_hbox cke_dialog_footer_buttons"><tbody><tr class="cke_dialog_ui_hbox"><td class="cke_dialog_ui_hbox_first" role="presentation"><a style="user-select: none;" href="javascript:void(0)" title="Sauvegarder" hidefocus="true" class="cke_dialog_ui_button cke_dialog_ui_button_ok" role="button" aria-labelledby="cke_82_label" id="cke_83_uiElement"><span id="cke_82_label" class="cke_dialog_ui_button">Sauvegarder</span></a></td><td class="cke_dialog_ui_hbox_last" role="presentation"><a style="user-select: none;" href="javascript:void(0)" title="Annuler" hidefocus="true" class="cke_dialog_ui_button cke_dialog_ui_button_cancel" role="button" aria-labelledby="cke_84_label" id="cke_85_uiElement"><span id="cke_84_label" class="cke_dialog_ui_button">Annuler</span></a></td></tr></tbody></table></td></tr></tbody></table></div></td></tr></tbody></table></div></body></html>
+</body>
+</html>
