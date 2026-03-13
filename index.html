@@ -22,6 +22,24 @@ font-size:28px;
 font-weight:bold;
 }
 
+.form{
+background:white;
+width:90%;
+max-width:600px;
+margin:20px auto;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.form input{
+width:90%;
+padding:10px;
+margin:8px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
 .container{
 display:flex;
 flex-wrap:wrap;
@@ -37,11 +55,6 @@ border-radius:15px;
 box-shadow:0 10px 25px rgba(0,0,0,0.1);
 padding:20px;
 text-align:center;
-transition:0.3s;
-}
-
-.product:hover{
-transform:scale(1.05);
 }
 
 .product img{
@@ -62,7 +75,7 @@ margin-top:10px;
 #cart{
 position:fixed;
 right:20px;
-top:100px;
+top:120px;
 background:white;
 width:260px;
 border-radius:15px;
@@ -82,6 +95,14 @@ margin-left:8px;
 <body>
 
 <header>Deuro.tn 🛒</header>
+
+<div class="form">
+<h3>Informations de livraison</h3>
+<input type="text" id="nom" placeholder="Nom">
+<input type="text" id="prenom" placeholder="Prénom">
+<input type="text" id="adresse" placeholder="Adresse de livraison">
+<input type="text" id="tel" placeholder="Téléphone">
+</div>
 
 <div class="container">
 
@@ -149,11 +170,25 @@ document.getElementById("total").innerText=total
 }
 
 function send(){
-let msg="Commande Deuro.tn : "
+
+let nom=document.getElementById("nom").value
+let prenom=document.getElementById("prenom").value
+let adresse=document.getElementById("adresse").value
+let tel=document.getElementById("tel").value
+
+let msg="Commande Deuro.tn %0A"
+msg+="Nom : "+nom+" %0A"
+msg+="Prénom : "+prenom+" %0A"
+msg+="Adresse : "+adresse+" %0A"
+msg+="Téléphone : "+tel+" %0A"
+msg+="Produits : "
+
 panier.forEach(p=>{
 msg+=p.name+" x"+p.q+" , "
 })
-window.open("https://wa.me/0754436855?text="+msg)
+
+window.open("https://wa.me/NUMERO?text="+msg)
+
 }
 
 </script>
