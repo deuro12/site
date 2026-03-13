@@ -8,13 +8,13 @@
 <style>
 body{
 font-family:Arial;
-background:#f4f4f4;
+background:#f2f2f2;
 margin:0;
 text-align:center;
 }
 
 h1{
-background:#2ecc71;
+background:#27ae60;
 color:white;
 padding:20px;
 margin:0;
@@ -38,7 +38,7 @@ box-shadow:0 5px 15px rgba(0,0,0,0.1);
 
 button{
 padding:10px;
-background:#2ecc71;
+background:#27ae60;
 color:white;
 border:none;
 border-radius:8px;
@@ -53,6 +53,11 @@ padding:20px;
 border-radius:12px;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
+
+.remove{
+background:red;
+margin-left:10px;
+}
 </style>
 
 </head>
@@ -64,15 +69,15 @@ box-shadow:0 5px 15px rgba(0,0,0,0.1);
 <div class="container">
 
 <div class="product">
-<h3>Article 1</h3>
+<h3>Article 1 (10€)</h3>
 <input type="number" id="a1" value="0">
-<button onclick="add('Article 1',a1.value)">Ajouter</button>
+<button onclick="add('Article 1',10,a1.value)">Ajouter</button>
 </div>
 
 <div class="product">
-<h3>Article 2</h3>
+<h3>Article 2 (20€)</h3>
 <input type="number" id="a2" value="0">
-<button onclick="add('Article 2',a2.value)">Ajouter</button>
+<button onclick="add('Article 2',20,a2.value)">Ajouter</button>
 </div>
 
 </div>
@@ -80,31 +85,49 @@ box-shadow:0 5px 15px rgba(0,0,0,0.1);
 <div id="panier">
 <h2>Panier</h2>
 <ul id="list"></ul>
+<h3>Total : <span id="total">0</span> €</h3>
 </div>
 
-<button onclick="send()">Valider la commande</button>
+<button onclick="send()">Commander sur WhatsApp</button>
 
 <script>
-let panier=[]
 
-function add(name,q){
+let panier=[]
+let total=0
+
+function add(name,price,q){
 if(q>0){
-panier.push(name+" x"+q)
+panier.push({name,price,q})
+total+=price*q
 display()
 }
 }
 
+function remove(i){
+total-=panier[i].price*panier[i].q
+panier.splice(i,1)
+display()
+}
+
 function display(){
 list.innerHTML=""
-panier.forEach(p=>{
-list.innerHTML+="<li>"+p+"</li>"
+panier.forEach((p,i)=>{
+list.innerHTML+=`<li>${p.name} x${p.q} 
+<button class="remove" onclick="remove(${i})">X</button></li>`
 })
+document.getElementById("total").innerText=total
 }
 
 function send(){
-alert("Commande envoyée : "+panier.join(", "))
+let msg="Commande : "
+panier.forEach(p=>{
+msg+=p.name+" x"+p.q+" , "
+})
+window.open("https://wa.me/NUMERO?text="+msg)
 }
+
 </script>
 
 </body>
 </html>
+
