@@ -1,120 +1,30 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-<title>Mon Shop</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-body{
-font-family:Arial;
-background:#f2f2f2;
-margin:0;
-text-align:center;
-}
-
-h1{
-background:#27ae60;
-color:white;
-padding:20px;
-margin:0;
-}
-
-.container{
-display:flex;
-justify-content:center;
-gap:20px;
-flex-wrap:wrap;
-padding:20px;
-}
-
-.product{
-background:white;
-padding:20px;
-border-radius:12px;
-width:220px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-button{
-padding:10px;
-background:#27ae60;
-color:white;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-#panier{
-background:white;
-width:300px;
-margin:20px auto;
-padding:20px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.remove{
-background:red;
-margin-left:10px;
-}
-</style>
-
-</head>
-
-<body>
-
-<h1>Mon Shop 🔥</h1>
-
-<div class="container">
-
-<div class="product">
-<h3>Article 1 (10€)</h3>
-<input type="number" id="a1" value="0">
-<button onclick="add('Article 1',10,a1.value)">Ajouter</button>
-</div>
-
-<div class="product">
-<h3>Article 2 (20€)</h3>
-<input type="number" id="a2" value="0">
-<button onclick="add('Article 2',20,a2.value)">Ajouter</button>
-</div>
-
-</div>
-
-<div id="panier">
-<h2>Panier</h2>
-<ul id="list"></ul>
-<h3>Total : <span id="total">0</span> €</h3>
-</div>
-
-<button onclick="send()">Commander sur WhatsApp</button>
-
 <script>
 
 let panier=[]
 let total=0
 
 function add(name,price,q){
+q=parseInt(q)
 if(q>0){
-panier.push({name,price,q})
+panier.push({name:name,price:price,q:q})
 total+=price*q
 display()
 }
 }
 
-function remove(i){
+function removeItem(i){
 total-=panier[i].price*panier[i].q
 panier.splice(i,1)
 display()
 }
 
 function display(){
-list.innerHTML=""
+let html=""
 panier.forEach((p,i)=>{
-list.innerHTML+=`<li>${p.name} x${p.q} 
-<button class="remove" onclick="remove(${i})">X</button></li>`
+html+=`<li>${p.name} x${p.q} 
+<button class="remove" onclick="removeItem(${i})">X</button></li>`
 })
+document.getElementById("list").innerHTML=html
 document.getElementById("total").innerText=total
 }
 
@@ -123,11 +33,7 @@ let msg="Commande : "
 panier.forEach(p=>{
 msg+=p.name+" x"+p.q+" , "
 })
-window.open("https://wa.me/NUMERO?text="+msg)
+alert(msg)
 }
 
 </script>
-
-</body>
-</html>
-
