@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="fr">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Deuro.tn</title>
 
 <style>
 
@@ -12,60 +13,112 @@ margin:0;
 background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);
 }
 
+/* HEADER */
+
 header{
 background:#111827;
 color:white;
 padding:15px;
 display:flex;
+justify-content:space-between;
 align-items:center;
-justify-content:center;
-gap:15px;
-font-size:26px;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.logoBox{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:24px;
 font-weight:bold;
 }
 
 .logo{height:40px}
 
+.cartIcon{
+background:#22c55e;
+width:35px;
+height:35px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+}
+
+/* ADMIN */
+
 .admin{
 display:none;
 background:white;
 width:90%;
-max-width:750px;
+max-width:700px;
 margin:20px auto;
 padding:20px;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
-.admin input,.admin select{
-padding:10px;
-margin:5px;
-border-radius:8px;
-border:1px solid #ccc;
+/* SEARCH */
+
+.searchBox{
+text-align:center;
+margin-top:20px;
 }
+
+.searchBox input,.searchBox select{
+padding:12px;
+border-radius:12px;
+border:1px solid #ddd;
+}
+
+/* PRODUCTS */
 
 .container{
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-gap:30px;
+gap:25px;
 padding:30px;
 }
 
 .product{
 background:white;
 width:240px;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-padding:18px;
+border-radius:20px;
+padding:15px;
 text-align:center;
 cursor:pointer;
+transition:0.3s;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.product:hover{
+transform:translateY(-10px);
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
 }
 
 .product img{
 width:100%;
-border-radius:12px;
+border-radius:15px;
+transition:0.4s;
 }
+
+.product:hover img{
+transform:scale(1.08);
+}
+
+.cat{
+background:#eef2ff;
+padding:5px 12px;
+border-radius:20px;
+font-size:12px;
+display:inline-block;
+}
+
+/* DETAIL */
 
 .detail{
 display:none;
@@ -73,22 +126,30 @@ background:white;
 width:90%;
 max-width:500px;
 margin:30px auto;
-padding:20px;
-border-radius:20px;
-box-shadow:0 15px 35px rgba(0,0,0,0.15);
+padding:25px;
+border-radius:25px;
 text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
+animation:pop 0.4s;
 }
+
+@keyframes pop{
+from{transform:scale(0.7);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+
+/* CART */
 
 #cart{
 position:fixed;
 right:20px;
-top:100px;
+top:120px;
 background:white;
 width:300px;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
+border-radius:20px;
 padding:15px;
-max-height:80vh;
+box-shadow:0 15px 35px rgba(0,0,0,0.2);
+max-height:70vh;
 overflow:auto;
 }
 
@@ -99,7 +160,6 @@ border:none;
 width:25px;
 height:25px;
 border-radius:6px;
-cursor:pointer;
 }
 
 .remove{
@@ -107,8 +167,24 @@ background:red;
 color:white;
 border:none;
 border-radius:6px;
-cursor:pointer;
 }
+
+button{
+background:linear-gradient(45deg,#22c55e,#16a34a);
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+margin-top:10px;
+}
+
+.back{
+background:#111827;
+}
+
+/* CHECKOUT */
 
 .checkout{
 display:none;
@@ -118,7 +194,7 @@ max-width:500px;
 margin:30px auto;
 padding:20px;
 border-radius:20px;
-box-shadow:0 15px 35px rgba(0,0,0,0.15);
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
 }
 
 .checkout input{
@@ -126,51 +202,66 @@ width:95%;
 padding:12px;
 margin:8px;
 border-radius:10px;
-border:1px solid #ccc;
+border:1px solid #ddd;
 }
 
-button{
-background:#22c55e;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:10px;
-cursor:pointer;
-margin-top:10px;
+/* MOBILE */
+
+@media(max-width:700px){
+
+#cart{
+bottom:0;
+top:auto;
+right:0;
+width:100%;
+border-radius:25px 25px 0 0;
 }
 
-.back{background:#111827}
+.container{
+padding-bottom:180px;
+}
+
+}
 
 </style>
-
 </head>
 
 <body>
 
 <header>
+
+<div class="logoBox">
 <img src="deuro.tn.png" class="logo">
 Deuro.tn
+</div>
+
+<div class="cartIcon" id="cartCount">0</div>
+
 </header>
 
 <div class="admin" id="adminPanel">
 <h3>ADMIN PANEL</h3>
-<input type="text" id="pname" placeholder="Nom produit">
-<input type="number" id="pprice" placeholder="Prix">
-<input type="text" id="psizes" placeholder="Tailles ex: S,M,L ou 40,41">
-<input type="file" id="pimg">
+
+<input id="pname" placeholder="Nom">
+<input id="pprice" type="number" placeholder="Prix">
+<input id="psizes" placeholder="Tailles S,M,L">
+<input id="pimg" type="file">
+
 <select id="pcat">
 <option>Tshirt</option>
 <option>Shoes</option>
 <option>Cap</option>
 <option>Other</option>
 </select>
+
 <button onclick="addProduct()">Ajouter</button>
+
 </div>
 
-<div style="text-align:center">
-<input type="text" id="search" placeholder="🔎 Rechercher..." onkeyup="render()">
+<div class="searchBox">
+<input id="search" placeholder="🔎 Rechercher..." onkeyup="render()">
 <select id="filterCat" onchange="render()">
-<option value="All">Toutes catégories</option>
+<option value="All">Toutes</option>
 <option>Tshirt</option>
 <option>Shoes</option>
 <option>Cap</option>
@@ -179,6 +270,7 @@ Deuro.tn
 </div>
 
 <div class="container" id="shop"></div>
+
 <div class="detail" id="detail"></div>
 
 <div id="cart">
@@ -189,11 +281,12 @@ Deuro.tn
 </div>
 
 <div class="checkout" id="checkout">
-<h3>Informations Livraison</h3>
+<h3>Livraison</h3>
 <input id="nom" placeholder="Nom">
-<input id="prenom" placeholder="Prénom">
+<input id="prenom" placeholder="Prenom">
 <input id="adresse" placeholder="Adresse">
-<input id="tel" placeholder="Téléphone">
+<input id="tel" placeholder="Telephone">
+
 <button onclick="order()">Commander WhatsApp</button>
 <button class="back" onclick="closeCheckout()">Retour</button>
 </div>
@@ -202,7 +295,18 @@ Deuro.tn
 
 let produits=JSON.parse(localStorage.getItem("produits"))||[]
 let panier=JSON.parse(localStorage.getItem("panier"))||[]
-let total=0
+
+let secret="admin2025"
+let typed=""
+
+document.addEventListener("keydown",e=>{
+typed+=e.key
+if(typed.length>secret.length) typed=typed.slice(1)
+if(typed===secret){
+adminPanel.style.display="block"
+alert("ADMIN MODE")
+}
+})
 
 function saveProducts(){
 localStorage.setItem("produits",JSON.stringify(produits))
@@ -212,30 +316,19 @@ function saveCart(){
 localStorage.setItem("panier",JSON.stringify(panier))
 }
 
-let secretCode="admin2025"
-let typed=""
-
-document.addEventListener("keydown",e=>{
-typed+=e.key
-if(typed.length>secretCode.length) typed=typed.slice(1)
-if(typed===secretCode){
-document.getElementById("adminPanel").style.display="block"
-alert("ADMIN MODE")
-}
-})
-
 function addProduct(){
-
-let name=pname.value
-let price=parseInt(pprice.value)
-let cat=pcat.value
-let sizes=psizes.value.split(",")
 
 let file=pimg.files[0]
 let reader=new FileReader()
 
 reader.onload=e=>{
-produits.push({name,price,cat,sizes,img:e.target.result})
+produits.push({
+name:pname.value,
+price:parseInt(pprice.value),
+sizes:psizes.value.split(","),
+cat:pcat.value,
+img:e.target.result
+})
 saveProducts()
 render()
 }
@@ -254,45 +347,49 @@ let html=""
 
 produits.forEach((p,i)=>{
 
-if(p.name.toLowerCase().includes(search) && (cat=="All"||p.cat==cat)){
+if(p.name.toLowerCase().includes(search) && (cat=="All"||cat==p.cat)){
 
 html+=`
 <div class="product" onclick="openDetail(${i})">
 <img src="${p.img}">
 <h3>${p.name}</h3>
-<p><b>${p.price} TND</b></p>
+<p class="cat">${p.cat}</p>
+<h4>${p.price} TND</h4>
 </div>
 `
+
 }
 
 })
 
 shop.innerHTML=html
 displayCart()
+
 }
 
 function openDetail(i){
 
 let p=produits[i]
-let sizesHTML=""
+let sizes=""
 
-p.sizes.forEach(s=>sizesHTML+=`<option>${s}</option>`)
+p.sizes.forEach(s=>sizes+=`<option>${s}</option>`)
 
 detail.style.display="block"
 
 detail.innerHTML=`
-<img src="${p.img}">
+<img src="${p.img}" style="width:100%;border-radius:20px">
 <h2>${p.name}</h2>
 <h3>${p.price} TND</h3>
 
-<select id="sizeChoice">${sizesHTML}</select>
+<select id="sizeChoice">${sizes}</select>
 
 <br>
-<button onclick="addToCart(${i})">Ajouter au panier</button>
+<button onclick="addToCart(${i})">Ajouter</button>
 <button class="back" onclick="render()">Retour</button>
 `
 
 window.scrollTo(0,0)
+
 }
 
 function addToCart(i){
@@ -304,21 +401,29 @@ let found=panier.find(p=>p.name==produits[i].name && p.size==size)
 if(found){
 found.q++
 }else{
-panier.push({name:produits[i].name,price:produits[i].price,size,q:1})
+panier.push({
+name:produits[i].name,
+price:produits[i].price,
+size:size,
+q:1
+})
 }
 
 saveCart()
 displayCart()
+
 }
 
 function displayCart(){
 
 let html=""
-total=0
+let total=0
+let count=0
 
 panier.forEach((p,i)=>{
 
 total+=p.price*p.q
+count+=p.q
 
 html+=`
 <li>
@@ -330,10 +435,13 @@ ${p.q}
 <button class="remove" onclick="removeItem(${i})">X</button>
 </li>
 `
+
 })
 
 cartList.innerHTML=html
 document.getElementById("total").innerText=total
+document.getElementById("cartCount").innerText=count
+
 }
 
 function plus(i){
@@ -369,7 +477,13 @@ checkout.style.display="none"
 
 function order(){
 
+if(panier.length==0){
+alert("Panier vide")
+return
+}
+
 let msg="Commande Deuro.tn %0A"
+
 msg+="Nom:"+nom.value+" %0A"
 msg+="Prenom:"+prenom.value+" %0A"
 msg+="Adresse:"+adresse.value+" %0A"
@@ -380,6 +494,7 @@ msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
 })
 
 window.open("https://wa.me/33754436855?text="+msg)
+
 }
 
 render()
