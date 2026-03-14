@@ -43,9 +43,9 @@ Deuro.tn
 </div>
 
 <div>
-<button class="loginBtn" onclick="loginAdmin()">Login</button>
-<button class="back" onclick="logoutAdmin()">Logout</button>
-<div class="cartIcon" id="cartCount">0</div>
+<button class="loginBtn" id="loginBtn" onclick="loginAdmin()" style="display:none">Login</button>
+<button class="back" id="logoutBtn" onclick="logoutAdmin()" style="display:none">Logout</button>
+<span class="cartIcon" id="cartCount">0</span>
 </div>
 </header>
 
@@ -122,10 +122,28 @@ firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
 
 let isAdmin=false
+let secret="deuroadmin"
+let typed=""
+
+document.addEventListener("keydown",function(e){
+typed+=e.key.toLowerCase()
+if(typed.includes(secret)){
+document.getElementById("loginBtn").style.display="inline-block"
+typed=""
+}
+})
 
 firebase.auth().onAuthStateChanged(user=>{
 isAdmin=!!user
-adminPanel.style.display=isAdmin?"block":"none"
+
+if(isAdmin){
+adminPanel.style.display="block"
+document.getElementById("logoutBtn").style.display="inline-block"
+document.getElementById("loginBtn").style.display="none"
+}else{
+adminPanel.style.display="none"
+document.getElementById("logoutBtn").style.display="none"
+}
 })
 
 function loginAdmin(){
