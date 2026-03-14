@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 margin:0;
-background:linear-gradient(135deg,#eef2ff,#ffffff,#fef3c7);
+background:linear-gradient(135deg,#e0f2fe,#ffffff,#fce7f3);
 }
 
 header{
@@ -38,28 +38,6 @@ border-radius:8px;
 border:1px solid #ccc;
 }
 
-.admin button{
-background:#2563eb;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:10px;
-cursor:pointer;
-}
-
-.filters{
-text-align:center;
-margin-top:10px;
-}
-
-.filters input, .filters select{
-padding:10px;
-border-radius:10px;
-border:1px solid #ccc;
-width:200px;
-margin:5px;
-}
-
 .container{
 display:flex;
 flex-wrap:wrap;
@@ -75,6 +53,7 @@ border-radius:18px;
 box-shadow:0 10px 25px rgba(0,0,0,0.08);
 padding:18px;
 text-align:center;
+cursor:pointer;
 }
 
 .product img{
@@ -82,42 +61,35 @@ width:100%;
 border-radius:12px;
 }
 
-.qtyBox{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-top:10px;
+.detail{
+display:none;
+background:white;
+width:90%;
+max-width:500px;
+margin:30px auto;
+padding:20px;
+border-radius:20px;
+box-shadow:0 15px 35px rgba(0,0,0,0.15);
+text-align:center;
 }
 
-.qtyBtn{
-background:#111;
-color:white;
-border:none;
-width:32px;
-height:32px;
-border-radius:8px;
-cursor:pointer;
+.detail img{
+width:100%;
+border-radius:15px;
 }
 
-.addBtn{
+button{
 background:#22c55e;
 color:white;
 border:none;
-padding:10px;
+padding:12px 20px;
 border-radius:10px;
-margin-top:10px;
 cursor:pointer;
-width:90%;
+margin-top:10px;
 }
 
-.deleteBtn{
-background:red;
-color:white;
-border:none;
-padding:8px;
-border-radius:8px;
-margin-top:8px;
-cursor:pointer;
+.back{
+background:#111827;
 }
 
 </style>
@@ -134,40 +106,73 @@ cursor:pointer;
 
 <input type="text" id="pname" placeholder="Nom">
 <input type="number" id="pprice" placeholder="Prix">
-<input type="text" id="pimg" placeholder="Lien image">
+
+<input type="file" id="pimg">
 
 <select id="pcat">
-<option value="Tshirt">Tshirt</option>
-<option value="Shoes">Shoes</option>
-<option value="Cap">Cap</option>
-<option value="Other">Other</option>
+<option>Tshirt</option>
+<option>Shoes</option>
+<option>Cap</option>
+<option>Other</option>
 </select>
 
 <button onclick="addProduct()">Ajouter</button>
 
 </div>
 
-<div class="filters">
+<div style="text-align:center">
 
 <input type="text" id="search" placeholder="🔎 Rechercher..." onkeyup="render()">
 
 <select id="filterCat" onchange="render()">
 <option value="All">Toutes catégories</option>
-<option value="Tshirt">Tshirt</option>
-<option value="Shoes">Shoes</option>
-<option value="Cap">Cap</option>
-<option value="Other">Other</option>
+<option>Tshirt</option>
+<option>Shoes</option>
+<option>Cap</option>
+<option>Other</option>
 </select>
 
 </div>
 
 <div class="container" id="shop"></div>
 
+<div class="detail" id="detail"></div>
+
 <script>
 
 let produits=[]
+let currentIndex=null
+
+function addProduct(){
+
+let name=document.getElementById("pname").value
+let price=document.getElementById("pprice").value
+let cat=document.getElementById("pcat").value
+
+let file=document.getElementById("pimg").files[0]
+
+let reader=new FileReader()
+
+reader.onload=function(e){
+
+produits.push({
+name,
+price,
+cat,
+img:e.target.result
+})
+
+render()
+
+}
+
+reader.readAsDataURL(file)
+
+}
 
 function render(){
+
+document.getElementById("detail").style.display="none"
 
 let search=document.getElementById("search").value.toLowerCase()
 let cat=document.getElementById("filterCat").value
@@ -177,27 +182,17 @@ let html=""
 produits.forEach((p,i)=>{
 
 if(
-(p.name.toLowerCase().includes(search)) &&
+p.name.toLowerCase().includes(search) &&
 (cat=="All" || p.cat==cat)
 ){
 
 html+=`
-<div class="product">
+<div class="product" onclick="openDetail(${i})">
 
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p><b>${p.price} TND</b></p>
 <p>${p.cat}</p>
-
-<div class="qtyBox">
-<button class="qtyBtn" onclick="minus('q${i}')">-</button>
-<div id="q${i}">1</div>
-<button class="qtyBtn" onclick="plus('q${i}')">+</button>
-</div>
-
-<button class="addBtn">Ajouter</button>
-
-<button class="deleteBtn" onclick="deleteProduct(${i})">Supprimer</button>
 
 </div>
 `
@@ -209,38 +204,38 @@ document.getElementById("shop").innerHTML=html
 
 }
 
-function addProduct(){
+function openDetail(i){
 
-let name=document.getElementById("pname").value
-let price=document.getElementById("pprice").value
-let img=document.getElementById("pimg").value
-let cat=document.getElementById("pcat").value
+currentIndex=i
 
-produits.push({name,price,img,cat})
+let p=produits[i]
 
-render()
+document.getElementById("detail").style.display="block"
 
-}
+document.getElementById("detail").innerHTML=`
 
-function deleteProduct(i){
+<img src="${p.img}">
+<h2>${p.name}</h2>
+<h3>${p.price} TND</h3>
+<p>Catégorie : ${p.cat}</p>
 
-produits.splice(i,1)
-render()
+<select id="size">
+<option>S</option>
+<option>M</option>
+<option>L</option>
+<option>XL</option>
+</select>
 
-}
+<br>
 
-function plus(id){
+<button onclick="alert('Produit ajouté au panier')">Ajouter au panier</button>
 
-let el=document.getElementById(id)
-el.innerText=parseInt(el.innerText)+1
+<br>
+<button class="back" onclick="render()">Retour</button>
 
-}
+`
 
-function minus(id){
-
-let el=document.getElementById(id)
-if(parseInt(el.innerText)>1)
-el.innerText=parseInt(el.innerText)-1
+window.scrollTo(0,0)
 
 }
 
