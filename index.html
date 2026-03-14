@@ -320,11 +320,13 @@ localStorage.setItem("panier",JSON.stringify(panier))
 
 function addProduct(){
 
-let name = pname.value.trim()
-let price = parseFloat(pprice.value)
-let sizes = psizes.value.trim()
-let cat = pcat.value
-let files = pimg.files
+function addProduct(){
+
+let name = document.getElementById("pname").value.trim()
+let price = parseFloat(document.getElementById("pprice").value)
+let sizes = document.getElementById("psizes").value.trim()
+let cat = document.getElementById("pcat").value
+let files = document.getElementById("pimg").files
 
 if(!name || !price || !sizes){
 alert("Remplir tous les champs")
@@ -364,10 +366,10 @@ imgs:images
 
 saveProducts()
 
-pname.value=""
-pprice.value=""
-psizes.value=""
-pimg.value=""
+document.getElementById("pname").value=""
+document.getElementById("pprice").value=""
+document.getElementById("psizes").value=""
+document.getElementById("pimg").value=""
 
 alert("Produit ajouté ✅")
 
