@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 margin:0;
-background:linear-gradient(135deg,#e0f2fe,#ffffff,#fce7f3);
+background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);
 }
 
 header{
@@ -19,7 +19,6 @@ padding:18px;
 text-align:center;
 font-size:26px;
 font-weight:bold;
-cursor:pointer;
 }
 
 .admin{
@@ -95,13 +94,13 @@ background:#111827;
 
 <body>
 
-<header onclick="openAdmin()">Deuro.tn 🛒</header>
+<header>Deuro.tn 🛒</header>
 
 <div class="admin" id="adminPanel">
 
 <h3>ADMIN PANEL</h3>
 
-<input type="text" id="pname" placeholder="Nom">
+<input type="text" id="pname" placeholder="Nom produit">
 <input type="number" id="pprice" placeholder="Prix">
 <input type="file" id="pimg">
 
@@ -112,7 +111,7 @@ background:#111827;
 <option>Other</option>
 </select>
 
-<button onclick="addProduct()">Ajouter Produit</button>
+<button onclick="addProduct()">Ajouter</button>
 
 </div>
 
@@ -136,32 +135,30 @@ background:#111827;
 
 <script>
 
-let produits=[]
-let password="1234"   // 🔐 CHANGE ICI TON MOT DE PASSE
-let adminOpen=false
+let produits = JSON.parse(localStorage.getItem("produits")) || []
 
-function openAdmin(){
-
-if(adminOpen){
-document.getElementById("adminPanel").style.display="none"
-adminOpen=false
-return
+function save(){
+localStorage.setItem("produits",JSON.stringify(produits))
 }
 
-let pass=prompt("Mot de passe ADMIN")
+let secretCode = "admin2025"
+let typed=""
 
-if(pass==password){
+document.addEventListener("keydown",function(e){
+
+typed+=e.key
+
+if(typed.length>secretCode.length)
+typed=typed.slice(1)
+
+if(typed===secretCode){
 
 document.getElementById("adminPanel").style.display="block"
-adminOpen=true
-
-}else{
-
-alert("Mot de passe incorrect")
+alert("ADMIN MODE")
 
 }
 
-}
+})
 
 function addProduct(){
 
@@ -181,6 +178,7 @@ cat,
 img:e.target.result
 })
 
+save()
 render()
 
 }
@@ -255,6 +253,8 @@ document.getElementById("detail").innerHTML=`
 window.scrollTo(0,0)
 
 }
+
+render()
 
 </script>
 
