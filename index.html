@@ -114,37 +114,15 @@ const db=firebase.firestore();
 let produits=[]
 let panier = JSON.parse(localStorage.getItem("panier")) || []
 
-async function syncFromFirebase(){
+/* REALTIME FIX */
 
-try{
-
-let snap = await db.collection("produits").get()
-
-if(snap.empty){
-console.log("Aucun produit firebase")
-return
-}
-
+db.collection("produits").onSnapshot(snap=>{
 produits=[]
-
 snap.forEach(doc=>{
-let data=doc.data()
-if(data && data.name){
-produits.push({...data,id:doc.id})
-}
+produits.push({...doc.data(),id:doc.id})
 })
-
-console.log("Produits chargés :",produits.length)
-
 render()
-
-}catch(e){
-console.error("Erreur Firebase :",e)
-}
-
-}
-
-syncFromFirebase()
+})
 
 function saveCart(){
 localStorage.setItem("panier",JSON.stringify(panier))
@@ -166,65 +144,77 @@ function closeAdmin(){
 document.getElementById("adminPanel").style.display="none"
 }
 
+/* IMAGE COMPRESSION FIX */
+
+function compress(file){
+return new Promise(res=>{
+let reader=new FileReader()
+reader.onload=e=>{
+let img=new Image()
+img.onload=function(){
+let canvas=document.createElement("canvas")
+let max=500
+let ratio=Math.min(max/img.width,max/img.height)
+canvas.width=img.width*ratio
+canvas.height=img.height*ratio
+let ctx=canvas.getContext("2d")
+ctx.drawImage(img,0,0,canvas.width,canvas.height)
+res(canvas.toDataURL("image/jpeg",0.6))
+}
+img.src=e.target.result
+}
+reader.readAsDataURL(file)
+})
+}
+
 async function addProduct(){
 
-let name=document.getElementById("pname").value.trim()
-let price=parseFloat(document.getElementById("pprice").value)
-let sizes=document.getElementById("psizes").value.trim()
-let cat=document.getElementById("pcat").value
-let files=document.getElementById("pimg").files
+let name=pname.value.trim()
+let price=parseFloat(pprice.value)
+let sizes=psizes.value.trim()
+let cat=pcat.value
+let files=pimg.files
 
 if(name==="" || isNaN(price) || sizes===""){alert("Remplir");return}
 
 let images=[]
 
 for(let file of files){
-let base=await toBase64(file)
+let base=await compress(file)
 images.push(base)
 }
 
 let data={name,price,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs:images}
 
-if(window.editIndex>=0){
+if(editIndex>=0){
 await db.collection("produits").doc(produits[editIndex].id).update(data)
-window.editIndex=-1
+editIndex=-1
 }else{
 await db.collection("produits").add(data)
 }
 
-alert("Sauvegardé")
-await syncFromFirebase()
-render()
+alert("Produit sauvegardé")
 
-}
-
-function toBase64(file){
-return new Promise(res=>{
-let r=new FileReader()
-r.onload=e=>res(e.target.result)
-r.readAsDataURL(file)
-})
 }
 
 async function deleteProduct(i){
 if(!confirm("Supprimer ?")) return
 await db.collection("produits").doc(produits[i].id).delete()
-await syncFromFirebase()
 }
 
 function editProduct(i){
 let p=produits[i]
-document.getElementById("adminPanel").style.display="block"
-document.getElementById("pname").value=p.name
-document.getElementById("pprice").value=p.price
-document.getElementById("psizes").value=p.sizes.join(",")
-document.getElementById("pcat").value=p.cat
-window.editIndex=i
+adminPanel.style.display="block"
+pname.value=p.name
+pprice.value=p.price
+psizes.value=p.sizes.join(",")
+pcat.value=p.cat
+editIndex=i
 }
 
 function render(){
 
-document.getElementById("detail").style.display="none"
+detail.style.display="none"
 
 let search=document.getElementById("search").value.toLowerCase()
 let cat=document.getElementById("filterCat").value
@@ -254,9 +244,8 @@ adminHtml+=`
 
 })
 
-document.getElementById("shop").innerHTML=html
-document.getElementById("adminList").innerHTML=adminHtml
-
+shop.innerHTML=html
+adminList.innerHTML=adminHtml
 displayCart()
 }
 
@@ -264,8 +253,6 @@ function openDetail(i){
 
 let p=produits[i]
 let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
-
-let detail=document.getElementById("detail")
 
 detail.style.display="block"
 detail.innerHTML=`
@@ -325,8 +312,8 @@ function plus(i){panier[i].q++;saveCart();displayCart()}
 function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);saveCart();displayCart()}
 function removeItem(i){panier.splice(i,1);saveCart();displayCart()}
 
-function openCheckout(){document.getElementById("checkout").style.display="block";window.scrollTo(0,0)}
-function closeCheckout(){document.getElementById("checkout").style.display="none"}
+function openCheckout(){checkout.style.display="block";window.scrollTo(0,0)}
+function closeCheckout(){checkout.style.display="none"}
 
 function order(){
 
@@ -350,8 +337,6 @@ msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
 window.open("https://wa.me/33754436855?text="+msg)
 
 }
-
-render()
 
 </script>
 
