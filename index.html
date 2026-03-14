@@ -26,7 +26,7 @@ header{background:#111827;color:white;padding:15px;display:flex;justify-content:
 #cart{position:fixed;right:20px;top:120px;background:white;width:300px;border-radius:20px;padding:15px;box-shadow:0 15px 35px rgba(0,0,0,0.2);max-height:70vh;overflow:auto;}
 .qtyBtn{background:#111827;color:white;border:none;width:25px;height:25px;border-radius:6px;}
 .remove{background:red;color:white;border:none;border-radius:6px;}
-button{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;border:none;padding:12px 20px;border-radius:12px;cursor:pointer;font-weight:bold;margin-top:10px;}
+button{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;border:none;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:bold;margin:3px;}
 .back{background:#111827;}
 .checkout{display:none;background:white;width:90%;max-width:500px;margin:30px auto;padding:20px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2);}
 .checkout input{width:95%;padding:12px;margin:8px;border-radius:10px;border:1px solid #ddd;}
@@ -46,17 +46,25 @@ Deuro.tn
 <div class="admin" id="adminPanel">
 <h3>ADMIN PANEL</h3>
 <button class="back" onclick="closeAdmin()">Fermer</button><br>
+
 <input id="pname" placeholder="Nom">
 <input id="pprice" type="number" placeholder="Prix">
 <input id="psizes" placeholder="Tailles S,M,L">
 <input id="pimg" type="file" multiple>
+
 <select id="pcat">
 <option>Tshirt</option>
 <option>Shoes</option>
 <option>Cap</option>
 <option>Other</option>
 </select>
+
 <button onclick="addProduct()">Ajouter / Modifier</button>
+
+<hr>
+<h3>Produits</h3>
+<div id="adminList"></div>
+
 </div>
 
 <div class="searchBox">
@@ -207,8 +215,10 @@ let search=document.getElementById("search").value.toLowerCase()
 let cat=document.getElementById("filterCat").value
 
 let html=""
+let adminHtml=""
 
 produits.forEach((p,i)=>{
+
 if(p.name.toLowerCase().includes(search)&&(cat==="All"||cat===p.cat)){
 html+=`
 <div class="product" onclick="openDetail(${i})">
@@ -216,13 +226,21 @@ html+=`
 <h3>${p.name}</h3>
 <p>${p.cat}</p>
 <h4>${p.price} TND</h4>
-<button onclick="event.stopPropagation();deleteProduct(${i})">Supprimer</button>
-<button onclick="event.stopPropagation();editProduct(${i})">Modifier</button>
 </div>`
 }
+
+adminHtml+=`
+<div style="border:1px solid #ddd;padding:10px;margin:5px;border-radius:10px">
+<b>${p.name}</b> - ${p.price} TND
+<button onclick="editProduct(${i})">Modifier</button>
+<button onclick="deleteProduct(${i})">Supprimer</button>
+</div>
+`
+
 })
 
 document.getElementById("shop").innerHTML=html
+document.getElementById("adminList").innerHTML=adminHtml
 
 displayCart()
 }
@@ -230,7 +248,6 @@ displayCart()
 function openDetail(i){
 
 let p=produits[i]
-
 let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
 
 let detail=document.getElementById("detail")
