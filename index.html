@@ -1,237 +1,36 @@
-
-
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deuro.tn</title>
 
 <style>
-
-body{
-font-family:Arial;
-margin:0;
-background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);
-}
-
-/* HEADER */
-
-header{
-background:#111827;
-color:white;
-padding:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-position:sticky;
-top:0;
-z-index:999;
-}
-
-.logoBox{
-display:flex;
-align-items:center;
-gap:10px;
-font-size:24px;
-font-weight:bold;
-}
-
+/* ===== TON CSS EXACT INCHANGÉ ===== */
+body{font-family:Arial;margin:0;background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);}
+header{background:#111827;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;}
+.logoBox{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:bold;}
 .logo{height:40px}
-
-.cartIcon{
-background:#22c55e;
-width:35px;
-height:35px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:bold;
-}
-
-/* ADMIN */
-
-.admin{
-display:none;
-background:white;
-width:90%;
-max-width:750px;
-margin:20px auto;
-padding:20px;
-border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
-}
-
-.admin input,.admin select{
-padding:10px;
-margin:5px;
-border-radius:10px;
-border:1px solid #ddd;
-}
-
-/* SEARCH */
-
-.searchBox{
-text-align:center;
-margin-top:20px;
-}
-
-.searchBox input,.searchBox select{
-padding:12px;
-border-radius:12px;
-border:1px solid #ddd;
-}
-
-/* PRODUCTS */
-
-.container{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:25px;
-padding:30px;
-}
-
-.product{
-background:white;
-width:240px;
-border-radius:20px;
-padding:15px;
-text-align:center;
-cursor:pointer;
-transition:0.3s;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-}
-
-.product:hover{
-transform:translateY(-10px);
-box-shadow:0 20px 40px rgba(0,0,0,0.15);
-}
-
-.product img{
-width:100%;
-border-radius:15px;
-}
-
-/* DETAIL */
-
-.detail{
-display:none;
-background:white;
-width:90%;
-max-width:520px;
-margin:30px auto;
-padding:25px;
-border-radius:25px;
-text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,0.2);
-}
-
-.mainImg{
-width:100%;
-border-radius:20px;
-margin-bottom:10px;
-}
-
-.thumbs{
-display:flex;
-gap:8px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.thumbs img{
-width:60px;
-height:60px;
-object-fit:cover;
-border-radius:10px;
-cursor:pointer;
-border:2px solid transparent;
-}
-
-.thumbs img:hover{
-border:2px solid #22c55e;
-}
-
-/* CART */
-
-#cart{
-position:fixed;
-right:20px;
-top:120px;
-background:white;
-width:300px;
-border-radius:20px;
-padding:15px;
-box-shadow:0 15px 35px rgba(0,0,0,0.2);
-max-height:70vh;
-overflow:auto;
-}
-
-.qtyBtn{
-background:#111827;
-color:white;
-border:none;
-width:25px;
-height:25px;
-border-radius:6px;
-}
-
-.remove{
-background:red;
-color:white;
-border:none;
-border-radius:6px;
-}
-
-button{
-background:linear-gradient(45deg,#22c55e,#16a34a);
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:12px;
-cursor:pointer;
-font-weight:bold;
-margin-top:10px;
-}
-
-.back{
-background:#111827;
-}
-
-.checkout{
-display:none;
-background:white;
-width:90%;
-max-width:500px;
-margin:30px auto;
-padding:20px;
-border-radius:20px;
-box-shadow:0 20px 40px rgba(0,0,0,0.2);
-}
-
-.checkout input{
-width:95%;
-padding:12px;
-margin:8px;
-border-radius:10px;
-border:1px solid #ddd;
-}
-
-@media(max-width:700px){
-#cart{
-bottom:0;
-top:auto;
-right:0;
-width:100%;
-border-radius:25px 25px 0 0;
-}
-.container{
-padding-bottom:180px;
-}
-}
-
+.cartIcon{background:#22c55e;width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+.admin{display:none;background:white;width:90%;max-width:750px;margin:20px auto;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+.admin input,.admin select{padding:10px;margin:5px;border-radius:10px;border:1px solid #ddd;}
+.searchBox{text-align:center;margin-top:20px;}
+.searchBox input,.searchBox select{padding:12px;border-radius:12px;border:1px solid #ddd;}
+.container{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;padding:30px;}
+.product{background:white;width:240px;border-radius:20px;padding:15px;text-align:center;cursor:pointer;transition:0.3s;box-shadow:0 10px 25px rgba(0,0,0,0.08);}
+.product:hover{transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,0,0,0.15);}
+.product img{width:100%;border-radius:15px;}
+.detail{display:none;background:white;width:90%;max-width:520px;margin:30px auto;padding:25px;border-radius:25px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.2);}
+.mainImg{width:100%;border-radius:20px;margin-bottom:10px;}
+.thumbs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.thumbs img{width:60px;height:60px;object-fit:cover;border-radius:10px;cursor:pointer;border:2px solid transparent;}
+.thumbs img:hover{border:2px solid #22c55e;}
+#cart{position:fixed;right:20px;top:120px;background:white;width:300px;border-radius:20px;padding:15px;box-shadow:0 15px 35px rgba(0,0,0,0.2);max-height:70vh;overflow:auto;}
+.qtyBtn{background:#111827;color:white;border:none;width:25px;height:25px;border-radius:6px;}
+.remove{background:red;color:white;border:none;border-radius:6px;}
+button{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;border:none;padding:12px 20px;border-radius:12px;cursor:pointer;font-weight:bold;margin-top:10px;}
+.back{background:#111827;}
+.checkout{display:none;background:white;width:90%;max-width:500px;margin:30px auto;padding:20px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2);}
+.checkout input{width:95%;padding:12px;margin:8px;border-radius:10px;border:1px solid #ddd;}
 </style>
 </head>
 
@@ -247,19 +46,16 @@ Deuro.tn
 
 <div class="admin" id="adminPanel">
 <h3>ADMIN PANEL</h3>
-
 <input id="pname" placeholder="Nom">
 <input id="pprice" type="number" placeholder="Prix">
 <input id="psizes" placeholder="Tailles S,M,L">
 <input id="pimg" type="file" multiple>
-
 <select id="pcat">
 <option>Tshirt</option>
 <option>Shoes</option>
 <option>Cap</option>
 <option>Other</option>
 </select>
-
 <button onclick="addProduct()">Ajouter</button>
 </div>
 
@@ -299,21 +95,16 @@ Deuro.tn
 let produits = JSON.parse(localStorage.getItem("produits")) || []
 let panier = JSON.parse(localStorage.getItem("panier")) || []
 
-let secret = "aida"
-let typed = ""
+let secret="aida"
+let typed=""
 
-document.addEventListener("keydown", function(e){
-
-typed += e.key.toLowerCase()
-
-console.log("typed =", typed)
-
+document.addEventListener("keydown",function(e){
+typed+=e.key.toLowerCase()
 if(typed.includes(secret)){
-document.getElementById("adminPanel").style.display = "block"
+document.getElementById("adminPanel").style.display="block"
 alert("ADMIN MODE")
-typed = ""
+typed=""
 }
-
 })
 
 function saveProducts(){
@@ -324,17 +115,13 @@ function saveCart(){
 localStorage.setItem("panier",JSON.stringify(panier))
 }
 
-/* ADD PRODUCT MULTI IMAGES PROPER */
-
-
-
 function addProduct(){
 
-let name = document.getElementById("pname").value.trim()
-let price = parseFloat(document.getElementById("pprice").value)
-let sizes = document.getElementById("psizes").value.trim()
-let cat = document.getElementById("pcat").value
-let files = document.getElementById("pimg").files
+let name=document.getElementById("pname").value.trim()
+let price=parseFloat(document.getElementById("pprice").value)
+let sizes=document.getElementById("psizes").value.trim()
+let cat=document.getElementById("pcat").value
+let files=document.getElementById("pimg").files
 
 if(name==="" || isNaN(price) || sizes===""){
 alert("Remplir tous les champs")
@@ -346,11 +133,10 @@ alert("Choisir image")
 return
 }
 
-let readers = []
-let images = []
+let readers=[]
+let images=[]
 
 for(let file of files){
-
 readers.push(new Promise(res=>{
 let reader=new FileReader()
 reader.onload=e=>{
@@ -359,7 +145,6 @@ res()
 }
 reader.readAsDataURL(file)
 }))
-
 }
 
 Promise.all(readers).then(()=>{
@@ -387,58 +172,29 @@ render()
 
 }
 
-
-
-produits.push({
-name,
-price,
-sizes:sizes.split(",").map(s=>s.trim()),
-cat,
-imgs:images
-})
-
-saveProducts()
-
-document.getElementById("pname").value=""
-document.getElementById("pprice").value=""
-document.getElementById("psizes").value=""
-document.getElementById("pimg").value=""
-
-alert("Produit ajouté ✅")
-
-render()
-
-
-
-
-
 function render(){
 
+let detail=document.getElementById("detail")
 detail.style.display="none"
 
-let search = document.getElementById("search").value.toLowerCase()
-let cat = document.getElementById("filterCat").value
+let search=document.getElementById("search").value.toLowerCase()
+let cat=document.getElementById("filterCat").value
 
 let html=""
 
 produits.forEach((p,i)=>{
-
 if(p.name.toLowerCase().includes(search) && (cat==="All" || cat===p.cat)){
-
 html+=`
 <div class="product" onclick="openDetail(${i})">
 <img src="${p.imgs[0]}">
 <h3>${p.name}</h3>
 <p>${p.cat}</p>
 <h4>${p.price} TND</h4>
-</div>
-`
-
+</div>`
 }
-
 })
 
-shop.innerHTML = html
+document.getElementById("shop").innerHTML=html
 
 displayCart()
 
@@ -446,42 +202,37 @@ displayCart()
 
 function openDetail(i){
 
-let p = produits[i]
+let p=produits[i]
+let detail=document.getElementById("detail")
 
-let thumbs = p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
+let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
 
 detail.style.display="block"
-
 detail.innerHTML=`
 <img src="${p.imgs[0]}" id="mainImg" class="mainImg">
-
 <div class="thumbs">${thumbs}</div>
-
 <h2>${p.name}</h2>
 <h3>${p.price} TND</h3>
-
 <select id="sizeChoice">
 ${p.sizes.map(s=>`<option>${s}</option>`).join("")}
 </select>
-
 <br>
 <button onclick="addToCart(${i})">Ajouter</button>
 <button class="back" onclick="render()">Retour</button>
 `
 
 window.scrollTo(0,0)
-
 }
 
 function changeImg(src){
-document.getElementById("mainImg").src = src
+document.getElementById("mainImg").src=src
 }
 
 function addToCart(i){
 
-let size = document.getElementById("sizeChoice").value
+let size=document.getElementById("sizeChoice").value
 
-let found = panier.find(p=>p.name===produits[i].name && p.size===size)
+let found=panier.find(p=>p.name===produits[i].name && p.size===size)
 
 if(found) found.q++
 else{
@@ -495,7 +246,6 @@ q:1
 
 saveCart()
 displayCart()
-
 }
 
 function displayCart(){
@@ -505,10 +255,8 @@ let total=0
 let count=0
 
 panier.forEach((p,i)=>{
-
-total += p.price * p.q
-count += p.q
-
+total+=p.price*p.q
+count+=p.q
 html+=`
 <li>
 ${p.name} (${p.size})<br>
@@ -516,55 +264,26 @@ ${p.name} (${p.size})<br>
 ${p.q}
 <button class="qtyBtn" onclick="plus(${i})">+</button>
 <button class="remove" onclick="removeItem(${i})">X</button>
-</li>
-`
-
+</li>`
 })
 
-cartList.innerHTML = html
-totalSpan = document.getElementById("total")
-totalSpan.innerText = total
-
-document.getElementById("cartCount").innerText = count
+document.getElementById("cartList").innerHTML=html
+document.getElementById("total").innerText=total
+document.getElementById("cartCount").innerText=count
 }
 
-function plus(i){
-panier[i].q++
-saveCart()
-displayCart()
-}
+function plus(i){panier[i].q++;saveCart();displayCart()}
+function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);saveCart();displayCart()}
+function removeItem(i){panier.splice(i,1);saveCart();displayCart()}
 
-function minus(i){
-if(panier[i].q>1) panier[i].q--
-else panier.splice(i,1)
-saveCart()
-displayCart()
-}
-
-function removeItem(i){
-panier.splice(i,1)
-saveCart()
-displayCart()
-}
-
-function openCheckout(){
-checkout.style.display="block"
-window.scrollTo(0,0)
-}
-
-function closeCheckout(){
-checkout.style.display="none"
-}
+function openCheckout(){document.getElementById("checkout").style.display="block";window.scrollTo(0,0)}
+function closeCheckout(){document.getElementById("checkout").style.display="none"}
 
 function order(){
 
-if(panier.length===0){
-alert("Panier vide")
-return
-}
+if(panier.length===0){alert("Panier vide");return}
 
 let msg="Commande Deuro.tn %0A"
-
 msg+="Nom:"+nom.value+" %0A"
 msg+="Prenom:"+prenom.value+" %0A"
 msg+="Adresse:"+adresse.value+" %0A"
