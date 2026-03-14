@@ -128,20 +128,29 @@ render()
 function compress(file){
 return new Promise(res=>{
 let reader=new FileReader()
+
 reader.onload=e=>{
 let img=new Image()
+
 img.onload=function(){
+
 let canvas=document.createElement("canvas")
-let max=500
+
+let max=300   // ⭐ avant 500
 let ratio=Math.min(max/img.width,max/img.height)
+
 canvas.width=img.width*ratio
 canvas.height=img.height*ratio
+
 let ctx=canvas.getContext("2d")
 ctx.drawImage(img,0,0,canvas.width,canvas.height)
-res(canvas.toDataURL("image/jpeg",0.6))
+
+res(canvas.toDataURL("image/jpeg",0.4)) // ⭐ qualité plus faible
 }
+
 img.src=e.target.result
 }
+
 reader.readAsDataURL(file)
 })
 }
