@@ -5,7 +5,6 @@
 <title>Deuro.tn</title>
 
 <style>
-/* ===== TON CSS EXACT INCHANGÉ ===== */
 body{font-family:Arial;margin:0;background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);}
 header{background:#111827;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;}
 .logoBox{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:bold;}
@@ -46,6 +45,7 @@ Deuro.tn
 
 <div class="admin" id="adminPanel">
 <h3>ADMIN PANEL</h3>
+<button class="back" onclick="closeAdmin()">Fermer</button><br>
 <input id="pname" placeholder="Nom">
 <input id="pprice" type="number" placeholder="Prix">
 <input id="psizes" placeholder="Tailles S,M,L">
@@ -56,7 +56,7 @@ Deuro.tn
 <option>Cap</option>
 <option>Other</option>
 </select>
-<button onclick="addProduct()">Ajouter</button>
+<button onclick="addProduct()">Ajouter / Modifier</button>
 </div>
 
 <div class="searchBox">
@@ -97,6 +97,7 @@ let panier = JSON.parse(localStorage.getItem("panier")) || []
 
 let secret="aida"
 let typed=""
+window.editIndex=-1
 
 document.addEventListener("keydown",function(e){
 typed+=e.key.toLowerCase()
@@ -106,6 +107,10 @@ alert("ADMIN MODE")
 typed=""
 }
 })
+
+function closeAdmin(){
+document.getElementById("adminPanel").style.display="none"
+}
 
 function saveProducts(){
 localStorage.setItem("produits",JSON.stringify(produits))
@@ -123,15 +128,8 @@ let sizes=document.getElementById("psizes").value.trim()
 let cat=document.getElementById("pcat").value
 let files=document.getElementById("pimg").files
 
-if(name==="" || isNaN(price) || sizes===""){
-alert("Remplir tous les champs")
-return
-}
-
-if(files.length===0){
-alert("Choisir image")
-return
-}
+if(name==="" || isNaN(price) || sizes===""){alert("Remplir tous les champs");return}
+if(files.length===0){alert("Choisir image");return}
 
 let readers=[]
 let images=[]
@@ -139,46 +137,35 @@ let images=[]
 for(let file of files){
 readers.push(new Promise(res=>{
 let reader=new FileReader()
-
 reader.onload=e=>{
-
 let img=new Image()
 img.onload=function(){
-
 let canvas=document.createElement("canvas")
 let max=600
-
 let ratio=Math.min(max/img.width,max/img.height)
-
 canvas.width=img.width*ratio
 canvas.height=img.height*ratio
-
 let ctx=canvas.getContext("2d")
 ctx.drawImage(img,0,0,canvas.width,canvas.height)
-
 images.push(canvas.toDataURL("image/jpeg",0.7))
-
 res()
-
 }
-
 img.src=e.target.result
-
 }
-
 reader.readAsDataURL(file)
 }))
 }
 
 Promise.all(readers).then(()=>{
 
-produits.push({
-name,
-price,
-sizes:sizes.split(",").map(s=>s.trim()),
-cat,
-imgs:images
-})
+let data={name,price,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs:images}
+
+if(window.editIndex>=0){
+produits[window.editIndex]=data
+window.editIndex=-1
+}else{
+produits.push(data)
+}
 
 saveProducts()
 
@@ -187,7 +174,7 @@ document.getElementById("pprice").value=""
 document.getElementById("psizes").value=""
 document.getElementById("pimg").value=""
 
-alert("Produit ajouté ✅")
+alert("Produit sauvegardé ✅")
 
 render()
 
@@ -195,10 +182,26 @@ render()
 
 }
 
+function deleteProduct(i){
+if(!confirm("Supprimer produit ?")) return
+produits.splice(i,1)
+saveProducts()
+render()
+}
+
+function editProduct(i){
+let p=produits[i]
+document.getElementById("adminPanel").style.display="block"
+document.getElementById("pname").value=p.name
+document.getElementById("pprice").value=p.price
+document.getElementById("psizes").value=p.sizes.join(",")
+document.getElementById("pcat").value=p.cat
+window.editIndex=i
+}
+
 function render(){
 
-let detail=document.getElementById("detail")
-detail.style.display="none"
+document.getElementById("detail").style.display="none"
 
 let search=document.getElementById("search").value.toLowerCase()
 let cat=document.getElementById("filterCat").value
@@ -206,13 +209,15 @@ let cat=document.getElementById("filterCat").value
 let html=""
 
 produits.forEach((p,i)=>{
-if(p.name.toLowerCase().includes(search) && (cat==="All" || cat===p.cat)){
+if(p.name.toLowerCase().includes(search)&&(cat==="All"||cat===p.cat)){
 html+=`
 <div class="product" onclick="openDetail(${i})">
 <img src="${p.imgs[0]}">
 <h3>${p.name}</h3>
 <p>${p.cat}</p>
 <h4>${p.price} TND</h4>
+<button onclick="event.stopPropagation();deleteProduct(${i})">Supprimer</button>
+<button onclick="event.stopPropagation();editProduct(${i})">Modifier</button>
 </div>`
 }
 })
@@ -220,15 +225,15 @@ html+=`
 document.getElementById("shop").innerHTML=html
 
 displayCart()
-
 }
 
 function openDetail(i){
 
 let p=produits[i]
-let detail=document.getElementById("detail")
 
 let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
+
+let detail=document.getElementById("detail")
 
 detail.style.display="block"
 detail.innerHTML=`
@@ -247,25 +252,16 @@ ${p.sizes.map(s=>`<option>${s}</option>`).join("")}
 window.scrollTo(0,0)
 }
 
-function changeImg(src){
-document.getElementById("mainImg").src=src
-}
+function changeImg(src){document.getElementById("mainImg").src=src}
 
 function addToCart(i){
 
 let size=document.getElementById("sizeChoice").value
 
-let found=panier.find(p=>p.name===produits[i].name && p.size===size)
+let found=panier.find(p=>p.name===produits[i].name&&p.size===size)
 
-if(found) found.q++
-else{
-panier.push({
-name:produits[i].name,
-price:produits[i].price,
-size,
-q:1
-})
-}
+if(found)found.q++
+else panier.push({name:produits[i].name,price:produits[i].price,size,q:1})
 
 saveCart()
 displayCart()
@@ -273,9 +269,7 @@ displayCart()
 
 function displayCart(){
 
-let html=""
-let total=0
-let count=0
+let html="",total=0,count=0
 
 panier.forEach((p,i)=>{
 total+=p.price*p.q
