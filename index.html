@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -34,8 +34,8 @@ font-weight:bold;
 
 .cartIcon{
 background:#22c55e;
-width:35px;
-height:35px;
+width:40px;
+height:40px;
 border-radius:50%;
 display:flex;
 align-items:center;
@@ -54,13 +54,6 @@ margin:20px auto;
 padding:20px;
 border-radius:20px;
 box-shadow:0 20px 40px rgba(0,0,0,0.2);
-}
-
-.admin input,.admin select{
-padding:10px;
-margin:5px;
-border-radius:10px;
-border:1px solid #ddd;
 }
 
 .adminCard{
@@ -91,17 +84,30 @@ text-align:center;
 cursor:pointer;
 box-shadow:0 10px 25px rgba(0,0,0,.1);
 transition:.3s;
+position:relative;
 }
 
 .product:hover{
 transform:translateY(-10px);
-box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
 
 .product img{
 width:100%;
 border-radius:15px;
 }
+
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:#22c55e;
+color:white;
+padding:5px 10px;
+border-radius:20px;
+font-size:12px;
+}
+
+/* DETAIL */
 
 .detail{
 display:none;
@@ -113,6 +119,37 @@ padding:20px;
 border-radius:20px;
 text-align:center;
 box-shadow:0 20px 40px rgba(0,0,0,.3);
+}
+
+.qtyBox{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+}
+
+.qtyBtn{
+background:#0f172a;
+color:white;
+border:none;
+width:30px;
+height:30px;
+border-radius:8px;
+}
+
+/* CART */
+
+#cart{
+position:fixed;
+right:20px;
+top:120px;
+background:white;
+width:280px;
+padding:15px;
+border-radius:20px;
+box-shadow:0 20px 40px rgba(0,0,0,.3);
+max-height:70vh;
+overflow:auto;
 }
 
 button{
@@ -167,9 +204,15 @@ Deuro.tn
 <div class="container" id="shop"></div>
 <div class="detail" id="detail"></div>
 
+<div id="cart">
+<h3>Panier</h3>
+<ul id="cartList"></ul>
+<h4>Total : <span id="total">0</span> TND</h4>
+</div>
+
 <script>
 
-/* SECRET ADMIN INVISIBLE */
+/* ADMIN SECRET */
 
 let secret="aida"
 let typed=""
@@ -179,33 +222,28 @@ typed+=e.key.toLowerCase()
 if(typed.length>secret.length) typed=typed.slice(1)
 
 if(typed===secret){
-document.getElementById("adminPanel").style.display="block"
-alert("ADMIN MODE ACTIVÉ")
+adminPanel.style.display="block"
 renderAdmin()
+alert("ADMIN MODE")
 }
 })
 
 let produits = JSON.parse(localStorage.getItem("produits")) || []
+let panier = JSON.parse(localStorage.getItem("panier")) || []
 
 function saveProducts(){
 localStorage.setItem("produits",JSON.stringify(produits))
 }
 
-/* ADD PRODUCT FIXED */
+function saveCart(){
+localStorage.setItem("panier",JSON.stringify(panier))
+}
+
+/* ADD PRODUCT */
 
 function addProduct(){
 
-let name=pname.value.trim()
-let price=parseFloat(pprice.value)
-let sizes=psizes.value.trim()
-let cat=pcat.value
 let files=pimg.files
-
-if(!name || !price || !sizes || files.length==0){
-alert("Remplir tout")
-return
-}
-
 let images=[]
 let readers=[]
 
@@ -225,22 +263,15 @@ r.readAsDataURL(f)
 Promise.all(readers).then(()=>{
 
 produits.push({
-name,
-price,
-sizes:sizes.split(","),
-cat,
+name:pname.value,
+price:parseFloat(pprice.value),
+sizes:psizes.value.split(","),
+cat:pcat.value,
 imgs:images,
 date:Date.now()
 })
 
 saveProducts()
-
-alert("Produit ajouté ✅")
-
-pname.value=""
-pprice.value=""
-psizes.value=""
-pimg.value=""
 
 render()
 renderAdmin()
@@ -249,7 +280,7 @@ renderAdmin()
 
 }
 
-/* DELETE PRODUCT */
+/* DELETE */
 
 function deleteProduct(i){
 
@@ -267,14 +298,12 @@ function renderAdmin(){
 let html="<h3>Produits</h3>"
 
 produits.forEach((p,i)=>{
-
 html+=`
 <div class="adminCard">
-${p.name} - ${p.price}TND
-<button onclick="deleteProduct(${i})">Supprimer</button>
+${p.name}
+<button onclick="deleteProduct(${i})">X</button>
 </div>
 `
-
 })
 
 adminList.innerHTML=html
@@ -285,12 +314,17 @@ adminList.innerHTML=html
 
 function render(){
 
+detail.style.display="none"
+
 let html=""
 
 produits.forEach((p,i)=>{
 
+let isNew = Date.now()-p.date < 86400000
+
 html+=`
-<div class="product">
+<div class="product" onclick="openDetail(${i})">
+${isNew?'<div class="badge">NEW</div>':''}
 <img src="${p.imgs[0]}">
 <h3>${p.name}</h3>
 <h4>${p.price} TND</h4>
@@ -300,6 +334,103 @@ html+=`
 })
 
 shop.innerHTML=html
+
+displayCart()
+
+}
+
+/* DETAIL */
+
+let currentIndex=0
+let slideInterval
+
+function openDetail(i){
+
+let p=produits[i]
+
+let thumbs = p.imgs.map(img=>`<img src="${img}" width=60 onclick="changeImg('${img}')">`).join("")
+
+detail.style.display="block"
+
+detail.innerHTML=`
+<img src="${p.imgs[0]}" id="mainImg" style="width:100%;border-radius:15px">
+
+<div>${thumbs}</div>
+
+<h2>${p.name}</h2>
+<h3>${p.price} TND</h3>
+
+<select id="size">
+${p.sizes.map(s=>`<option>${s}</option>`)}
+</select>
+
+<div class="qtyBox">
+<button class="qtyBtn" onclick="changeQty(-1)">-</button>
+<span id="qty">1</span>
+<button class="qtyBtn" onclick="changeQty(1)">+</button>
+</div>
+
+<button onclick="addToCart(${i})">Ajouter panier</button>
+<button class="back" onclick="render()">Retour</button>
+`
+
+clearInterval(slideInterval)
+
+slideInterval=setInterval(()=>{
+currentIndex++
+if(currentIndex>=p.imgs.length) currentIndex=0
+mainImg.src=p.imgs[currentIndex]
+},2500)
+
+window.scrollTo(0,0)
+
+}
+
+function changeImg(src){
+mainImg.src=src
+}
+
+function changeQty(v){
+let q=parseInt(qty.innerText)
+q+=v
+if(q<1) q=1
+qty.innerText=q
+}
+
+/* PANIER */
+
+function addToCart(i){
+
+let size=document.getElementById("size").value
+let q=parseInt(qty.innerText)
+
+panier.push({
+name:produits[i].name,
+price:produits[i].price,
+size,
+q
+})
+
+saveCart()
+displayCart()
+
+}
+
+function displayCart(){
+
+let html=""
+let total=0
+let count=0
+
+panier.forEach(p=>{
+html+=`<li>${p.name} (${p.size}) x${p.q}</li>`
+total+=p.price*p.q
+count+=p.q
+})
+
+cartList.innerHTML=html
+total.innerText=total
+cartCount.innerText=count
 
 }
 
