@@ -102,6 +102,7 @@ background:#111827;
 
 <input type="text" id="pname" placeholder="Nom produit">
 <input type="number" id="pprice" placeholder="Prix">
+<input type="text" id="psizes" placeholder="Tailles ex: S,M,L ou 40,41">
 <input type="file" id="pimg">
 
 <select id="pcat">
@@ -141,7 +142,7 @@ function save(){
 localStorage.setItem("produits",JSON.stringify(produits))
 }
 
-let secretCode = "admin2025"
+let secretCode="admin2025"
 let typed=""
 
 document.addEventListener("keydown",function(e){
@@ -165,6 +166,8 @@ function addProduct(){
 let name=document.getElementById("pname").value
 let price=document.getElementById("pprice").value
 let cat=document.getElementById("pcat").value
+let sizes=document.getElementById("psizes").value.split(",")
+
 let file=document.getElementById("pimg").files[0]
 
 let reader=new FileReader()
@@ -175,6 +178,7 @@ produits.push({
 name,
 price,
 cat,
+sizes,
 img:e.target.result
 })
 
@@ -225,6 +229,12 @@ function openDetail(i){
 
 let p=produits[i]
 
+let sizesHTML=""
+
+p.sizes.forEach(s=>{
+sizesHTML+=`<option>${s}</option>`
+})
+
 document.getElementById("detail").style.display="block"
 
 document.getElementById("detail").innerHTML=`
@@ -235,10 +245,7 @@ document.getElementById("detail").innerHTML=`
 <p>Catégorie : ${p.cat}</p>
 
 <select>
-<option>S</option>
-<option>M</option>
-<option>L</option>
-<option>XL</option>
+${sizesHTML}
 </select>
 
 <br>
