@@ -198,8 +198,13 @@ alert("Produit sauvegardé")
 }
 
 async function deleteProduct(i){
-if(!confirm("Supprimer ?"))return
-await db.collection("produits").doc(produits[i].id).delete()
+
+if(!confirm("Supprimer ?")) return
+
+let id = produits[i].id   // ⭐ très important
+
+await db.collection("produits").doc(id).delete()
+
 }
 
 function editProduct(i){
