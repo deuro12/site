@@ -11,6 +11,7 @@ header{background:#111827;color:white;padding:15px;display:flex;justify-content:
 .logo{height:40px}
 .cartIcon{background:#22c55e;width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
 .admin{display:none;background:white;width:90%;max-width:750px;margin:20px auto;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+.admin input,.admin select{padding:10px;margin:5px;border-radius:10px;border:1px solid #ddd;}
 .searchBox{text-align:center;margin-top:20px;}
 .searchBox input,.searchBox select{padding:12px;border-radius:12px;border:1px solid #ddd;}
 .container{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;padding:30px;}
@@ -114,10 +115,33 @@ let produits=[]
 let panier = JSON.parse(localStorage.getItem("panier")) || []
 
 async function syncFromFirebase(){
+
+try{
+
 let snap = await db.collection("produits").get()
+
+if(snap.empty){
+console.log("Aucun produit firebase")
+return
+}
+
 produits=[]
-snap.forEach(doc=>produits.push({...doc.data(),id:doc.id}))
+
+snap.forEach(doc=>{
+let data=doc.data()
+if(data && data.name){
+produits.push({...data,id:doc.id})
+}
+})
+
+console.log("Produits chargés :",produits.length)
+
 render()
+
+}catch(e){
+console.error("Erreur Firebase :",e)
+}
+
 }
 
 syncFromFirebase()
@@ -144,37 +168,34 @@ document.getElementById("adminPanel").style.display="none"
 
 async function addProduct(){
 
-let name=pname.value.trim()
-let price=parseFloat(pprice.value)
-let sizes=psizes.value.trim()
-let cat=pcat.value
-let files=pimg.files
+let name=document.getElementById("pname").value.trim()
+let price=parseFloat(document.getElementById("pprice").value)
+let sizes=document.getElementById("psizes").value.trim()
+let cat=document.getElementById("pcat").value
+let files=document.getElementById("pimg").files
 
-if(name===""||isNaN(price)||sizes===""){alert("Remplir");return}
-if(files.length===0 && editIndex<0){alert("Choisir image");return}
+if(name==="" || isNaN(price) || sizes===""){alert("Remplir");return}
 
 let images=[]
 
-if(files.length>0){
 for(let file of files){
 let base=await toBase64(file)
 images.push(base)
 }
-}else{
-images=produits[editIndex].imgs
-}
 
 let data={name,price,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs:images}
 
-if(editIndex>=0){
+if(window.editIndex>=0){
 await db.collection("produits").doc(produits[editIndex].id).update(data)
-editIndex=-1
+window.editIndex=-1
 }else{
 await db.collection("produits").add(data)
 }
 
 alert("Sauvegardé")
-syncFromFirebase()
+await syncFromFirebase()
+render()
+
 }
 
 function toBase64(file){
@@ -188,22 +209,22 @@ r.readAsDataURL(file)
 async function deleteProduct(i){
 if(!confirm("Supprimer ?")) return
 await db.collection("produits").doc(produits[i].id).delete()
-syncFromFirebase()
+await syncFromFirebase()
 }
 
 function editProduct(i){
 let p=produits[i]
-adminPanel.style.display="block"
-pname.value=p.name
-pprice.value=p.price
-psizes.value=p.sizes.join(",")
-pcat.value=p.cat
-editIndex=i
+document.getElementById("adminPanel").style.display="block"
+document.getElementById("pname").value=p.name
+document.getElementById("pprice").value=p.price
+document.getElementById("psizes").value=p.sizes.join(",")
+document.getElementById("pcat").value=p.cat
+window.editIndex=i
 }
 
 function render(){
 
-detail.style.display="none"
+document.getElementById("detail").style.display="none"
 
 let search=document.getElementById("search").value.toLowerCase()
 let cat=document.getElementById("filterCat").value
@@ -224,15 +245,18 @@ html+=`
 }
 
 adminHtml+=`
-<div>
-${p.name} ${p.price}
+<div style="border:1px solid #ddd;padding:10px;margin:5px;border-radius:10px">
+<b>${p.name}</b> - ${p.price} TND
 <button onclick="editProduct(${i})">Modifier</button>
 <button onclick="deleteProduct(${i})">Supprimer</button>
-</div>`
+</div>
+`
+
 })
 
-shop.innerHTML=html
-adminList.innerHTML=adminHtml
+document.getElementById("shop").innerHTML=html
+document.getElementById("adminList").innerHTML=adminHtml
+
 displayCart()
 }
 
@@ -240,6 +264,8 @@ function openDetail(i){
 
 let p=produits[i]
 let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
+
+let detail=document.getElementById("detail")
 
 detail.style.display="block"
 detail.innerHTML=`
@@ -258,11 +284,11 @@ ${p.sizes.map(s=>`<option>${s}</option>`).join("")}
 window.scrollTo(0,0)
 }
 
-function changeImg(src){mainImg.src=src}
+function changeImg(src){document.getElementById("mainImg").src=src}
 
 function addToCart(i){
 
-let size=sizeChoice.value
+let size=document.getElementById("sizeChoice").value
 
 let found=panier.find(p=>p.name===produits[i].name&&p.size===size)
 
@@ -290,18 +316,17 @@ ${p.q}
 </li>`
 })
 
-cartList.innerHTML=html
-totalEl=document.getElementById("total")
-totalEl.innerText=total
-cartCount.innerText=count
+document.getElementById("cartList").innerHTML=html
+document.getElementById("total").innerText=total
+document.getElementById("cartCount").innerText=count
 }
 
 function plus(i){panier[i].q++;saveCart();displayCart()}
 function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);saveCart();displayCart()}
 function removeItem(i){panier.splice(i,1);saveCart();displayCart()}
 
-function openCheckout(){checkout.style.display="block";window.scrollTo(0,0)}
-function closeCheckout(){checkout.style.display="none"}
+function openCheckout(){document.getElementById("checkout").style.display="block";window.scrollTo(0,0)}
+function closeCheckout(){document.getElementById("checkout").style.display="none"}
 
 function order(){
 
@@ -325,6 +350,8 @@ msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
 window.open("https://wa.me/33754436855?text="+msg)
 
 }
+
+render()
 
 </script>
 
