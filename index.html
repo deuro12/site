@@ -19,9 +19,11 @@ padding:18px;
 text-align:center;
 font-size:26px;
 font-weight:bold;
+cursor:pointer;
 }
 
 .admin{
+display:none;
 background:white;
 width:90%;
 max-width:750px;
@@ -73,11 +75,6 @@ box-shadow:0 15px 35px rgba(0,0,0,0.15);
 text-align:center;
 }
 
-.detail img{
-width:100%;
-border-radius:15px;
-}
-
 button{
 background:#22c55e;
 color:white;
@@ -98,15 +95,14 @@ background:#111827;
 
 <body>
 
-<header>Deuro.tn 🛒</header>
+<header onclick="openAdmin()">Deuro.tn 🛒</header>
 
-<div class="admin">
+<div class="admin" id="adminPanel">
 
-<h3>Ajouter Produit</h3>
+<h3>ADMIN PANEL</h3>
 
 <input type="text" id="pname" placeholder="Nom">
 <input type="number" id="pprice" placeholder="Prix">
-
 <input type="file" id="pimg">
 
 <select id="pcat">
@@ -116,7 +112,7 @@ background:#111827;
 <option>Other</option>
 </select>
 
-<button onclick="addProduct()">Ajouter</button>
+<button onclick="addProduct()">Ajouter Produit</button>
 
 </div>
 
@@ -141,14 +137,37 @@ background:#111827;
 <script>
 
 let produits=[]
-let currentIndex=null
+let password="1234"   // 🔐 CHANGE ICI TON MOT DE PASSE
+let adminOpen=false
+
+function openAdmin(){
+
+if(adminOpen){
+document.getElementById("adminPanel").style.display="none"
+adminOpen=false
+return
+}
+
+let pass=prompt("Mot de passe ADMIN")
+
+if(pass==password){
+
+document.getElementById("adminPanel").style.display="block"
+adminOpen=true
+
+}else{
+
+alert("Mot de passe incorrect")
+
+}
+
+}
 
 function addProduct(){
 
 let name=document.getElementById("pname").value
 let price=document.getElementById("pprice").value
 let cat=document.getElementById("pcat").value
-
 let file=document.getElementById("pimg").files[0]
 
 let reader=new FileReader()
@@ -206,8 +225,6 @@ document.getElementById("shop").innerHTML=html
 
 function openDetail(i){
 
-currentIndex=i
-
 let p=produits[i]
 
 document.getElementById("detail").style.display="block"
@@ -219,7 +236,7 @@ document.getElementById("detail").innerHTML=`
 <h3>${p.price} TND</h3>
 <p>Catégorie : ${p.cat}</p>
 
-<select id="size">
+<select>
 <option>S</option>
 <option>M</option>
 <option>L</option>
@@ -228,7 +245,7 @@ document.getElementById("detail").innerHTML=`
 
 <br>
 
-<button onclick="alert('Produit ajouté au panier')">Ajouter au panier</button>
+<button onclick="alert('Ajouté au panier')">Ajouter au panier</button>
 
 <br>
 <button class="back" onclick="render()">Retour</button>
