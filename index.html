@@ -320,8 +320,6 @@ localStorage.setItem("panier",JSON.stringify(panier))
 
 function addProduct(){
 
-function addProduct(){
-
 let name = document.getElementById("pname").value.trim()
 let price = parseFloat(document.getElementById("pprice").value)
 let sizes = document.getElementById("psizes").value.trim()
@@ -354,6 +352,30 @@ reader.readAsDataURL(file)
 
 }
 
+Promise.all(readers).then(()=>{
+
+produits.push({
+name,
+price,
+sizes:sizes.split(",").map(s=>s.trim()),
+cat,
+imgs:images
+})
+
+saveProducts()
+
+document.getElementById("pname").value=""
+document.getElementById("pprice").value=""
+document.getElementById("psizes").value=""
+document.getElementById("pimg").value=""
+
+alert("Produit ajouté ✅")
+
+render()
+
+})
+
+}
 Promise.all(readers).then(()=>{
 
 produits.push({
