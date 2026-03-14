@@ -332,44 +332,70 @@ localStorage.setItem("panier",JSON.stringify(panier))
 
 function addProduct(){
 
-let name = pname.value.trim()
-let price = parseFloat(pprice.value)
-let sizes = psizes.value.trim()
-let cat = pcat.value
-let files = pimg.files
+let name = document.getElementById("pname").value.trim()
+let price = document.getElementById("pprice").value
+let sizes = document.getElementById("psizes").value.trim()
+let cat = document.getElementById("pcat").value
+let files = document.getElementById("pimg").files
 
-/* VALIDATION */
+/* VALIDATION STABLE */
 
-if(!name || !price || !sizes){
+if(name === "" || price === "" || sizes === ""){
 alert("Remplir tous les champs")
 return
 }
 
-if(files.length == 0){
-alert("Choisir au moins une image")
+if(files.length === 0){
+alert("Choisir image")
 return
 }
 
+price = parseFloat(price)
+
 let images = []
-let readers = []
+let loaded = 0
 
 for(let i=0;i<files.length;i++){
 
-readers.push(new Promise(resolve=>{
-
 let reader = new FileReader()
 
-reader.onload = e=>{
+reader.onload = function(e){
+
 images.push(e.target.result)
-resolve()
+loaded++
+
+if(loaded === files.length){
+
+produits.push({
+name:name,
+price:price,
+sizes:sizes.split(","),
+cat:cat,
+imgs:images
+})
+
+saveProducts()
+
+alert("Produit ajouté ✅")
+
+/* RESET */
+
+document.getElementById("pname").value=""
+document.getElementById("pprice").value=""
+document.getElementById("psizes").value=""
+document.getElementById("pimg").value=""
+
+render()
+
+}
+
 }
 
 reader.readAsDataURL(files[i])
 
-}))
-
 }
 
+}
 /* ATTENDRE chargement toutes images */
 
 Promise.all(readers).then(()=>{
