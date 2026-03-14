@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-
 <html>
-<header>
-<img src="ANL3.png" style="height:60px">
-</header>
+
+<head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -17,71 +16,89 @@ margin:0;
 header{
 background:#111;
 color:white;
-padding:20px;
+padding:18px;
 text-align:center;
-font-size:28px;
+font-size:26px;
 font-weight:bold;
 }
 
 .form{
 background:white;
 width:90%;
-max-width:600px;
-margin:20px auto;
-padding:20px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
+max-width:650px;
+margin:25px auto;
+padding:25px;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
 .form input{
-width:90%;
-padding:10px;
+width:95%;
+padding:12px;
 margin:8px;
-border-radius:8px;
-border:1px solid #ccc;
+border-radius:10px;
+border:1px solid #ddd;
 }
 
 .container{
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-gap:25px;
+gap:30px;
 padding:30px;
 }
 
 .product{
 background:white;
-width:220px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-padding:20px;
+width:240px;
+border-radius:18px;
+box-shadow:0 12px 25px rgba(0,0,0,0.08);
+padding:18px;
 text-align:center;
+transition:0.3s;
+}
+
+.product:hover{
+transform:translateY(-5px);
 }
 
 .product img{
 width:100%;
-border-radius:10px;
+border-radius:12px;
+}
+
+select, input[type=number]{
+width:90%;
+padding:10px;
+margin-top:8px;
+border-radius:8px;
+border:1px solid #ccc;
 }
 
 button{
 background:#27ae60;
 border:none;
 color:white;
-padding:10px 15px;
-border-radius:8px;
+padding:11px 18px;
+border-radius:10px;
 cursor:pointer;
 margin-top:10px;
+font-weight:bold;
+}
+
+button:hover{
+background:#219150;
 }
 
 #cart{
 position:fixed;
 right:20px;
-top:120px;
+top:110px;
 background:white;
-width:260px;
-border-radius:15px;
+width:270px;
+border-radius:18px;
 box-shadow:0 10px 25px rgba(0,0,0,0.15);
-padding:15px;
+padding:18px;
 }
 
 .remove{
@@ -101,7 +118,7 @@ margin-left:8px;
 <h3>Informations de livraison</h3>
 <input type="text" id="nom" placeholder="Nom">
 <input type="text" id="prenom" placeholder="Prénom">
-<input type="text" id="adresse" placeholder="Adresse de livraison">
+<input type="text" id="adresse" placeholder="Adresse">
 <input type="text" id="tel" placeholder="Téléphone">
 </div>
 
@@ -110,25 +127,37 @@ margin-left:8px;
 <div class="product">
 <img src="https://via.placeholder.com/200">
 <h3>T-shirt</h3>
-<p>25 TND</p>
-<input type="number" id="p1" value="0">
-<button onclick="add('T-shirt',25,p1.value)">Ajouter</button>
+<p><b>25 TND</b></p>
+
+<select id="size1">
+<option value="S">S</option>
+<option value="M">M</option>
+<option value="L">L</option>
+<option value="XL">XL</option>
+</select>
+
+<input type="number" id="q1" value="1" min="1">
+
+<button onclick="add('T-shirt',25,q1.value,size1.value)">Ajouter</button>
 </div>
+
 
 <div class="product">
 <img src="ANL3.jpg">
 <h3>Chaussures</h3>
-<p>80 TND</p>
-<input type="number" id="p2" value="0">
-<button onclick="add('Chaussures',80,p2.value)">Ajouter</button>
-</div>
+<p><b>80 TND</b></p>
 
-<div class="product">
-<img src="https://via.placeholder.com/200">
-<h3>Casquette</h3>
-<p>20 TND</p>
-<input type="number" id="p3" value="0">
-<button onclick="add('Casquette',20,p3.value)">Ajouter</button>
+<select id="size2">
+<option>40</option>
+<option>41</option>
+<option>42</option>
+<option>43</option>
+<option>44</option>
+</select>
+
+<input type="number" id="q2" value="1" min="1">
+
+<button onclick="add('Chaussures',80,q2.value,size2.value)">Ajouter</button>
 </div>
 
 </div>
@@ -145,13 +174,14 @@ margin-left:8px;
 let panier=[]
 let total=0
 
-function add(name,price,q){
+function add(name,price,q,size){
+
 q=parseInt(q)
-if(q>0){
-panier.push({name,price,q})
+
+panier.push({name,price,q,size})
 total+=price*q
 display()
-}
+
 }
 
 function removeItem(i){
@@ -161,13 +191,17 @@ display()
 }
 
 function display(){
+
 let html=""
+
 panier.forEach((p,i)=>{
-html+=`<li>${p.name} x${p.q}
+html+=`<li>${p.name} (${p.size}) x${p.q}
 <button class="remove" onclick="removeItem(${i})">X</button></li>`
 })
+
 document.getElementById("list").innerHTML=html
 document.getElementById("total").innerText=total
+
 }
 
 function send(){
@@ -182,10 +216,10 @@ msg+="Nom : "+nom+" %0A"
 msg+="Prénom : "+prenom+" %0A"
 msg+="Adresse : "+adresse+" %0A"
 msg+="Téléphone : "+tel+" %0A"
-msg+="Produits : "
+msg+="Produits : %0A"
 
 panier.forEach(p=>{
-msg+=p.name+" x"+p.q+" , "
+msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
 })
 
 window.open("https://wa.me/33754436855?text="+msg)
