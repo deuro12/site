@@ -1,8 +1,9 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deuro.tn</title>
+<title>Deuro.tn Ultra</title>
 
 <style>
 
@@ -12,10 +13,8 @@ margin:0;
 background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);
 }
 
-/* HEADER */
-
 header{
-background:#111827;
+background:#0f172a;
 color:white;
 padding:15px;
 display:flex;
@@ -28,13 +27,20 @@ z-index:999;
 
 .logoBox{
 display:flex;
-align-items:center;
 gap:10px;
 font-size:24px;
 font-weight:bold;
+align-items:center;
 }
 
 .logo{height:40px}
+
+.adminBtn{
+background:#f59e0b;
+padding:8px 14px;
+border-radius:10px;
+cursor:pointer;
+}
 
 .cartIcon{
 background:#22c55e;
@@ -47,17 +53,17 @@ justify-content:center;
 font-weight:bold;
 }
 
-/* ADMIN */
+/* ADMIN PANEL */
 
 .admin{
 display:none;
 background:white;
-width:90%;
-max-width:750px;
+width:95%;
+max-width:800px;
 margin:20px auto;
 padding:20px;
 border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
+box-shadow:0 10px 40px rgba(0,0,0,0.2);
 }
 
 .admin input,.admin select{
@@ -67,20 +73,21 @@ border-radius:10px;
 border:1px solid #ddd;
 }
 
-/* SEARCH */
-
-.searchBox{
-text-align:center;
+.productListAdmin{
 margin-top:20px;
 }
 
-.searchBox input,.searchBox select{
-padding:12px;
+.adminCard{
+background:#f1f5f9;
+padding:10px;
+margin:8px 0;
 border-radius:12px;
-border:1px solid #ddd;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-/* PRODUCTS */
+/* SHOP */
 
 .container{
 display:flex;
@@ -97,13 +104,14 @@ border-radius:20px;
 padding:15px;
 text-align:center;
 cursor:pointer;
-transition:0.3s;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
+transition:.4s;
+position:relative;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
 .product:hover{
-transform:translateY(-10px);
-box-shadow:0 20px 40px rgba(0,0,0,0.15);
+transform:translateY(-12px) scale(1.03);
+box-shadow:0 25px 50px rgba(0,0,0,.2);
 }
 
 .product img{
@@ -111,123 +119,70 @@ width:100%;
 border-radius:15px;
 }
 
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:#22c55e;
+color:white;
+padding:4px 10px;
+border-radius:20px;
+font-size:12px;
+}
+
 /* DETAIL */
 
 .detail{
 display:none;
 background:white;
-width:90%;
+width:95%;
 max-width:520px;
 margin:30px auto;
 padding:25px;
 border-radius:25px;
 text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,0.2);
+box-shadow:0 25px 50px rgba(0,0,0,.3);
+animation:fade .4s;
+}
+
+@keyframes fade{
+from{opacity:0;transform:scale(.9)}
+to{opacity:1}
 }
 
 .mainImg{
 width:100%;
 border-radius:20px;
-margin-bottom:10px;
 }
 
-.thumbs{
+.qtyBox{
 display:flex;
-gap:8px;
 justify-content:center;
-flex-wrap:wrap;
-}
-
-.thumbs img{
-width:60px;
-height:60px;
-object-fit:cover;
-border-radius:10px;
-cursor:pointer;
-border:2px solid transparent;
-}
-
-.thumbs img:hover{
-border:2px solid #22c55e;
-}
-
-/* CART */
-
-#cart{
-position:fixed;
-right:20px;
-top:120px;
-background:white;
-width:300px;
-border-radius:20px;
-padding:15px;
-box-shadow:0 15px 35px rgba(0,0,0,0.2);
-max-height:70vh;
-overflow:auto;
+gap:10px;
+margin-top:10px;
 }
 
 .qtyBtn{
-background:#111827;
+background:#0f172a;
 color:white;
 border:none;
-width:25px;
-height:25px;
-border-radius:6px;
-}
-
-.remove{
-background:red;
-color:white;
-border:none;
-border-radius:6px;
+width:30px;
+height:30px;
+border-radius:8px;
 }
 
 button{
 background:linear-gradient(45deg,#22c55e,#16a34a);
-color:white;
 border:none;
+color:white;
 padding:12px 20px;
 border-radius:12px;
 cursor:pointer;
-font-weight:bold;
 margin-top:10px;
+font-weight:bold;
 }
 
-.back{
-background:#111827;
-}
-
-.checkout{
-display:none;
-background:white;
-width:90%;
-max-width:500px;
-margin:30px auto;
-padding:20px;
-border-radius:20px;
-box-shadow:0 20px 40px rgba(0,0,0,0.2);
-}
-
-.checkout input{
-width:95%;
-padding:12px;
-margin:8px;
-border-radius:10px;
-border:1px solid #ddd;
-}
-
-@media(max-width:700px){
-#cart{
-bottom:0;
-top:auto;
-right:0;
-width:100%;
-border-radius:25px 25px 0 0;
-}
-.container{
-padding-bottom:180px;
-}
-}
+.back{background:#111827}
 
 </style>
 </head>
@@ -239,11 +194,16 @@ padding-bottom:180px;
 <img src="deuro.tn.png" class="logo">
 Deuro.tn
 </div>
+
+<div style="display:flex;gap:10px">
+<div class="adminBtn" onclick="toggleAdmin()">ADMIN</div>
 <div class="cartIcon" id="cartCount">0</div>
+</div>
 </header>
 
 <div class="admin" id="adminPanel">
-<h3>ADMIN PANEL</h3>
+
+<h3>Ajouter produit</h3>
 
 <input id="pname" placeholder="Nom">
 <input id="pprice" type="number" placeholder="Prix">
@@ -258,289 +218,191 @@ Deuro.tn
 </select>
 
 <button onclick="addProduct()">Ajouter</button>
-</div>
 
-<div class="searchBox">
-<input id="search" placeholder="🔎 Rechercher..." onkeyup="render()">
-<select id="filterCat" onchange="render()">
-<option value="All">Toutes</option>
-<option>Tshirt</option>
-<option>Shoes</option>
-<option>Cap</option>
-<option>Other</option>
-</select>
+<div class="productListAdmin" id="adminList"></div>
+
 </div>
 
 <div class="container" id="shop"></div>
 <div class="detail" id="detail"></div>
-
-<div id="cart">
-<h3>Panier</h3>
-<ul id="cartList"></ul>
-<h4>Total : <span id="total">0</span> TND</h4>
-<button onclick="openCheckout()">Checkout</button>
-</div>
-
-<div class="checkout" id="checkout">
-<h3>Livraison</h3>
-<input id="nom" placeholder="Nom">
-<input id="prenom" placeholder="Prenom">
-<input id="adresse" placeholder="Adresse">
-<input id="tel" placeholder="Telephone">
-<button onclick="order()">Commander WhatsApp</button>
-<button class="back" onclick="closeCheckout()">Retour</button>
-</div>
 
 <script>
 
 let produits = JSON.parse(localStorage.getItem("produits")) || []
 let panier = JSON.parse(localStorage.getItem("panier")) || []
 
-let secret="aida"
-let typed=""
-
-document.addEventListener("keydown",e=>{
-typed+=e.key.toLowerCase()
-if(typed.length>secret.length) typed=typed.slice(1)
-if(typed===secret){
-document.getElementById("adminPanel").style.display="block"
-alert("ADMIN MODE")
-}
-})
-
 function saveProducts(){
 localStorage.setItem("produits",JSON.stringify(produits))
 }
 
-function saveCart(){
-localStorage.setItem("panier",JSON.stringify(panier))
+function toggleAdmin(){
+adminPanel.style.display =
+adminPanel.style.display=="block" ? "none":"block"
+renderAdmin()
 }
-
-/* ADD PRODUCT MULTI IMAGES PROPER */
 
 function addProduct(){
 
-let name = pname.value.trim()
-let price = parseFloat(pprice.value)
-let sizes = psizes.value.trim()
-let cat = pcat.value
 let files = pimg.files
+let images=[]
+let promises=[]
 
-if(!name || !price || !sizes){
-alert("Remplir tous les champs")
-return
-}
+for(let f of files){
 
-if(files.length===0){
-alert("Choisir image")
-return
-}
-
-let readers = []
-let images = []
-
-for(let file of files){
-
-readers.push(new Promise(res=>{
-let reader=new FileReader()
-reader.onload=e=>{
+promises.push(new Promise(res=>{
+let r=new FileReader()
+r.onload=e=>{
 images.push(e.target.result)
 res()
 }
-reader.readAsDataURL(file)
+r.readAsDataURL(f)
 }))
 
 }
 
-Promise.all(readers).then(()=>{
+Promise.all(promises).then(()=>{
 
 produits.push({
-name,
-price,
-sizes:sizes.split(",").map(s=>s.trim()),
-cat,
-imgs:images
+name:pname.value,
+price:parseFloat(pprice.value),
+sizes:psizes.value.split(","),
+cat:pcat.value,
+imgs:images,
+date:Date.now()
 })
 
 saveProducts()
-
-pname.value=""
-pprice.value=""
-psizes.value=""
-pimg.value=""
-
-alert("Produit ajouté ✅")
-
 render()
+renderAdmin()
 
 })
+
+}
+
+function deleteProduct(i){
+
+if(confirm("Supprimer produit ?")){
+produits.splice(i,1)
+saveProducts()
+render()
+renderAdmin()
+}
+
+}
+
+function renderAdmin(){
+
+let html="<h3>Produits</h3>"
+
+produits.forEach((p,i)=>{
+
+html+=`
+<div class="adminCard">
+${p.name} - ${p.price}TND
+<button onclick="deleteProduct(${i})">Supprimer</button>
+</div>
+`
+
+})
+
+adminList.innerHTML=html
 
 }
 
 function render(){
 
-detail.style.display="none"
-
-let search = document.getElementById("search").value.toLowerCase()
-let cat = document.getElementById("filterCat").value
-
 let html=""
 
 produits.forEach((p,i)=>{
 
-if(p.name.toLowerCase().includes(search) && (cat==="All" || cat===p.cat)){
+let isNew = Date.now()-p.date < 86400000
 
 html+=`
 <div class="product" onclick="openDetail(${i})">
+${isNew ? `<div class="badge">NEW</div>`:""}
 <img src="${p.imgs[0]}">
 <h3>${p.name}</h3>
-<p>${p.cat}</p>
 <h4>${p.price} TND</h4>
 </div>
 `
 
-}
-
 })
 
-shop.innerHTML = html
-
-displayCart()
+shop.innerHTML=html
 
 }
+
+let currentSlide=0
+let slideInterval
 
 function openDetail(i){
 
-let p = produits[i]
-
-let thumbs = p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
+let p=produits[i]
+let qty=1
 
 detail.style.display="block"
 
 detail.innerHTML=`
 <img src="${p.imgs[0]}" id="mainImg" class="mainImg">
 
-<div class="thumbs">${thumbs}</div>
-
 <h2>${p.name}</h2>
 <h3>${p.price} TND</h3>
 
-<select id="sizeChoice">
-${p.sizes.map(s=>`<option>${s}</option>`).join("")}
+<select id="size">
+${p.sizes.map(s=>`<option>${s}</option>`)}
 </select>
 
-<br>
-<button onclick="addToCart(${i})">Ajouter</button>
+<div class="qtyBox">
+<button class="qtyBtn" onclick="changeQty(-1)">-</button>
+<span id="qty">1</span>
+<button class="qtyBtn" onclick="changeQty(1)">+</button>
+</div>
+
+<button onclick="addToCart(${i})">Ajouter panier</button>
 <button class="back" onclick="render()">Retour</button>
 `
 
-window.scrollTo(0,0)
+currentSlide=0
+
+clearInterval(slideInterval)
+
+slideInterval=setInterval(()=>{
+currentSlide++
+if(currentSlide>=p.imgs.length) currentSlide=0
+mainImg.src=p.imgs[currentSlide]
+},2000)
 
 }
 
-function changeImg(src){
-document.getElementById("mainImg").src = src
+function changeQty(v){
+
+let q = parseInt(qty.innerText)
+
+q+=v
+
+if(q<1) q=1
+
+qty.innerText=q
+
 }
 
 function addToCart(i){
 
-let size = document.getElementById("sizeChoice").value
+let q = parseInt(qty.innerText)
+let size = document.getElementById("size").value
 
-let found = panier.find(p=>p.name===produits[i].name && p.size===size)
-
-if(found) found.q++
-else{
 panier.push({
 name:produits[i].name,
 price:produits[i].price,
 size,
-q:1
-})
-}
-
-saveCart()
-displayCart()
-
-}
-
-function displayCart(){
-
-let html=""
-let total=0
-let count=0
-
-panier.forEach((p,i)=>{
-
-total += p.price * p.q
-count += p.q
-
-html+=`
-<li>
-${p.name} (${p.size})<br>
-<button class="qtyBtn" onclick="minus(${i})">-</button>
-${p.q}
-<button class="qtyBtn" onclick="plus(${i})">+</button>
-<button class="remove" onclick="removeItem(${i})">X</button>
-</li>
-`
-
+q
 })
 
-cartList.innerHTML = html
-totalSpan = document.getElementById("total")
-totalSpan.innerText = total
+localStorage.setItem("panier",JSON.stringify(panier))
 
-cartCount.innerText = count
+cartCount.innerText = panier.length
 
-}
-
-function plus(i){
-panier[i].q++
-saveCart()
-displayCart()
-}
-
-function minus(i){
-if(panier[i].q>1) panier[i].q--
-else panier.splice(i,1)
-saveCart()
-displayCart()
-}
-
-function removeItem(i){
-panier.splice(i,1)
-saveCart()
-displayCart()
-}
-
-function openCheckout(){
-checkout.style.display="block"
-window.scrollTo(0,0)
-}
-
-function closeCheckout(){
-checkout.style.display="none"
-}
-
-function order(){
-
-if(panier.length===0){
-alert("Panier vide")
-return
-}
-
-let msg="Commande Deuro.tn %0A"
-
-msg+="Nom:"+nom.value+" %0A"
-msg+="Prenom:"+prenom.value+" %0A"
-msg+="Adresse:"+adresse.value+" %0A"
-msg+="Tel:"+tel.value+" %0A"
-
-panier.forEach(p=>{
-msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
-})
-
-window.open("https://wa.me/33754436855?text="+msg)
+alert("Ajouté au panier")
 
 }
 
@@ -550,3 +412,4 @@ render()
 
 </body>
 </html>
+```
