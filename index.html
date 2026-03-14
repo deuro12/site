@@ -332,46 +332,72 @@ localStorage.setItem("panier",JSON.stringify(panier))
 
 function addProduct(){
 
-let files=pimg.files
-if(files.length==0){
-alert("Choisir image")
+let name = pname.value.trim()
+let price = parseFloat(pprice.value)
+let sizes = psizes.value.trim()
+let cat = pcat.value
+let files = pimg.files
+
+/* VALIDATION */
+
+if(!name || !price || !sizes){
+alert("Remplir tous les champs")
 return
 }
 
-let images=[]
-let loaded=0
+if(files.length == 0){
+alert("Choisir au moins une image")
+return
+}
+
+let images = []
+let readers = []
 
 for(let i=0;i<files.length;i++){
 
-let reader=new FileReader()
+readers.push(new Promise(resolve=>{
 
-reader.onload=e=>{
+let reader = new FileReader()
+
+reader.onload = e=>{
 images.push(e.target.result)
-loaded++
-
-if(loaded==files.length){
-
-produits.push({
-name:pname.value,
-price:parseInt(pprice.value),
-sizes:psizes.value.split(","),
-cat:pcat.value,
-imgs:images
-})
-
-saveProducts()
-render()
-
-}
-
+resolve()
 }
 
 reader.readAsDataURL(files[i])
 
-}
+}))
 
 }
 
+/* ATTENDRE chargement toutes images */
+
+Promise.all(readers).then(()=>{
+
+produits.push({
+name:name,
+price:price,
+sizes:sizes.split(","),
+cat:cat,
+imgs:images
+})
+
+saveProducts()
+
+/* RESET FORM */
+
+pname.value=""
+pprice.value=""
+psizes.value=""
+pimg.value=""
+
+alert("Produit ajouté ✅")
+
+render()
+
+})
+
+}
 function render(){
 
 detail.style.display="none"
