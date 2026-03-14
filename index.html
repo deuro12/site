@@ -30,6 +30,7 @@ button{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;border:none
 .back{background:#111827;}
 .checkout{display:none;background:white;width:90%;max-width:500px;margin:30px auto;padding:20px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2);}
 .checkout input{width:95%;padding:12px;margin:8px;border-radius:10px;border:1px solid #ddd;}
+.loginBtn{background:#2563eb}
 </style>
 </head>
 
@@ -40,7 +41,12 @@ button{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;border:none
 <img src="deuro.tn.png" class="logo">
 Deuro.tn
 </div>
+
+<div>
+<button class="loginBtn" onclick="loginAdmin()">Login</button>
+<button class="back" onclick="logoutAdmin()">Logout</button>
 <div class="cartIcon" id="cartCount">0</div>
+</div>
 </header>
 
 <div class="admin" id="adminPanel">
@@ -99,6 +105,7 @@ Deuro.tn
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <script>
 
@@ -114,6 +121,31 @@ appId:"1:1002857571428:web:66aca552c0dc3f58fc6b71"
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
 
+let isAdmin=false
+
+firebase.auth().onAuthStateChanged(user=>{
+isAdmin=!!user
+adminPanel.style.display=isAdmin?"block":"none"
+})
+
+function loginAdmin(){
+let email=prompt("Email admin")
+let pass=prompt("Password")
+firebase.auth().signInWithEmailAndPassword(email,pass)
+.catch(()=>alert("Erreur login"))
+}
+
+function logoutAdmin(){
+firebase.auth().signOut()
+}
+
+function protect(){
+if(!isAdmin){
+alert("Login admin requis")
+throw "not admin"
+}
+}
+
 let produits=[]
 let panier = JSON.parse(localStorage.getItem("panier")) || []
 
@@ -128,48 +160,30 @@ render()
 function compress(file){
 return new Promise(res=>{
 let reader=new FileReader()
-
 reader.onload=e=>{
 let img=new Image()
-
 img.onload=function(){
-
 let canvas=document.createElement("canvas")
-
-let max=300   // ⭐ avant 500
+let max=300
 let ratio=Math.min(max/img.width,max/img.height)
-
 canvas.width=img.width*ratio
 canvas.height=img.height*ratio
-
 let ctx=canvas.getContext("2d")
 ctx.drawImage(img,0,0,canvas.width,canvas.height)
-
-res(canvas.toDataURL("image/jpeg",0.4)) // ⭐ qualité plus faible
+res(canvas.toDataURL("image/jpeg",0.4))
 }
-
 img.src=e.target.result
 }
-
 reader.readAsDataURL(file)
 })
 }
 
-let secret="aida"
-let typed=""
 let editIndex=-1
-
-document.addEventListener("keydown",function(e){
-typed+=e.key.toLowerCase()
-if(typed.includes(secret)){
-adminPanel.style.display="block"
-typed=""
-}
-})
 
 function closeAdmin(){adminPanel.style.display="none"}
 
 async function addProduct(){
+protect()
 
 let name=pname.value.trim()
 let price=parseFloat(pprice.value)
@@ -198,16 +212,13 @@ alert("Produit sauvegardé")
 }
 
 async function deleteProduct(i){
-
+protect()
 if(!confirm("Supprimer ?")) return
-
-let id = produits[i].id   // ⭐ très important
-
-await db.collection("produits").doc(id).delete()
-
+await db.collection("produits").doc(produits[i].id).delete()
 }
 
 function editProduct(i){
+protect()
 let p=produits[i]
 adminPanel.style.display="block"
 pname.value=p.name
@@ -239,13 +250,14 @@ html+=`
 </div>`
 }
 
+if(isAdmin){
 adminHtml+=`
 <div style="border:1px solid #ddd;padding:10px;margin:5px;border-radius:10px">
 <b>${p.name}</b> - ${p.price} TND
 <button onclick="editProduct(${i})">Modifier</button>
 <button onclick="deleteProduct(${i})">Supprimer</button>
-</div>
-`
+</div>`
+}
 
 })
 
@@ -281,7 +293,6 @@ function changeImg(src){document.getElementById("mainImg").src=src}
 function addToCart(i){
 
 let size=document.getElementById("sizeChoice").value
-
 let found=panier.find(p=>p.name===produits[i].name&&p.size===size)
 
 if(found)found.q++
@@ -309,7 +320,7 @@ ${p.q}
 })
 
 cartList.innerHTML=html
-total.innerText=total
+document.getElementById("total").innerText=total
 cartCount.innerText=count
 }
 
