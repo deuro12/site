@@ -139,10 +139,33 @@ let images=[]
 for(let file of files){
 readers.push(new Promise(res=>{
 let reader=new FileReader()
+
 reader.onload=e=>{
-images.push(e.target.result)
+
+let img=new Image()
+img.onload=function(){
+
+let canvas=document.createElement("canvas")
+let max=600
+
+let ratio=Math.min(max/img.width,max/img.height)
+
+canvas.width=img.width*ratio
+canvas.height=img.height*ratio
+
+let ctx=canvas.getContext("2d")
+ctx.drawImage(img,0,0,canvas.width,canvas.height)
+
+images.push(canvas.toDataURL("image/jpeg",0.7))
+
 res()
+
 }
+
+img.src=e.target.result
+
+}
+
 reader.readAsDataURL(file)
 }))
 }
