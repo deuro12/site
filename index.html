@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Deuro.tn</title>
 
 <style>
@@ -54,11 +53,18 @@ font-weight:bold;
 display:none;
 background:white;
 width:90%;
-max-width:700px;
+max-width:750px;
 margin:20px auto;
 padding:20px;
 border-radius:20px;
 box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.admin input,.admin select{
+padding:10px;
+margin:5px;
+border-radius:10px;
+border:1px solid #ddd;
 }
 
 /* SEARCH */
@@ -103,11 +109,6 @@ box-shadow:0 20px 40px rgba(0,0,0,0.15);
 .product img{
 width:100%;
 border-radius:15px;
-transition:0.4s;
-}
-
-.product:hover img{
-transform:scale(1.08);
 }
 
 .cat{
@@ -124,18 +125,38 @@ display:inline-block;
 display:none;
 background:white;
 width:90%;
-max-width:500px;
+max-width:520px;
 margin:30px auto;
 padding:25px;
 border-radius:25px;
 text-align:center;
 box-shadow:0 20px 40px rgba(0,0,0,0.2);
-animation:pop 0.4s;
 }
 
-@keyframes pop{
-from{transform:scale(0.7);opacity:0}
-to{transform:scale(1);opacity:1}
+.mainImg{
+width:100%;
+border-radius:20px;
+margin-bottom:10px;
+}
+
+.thumbs{
+display:flex;
+gap:8px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.thumbs img{
+width:60px;
+height:60px;
+object-fit:cover;
+border-radius:10px;
+cursor:pointer;
+border:2px solid transparent;
+}
+
+.thumbs img:hover{
+border:2px solid #22c55e;
 }
 
 /* CART */
@@ -208,7 +229,6 @@ border:1px solid #ddd;
 /* MOBILE */
 
 @media(max-width:700px){
-
 #cart{
 bottom:0;
 top:auto;
@@ -216,11 +236,9 @@ right:0;
 width:100%;
 border-radius:25px 25px 0 0;
 }
-
 .container{
 padding-bottom:180px;
 }
-
 }
 
 </style>
@@ -229,14 +247,11 @@ padding-bottom:180px;
 <body>
 
 <header>
-
 <div class="logoBox">
 <img src="deuro.tn.png" class="logo">
 Deuro.tn
 </div>
-
 <div class="cartIcon" id="cartCount">0</div>
-
 </header>
 
 <div class="admin" id="adminPanel">
@@ -245,7 +260,7 @@ Deuro.tn
 <input id="pname" placeholder="Nom">
 <input id="pprice" type="number" placeholder="Prix">
 <input id="psizes" placeholder="Tailles S,M,L">
-<input id="pimg" type="file">
+<input id="pimg" type="file" multiple>
 
 <select id="pcat">
 <option>Tshirt</option>
@@ -255,7 +270,6 @@ Deuro.tn
 </select>
 
 <button onclick="addProduct()">Ajouter</button>
-
 </div>
 
 <div class="searchBox">
@@ -270,7 +284,6 @@ Deuro.tn
 </div>
 
 <div class="container" id="shop"></div>
-
 <div class="detail" id="detail"></div>
 
 <div id="cart">
@@ -286,7 +299,6 @@ Deuro.tn
 <input id="prenom" placeholder="Prenom">
 <input id="adresse" placeholder="Adresse">
 <input id="tel" placeholder="Telephone">
-
 <button onclick="order()">Commander WhatsApp</button>
 <button class="back" onclick="closeCheckout()">Retour</button>
 </div>
@@ -316,24 +328,48 @@ function saveCart(){
 localStorage.setItem("panier",JSON.stringify(panier))
 }
 
+/* ADD PRODUCT MULTI IMAGES */
+
 function addProduct(){
 
-let file=pimg.files[0]
+let files=pimg.files
+if(files.length==0){
+alert("Choisir image")
+return
+}
+
+let images=[]
+let loaded=0
+
+for(let i=0;i<files.length;i++){
+
 let reader=new FileReader()
 
 reader.onload=e=>{
+images.push(e.target.result)
+loaded++
+
+if(loaded==files.length){
+
 produits.push({
 name:pname.value,
 price:parseInt(pprice.value),
 sizes:psizes.value.split(","),
 cat:pcat.value,
-img:e.target.result
+imgs:images
 })
+
 saveProducts()
 render()
+
 }
 
-reader.readAsDataURL(file)
+}
+
+reader.readAsDataURL(files[i])
+
+}
+
 }
 
 function render(){
@@ -351,7 +387,7 @@ if(p.name.toLowerCase().includes(search) && (cat=="All"||cat==p.cat)){
 
 html+=`
 <div class="product" onclick="openDetail(${i})">
-<img src="${p.img}">
+<img src="${p.imgs[0]}">
 <h3>${p.name}</h3>
 <p class="cat">${p.cat}</p>
 <h4>${p.price} TND</h4>
@@ -367,21 +403,30 @@ displayCart()
 
 }
 
+/* DETAIL WITH SLIDER */
+
 function openDetail(i){
 
 let p=produits[i]
-let sizes=""
 
-p.sizes.forEach(s=>sizes+=`<option>${s}</option>`)
+let thumbs=""
+
+p.imgs.forEach(img=>{
+thumbs+=`<img src="${img}" onclick="changeImg('${img}')">`
+})
 
 detail.style.display="block"
 
 detail.innerHTML=`
-<img src="${p.img}" style="width:100%;border-radius:20px">
+<img src="${p.imgs[0]}" id="mainImg" class="mainImg">
+<div class="thumbs">${thumbs}</div>
+
 <h2>${p.name}</h2>
 <h3>${p.price} TND</h3>
 
-<select id="sizeChoice">${sizes}</select>
+<select id="sizeChoice">
+${p.sizes.map(s=>`<option>${s}</option>`).join("")}
+</select>
 
 <br>
 <button onclick="addToCart(${i})">Ajouter</button>
@@ -390,6 +435,10 @@ detail.innerHTML=`
 
 window.scrollTo(0,0)
 
+}
+
+function changeImg(src){
+document.getElementById("mainImg").src=src
 }
 
 function addToCart(i){
