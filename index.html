@@ -15,10 +15,17 @@ background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);
 header{
 background:#111827;
 color:white;
-padding:18px;
-text-align:center;
+padding:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:15px;
 font-size:26px;
 font-weight:bold;
+}
+
+.logo{
+height:40px;
 }
 
 .admin{
@@ -74,14 +81,30 @@ box-shadow:0 15px 35px rgba(0,0,0,0.15);
 text-align:center;
 }
 
+#cart{
+position:fixed;
+right:20px;
+top:100px;
+background:white;
+width:280px;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+padding:15px;
+}
+
 button{
 background:#22c55e;
 color:white;
 border:none;
-padding:12px 20px;
+padding:10px 18px;
 border-radius:10px;
 cursor:pointer;
 margin-top:10px;
+}
+
+.remove{
+background:red;
+margin-left:8px;
 }
 
 .back{
@@ -94,7 +117,10 @@ background:#111827;
 
 <body>
 
-<header>Deuro.tn 🛒</header>
+<header>
+<img src="deuro.tn.png" class="logo">
+Deuro.tn
+</header>
 
 <div class="admin" id="adminPanel">
 
@@ -134,37 +160,45 @@ background:#111827;
 
 <div class="detail" id="detail"></div>
 
+<div id="cart">
+<h3>Panier</h3>
+<ul id="cartList"></ul>
+<h4>Total : <span id="total">0</span> TND</h4>
+<button onclick="order()">Commander</button>
+</div>
+
 <script>
 
 let produits = JSON.parse(localStorage.getItem("produits")) || []
+let panier = JSON.parse(localStorage.getItem("panier")) || []
+let total=0
 
-function save(){
+function saveProducts(){
 localStorage.setItem("produits",JSON.stringify(produits))
+}
+
+function saveCart(){
+localStorage.setItem("panier",JSON.stringify(panier))
 }
 
 let secretCode="admin2025"
 let typed=""
 
 document.addEventListener("keydown",function(e){
-
 typed+=e.key
-
 if(typed.length>secretCode.length)
 typed=typed.slice(1)
 
 if(typed===secretCode){
-
 document.getElementById("adminPanel").style.display="block"
 alert("ADMIN MODE")
-
 }
-
 })
 
 function addProduct(){
 
 let name=document.getElementById("pname").value
-let price=document.getElementById("pprice").value
+let price=parseInt(document.getElementById("pprice").value)
 let cat=document.getElementById("pcat").value
 let sizes=document.getElementById("psizes").value.split(",")
 
@@ -175,14 +209,10 @@ let reader=new FileReader()
 reader.onload=function(e){
 
 produits.push({
-name,
-price,
-cat,
-sizes,
-img:e.target.result
+name,price,cat,sizes,img:e.target.result
 })
 
-save()
+saveProducts()
 render()
 
 }
@@ -202,19 +232,14 @@ let html=""
 
 produits.forEach((p,i)=>{
 
-if(
-p.name.toLowerCase().includes(search) &&
-(cat=="All" || p.cat==cat)
-){
+if(p.name.toLowerCase().includes(search) && (cat=="All"||p.cat==cat)){
 
 html+=`
 <div class="product" onclick="openDetail(${i})">
-
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p><b>${p.price} TND</b></p>
 <p>${p.cat}</p>
-
 </div>
 `
 }
@@ -222,6 +247,7 @@ html+=`
 })
 
 document.getElementById("shop").innerHTML=html
+displayCart()
 
 }
 
@@ -230,7 +256,6 @@ function openDetail(i){
 let p=produits[i]
 
 let sizesHTML=""
-
 p.sizes.forEach(s=>{
 sizesHTML+=`<option>${s}</option>`
 })
@@ -242,15 +267,14 @@ document.getElementById("detail").innerHTML=`
 <img src="${p.img}">
 <h2>${p.name}</h2>
 <h3>${p.price} TND</h3>
-<p>Catégorie : ${p.cat}</p>
 
-<select>
+<select id="sizeChoice">
 ${sizesHTML}
 </select>
 
 <br>
 
-<button onclick="alert('Ajouté au panier')">Ajouter au panier</button>
+<button onclick="addToCart(${i})">Ajouter au panier</button>
 
 <br>
 <button class="back" onclick="render()">Retour</button>
@@ -258,6 +282,59 @@ ${sizesHTML}
 `
 
 window.scrollTo(0,0)
+
+}
+
+function addToCart(i){
+
+let size=document.getElementById("sizeChoice").value
+
+panier.push({
+name:produits[i].name,
+price:produits[i].price,
+size,
+q:1
+})
+
+saveCart()
+displayCart()
+alert("Ajouté au panier")
+
+}
+
+function displayCart(){
+
+let html=""
+total=0
+
+panier.forEach((p,i)=>{
+total+=p.price*p.q
+
+html+=`<li>${p.name} (${p.size}) x${p.q}
+<button class="remove" onclick="removeItem(${i})">X</button>
+</li>`
+})
+
+document.getElementById("cartList").innerHTML=html
+document.getElementById("total").innerText=total
+
+}
+
+function removeItem(i){
+panier.splice(i,1)
+saveCart()
+displayCart()
+}
+
+function order(){
+
+let msg="Commande Deuro.tn %0A"
+
+panier.forEach(p=>{
+msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
+})
+
+window.open("https://wa.me/33754436855?text="+msg)
 
 }
 
