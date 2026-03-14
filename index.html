@@ -299,16 +299,21 @@ Deuro.tn
 let produits = JSON.parse(localStorage.getItem("produits")) || []
 let panier = JSON.parse(localStorage.getItem("panier")) || []
 
-let secret="aida"
-let typed=""
+let secret = "aida"
+let typed = ""
 
-document.addEventListener("keydown",e=>{
-typed+=e.key.toLowerCase()
-if(typed.length>secret.length) typed=typed.slice(1)
-if(typed===secret){
-document.getElementById("adminPanel").style.display="block"
+document.addEventListener("keydown", function(e){
+
+typed += e.key.toLowerCase()
+
+console.log("typed =", typed)
+
+if(typed.includes(secret)){
+document.getElementById("adminPanel").style.display = "block"
 alert("ADMIN MODE")
+typed = ""
 }
+
 })
 
 function saveProducts(){
