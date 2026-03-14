@@ -30,16 +30,17 @@ font-weight:bold;
 display:none;
 background:white;
 width:90%;
-max-width:750px;
+max-width:800px;
 margin:20px auto;
 padding:20px;
 border-radius:18px;
 box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-.admin input,.admin select{
+.admin input,.admin textarea,.admin select{
+width:95%;
 padding:10px;
-margin:5px;
+margin:6px;
 border-radius:8px;
 border:1px solid #ccc;
 }
@@ -48,98 +49,40 @@ border:1px solid #ccc;
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
-gap:30px;
-padding:30px;
+gap:25px;
+padding:25px;
 }
 
 .product{
 background:white;
-width:240px;
+width:230px;
 border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-padding:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+padding:15px;
 text-align:center;
-cursor:pointer;
+transition:.2s;
+}
+
+.product:hover{
+transform:translateY(-3px);
 }
 
 .product img{
 width:100%;
+height:180px;
+object-fit:cover;
 border-radius:12px;
 }
 
-.detail{
-display:none;
-background:white;
-width:90%;
-max-width:500px;
-margin:30px auto;
-padding:20px;
-border-radius:20px;
-box-shadow:0 15px 35px rgba(0,0,0,0.15);
-text-align:center;
-}
-
-#cart{
-position:fixed;
-right:20px;
-top:100px;
-background:white;
-width:300px;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
-padding:15px;
-max-height:80vh;
-overflow:auto;
-}
-
-.qtyBtn{
-background:#111827;
-color:white;
-border:none;
-width:25px;
-height:25px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.remove{
+.deleteBtn{
 background:red;
 color:white;
 border:none;
-border-radius:6px;
+padding:6px 10px;
+border-radius:8px;
 cursor:pointer;
+margin-top:5px;
 }
-
-.checkout{
-display:none;
-background:white;
-width:90%;
-max-width:500px;
-margin:30px auto;
-padding:20px;
-border-radius:20px;
-box-shadow:0 15px 35px rgba(0,0,0,0.15);
-}
-
-.checkout input{
-width:95%;
-padding:12px;
-margin:8px;
-border-radius:10px;
-border:1px solid #ccc;
-}
-
-button{
-background:#22c55e;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:10px;
-cursor:pointer;
-margin-top:10px;
-}
-
-.back{background:#111827}
 
 </style>
 
@@ -153,63 +96,30 @@ Deuro.tn
 </header>
 
 <div class="admin" id="adminPanel">
-<h3>ADMIN PANEL</h3>
-<input type="text" id="pname" placeholder="Nom produit">
-<input type="number" id="pprice" placeholder="Prix">
-<input type="text" id="psizes" placeholder="Tailles ex: S,M,L ou 40,41">
-<input type="file" id="pimg">
-<select id="pcat">
-<option>Tshirt</option>
-<option>Shoes</option>
-<option>Cap</option>
-<option>Other</option>
-</select>
-<button onclick="addProduct()">Ajouter</button>
-</div>
 
-<div style="text-align:center">
-<input type="text" id="search" placeholder="🔎 Rechercher..." onkeyup="render()">
-<select id="filterCat" onchange="render()">
-<option value="All">Toutes catégories</option>
-<option>Tshirt</option>
-<option>Shoes</option>
-<option>Cap</option>
-<option>Other</option>
-</select>
+<h3>Ajouter Plusieurs Produits</h3>
+
+<textarea id="bulkProducts" rows="6"
+placeholder="Format :
+Nom|Prix|Categorie|Tailles|Caracteristiques
+Tshirt Nike|80|Tshirt|S,M,L|Coton premium
+Chaussure Air|220|Shoes|40,41,42|Running">
+</textarea>
+
+<input type="file" id="multiImg" multiple>
+
+<button onclick="addBulk()">Ajouter Tous</button>
+
 </div>
 
 <div class="container" id="shop"></div>
-<div class="detail" id="detail"></div>
-
-<div id="cart">
-<h3>Panier</h3>
-<ul id="cartList"></ul>
-<h4>Total : <span id="total">0</span> TND</h4>
-<button onclick="openCheckout()">Checkout</button>
-</div>
-
-<div class="checkout" id="checkout">
-<h3>Informations Livraison</h3>
-<input id="nom" placeholder="Nom">
-<input id="prenom" placeholder="Prénom">
-<input id="adresse" placeholder="Adresse">
-<input id="tel" placeholder="Téléphone">
-<button onclick="order()">Commander WhatsApp</button>
-<button class="back" onclick="closeCheckout()">Retour</button>
-</div>
 
 <script>
 
-let produits=JSON.parse(localStorage.getItem("produits"))||[]
-let panier=JSON.parse(localStorage.getItem("panier"))||[]
-let total=0
+let produits = JSON.parse(localStorage.getItem("produits")) || []
 
-function saveProducts(){
+function save(){
 localStorage.setItem("produits",JSON.stringify(produits))
-}
-
-function saveCart(){
-localStorage.setItem("panier",JSON.stringify(panier))
 }
 
 let secretCode="admin2025"
@@ -219,167 +129,90 @@ document.addEventListener("keydown",e=>{
 typed+=e.key
 if(typed.length>secretCode.length) typed=typed.slice(1)
 if(typed===secretCode){
-document.getElementById("adminPanel").style.display="block"
+adminPanel.style.display="block"
 alert("ADMIN MODE")
 }
 })
 
-function addProduct(){
+function addBulk(){
 
-let name=pname.value
-let price=parseInt(pprice.value)
-let cat=pcat.value
-let sizes=psizes.value.split(",")
+let lines = bulkProducts.value.split("\n")
+let files = multiImg.files
 
-let file=pimg.files[0]
+let fileIndex=0
+
+lines.forEach(line=>{
+
+if(line.trim()=="") return
+
+let parts=line.split("|")
+
+let name=parts[0]
+let price=parseInt(parts[1])
+let cat=parts[2]
+let sizes=parts[3].split(",")
+let desc=parts[4]
+
+let imgs=[]
+
+for(let i=0;i<2 && fileIndex<files.length;i++){
+
 let reader=new FileReader()
 
 reader.onload=e=>{
-produits.push({name,price,cat,sizes,img:e.target.result})
-saveProducts()
+imgs.push(e.target.result)
+
+if(imgs.length==2){
+produits.push({name,price,cat,sizes,desc,imgs})
+save()
 render()
 }
+}
 
-reader.readAsDataURL(file)
+reader.readAsDataURL(files[fileIndex])
+fileIndex++
+
+}
+
+})
+
 }
 
 function render(){
-
-detail.style.display="none"
-
-let search=document.getElementById("search").value.toLowerCase()
-let cat=document.getElementById("filterCat").value
 
 let html=""
 
 produits.forEach((p,i)=>{
 
-if(p.name.toLowerCase().includes(search) && (cat=="All"||p.cat==cat)){
-
 html+=`
-<div class="product" onclick="openDetail(${i})">
-<img src="${p.img}">
+<div class="product">
+
+<img src="${p.imgs[0]}">
+
 <h3>${p.name}</h3>
 <p><b>${p.price} TND</b></p>
+<p>${p.desc}</p>
+
+<p>Tailles: ${p.sizes.join(",")}</p>
+
+<button class="deleteBtn" onclick="deleteProduct(${i})">Supprimer</button>
+
 </div>
 `
-}
-
 })
 
 shop.innerHTML=html
-displayCart()
+
 }
 
-function openDetail(i){
+function deleteProduct(i){
 
-let p=produits[i]
-let sizesHTML=""
-
-p.sizes.forEach(s=>sizesHTML+=`<option>${s}</option>`)
-
-detail.style.display="block"
-
-detail.innerHTML=`
-<img src="${p.img}">
-<h2>${p.name}</h2>
-<h3>${p.price} TND</h3>
-
-<select id="sizeChoice">${sizesHTML}</select>
-
-<br>
-<button onclick="addToCart(${i})">Ajouter au panier</button>
-<button class="back" onclick="render()">Retour</button>
-`
-
-window.scrollTo(0,0)
+if(confirm("Supprimer produit ?")){
+produits.splice(i,1)
+save()
+render()
 }
 
-function addToCart(i){
-
-let size=sizeChoice.value
-
-let found=panier.find(p=>p.name==produits[i].name && p.size==size)
-
-if(found){
-found.q++
-}else{
-panier.push({name:produits[i].name,price:produits[i].price,size,q:1})
-}
-
-saveCart()
-displayCart()
-}
-
-function displayCart(){
-
-let html=""
-total=0
-
-panier.forEach((p,i)=>{
-
-total+=p.price*p.q
-
-html+=`
-<li>
-${p.name} (${p.size})
-<br>
-<button class="qtyBtn" onclick="minus(${i})">-</button>
-${p.q}
-<button class="qtyBtn" onclick="plus(${i})">+</button>
-<button class="remove" onclick="removeItem(${i})">X</button>
-</li>
-`
-})
-
-cartList.innerHTML=html
-document.getElementById("total").innerText=total
-}
-
-function plus(i){
-panier[i].q++
-saveCart()
-displayCart()
-}
-
-function minus(i){
-if(panier[i].q>1){
-panier[i].q--
-}else{
-panier.splice(i,1)
-}
-saveCart()
-displayCart()
-}
-
-function removeItem(i){
-panier.splice(i,1)
-saveCart()
-displayCart()
-}
-
-function openCheckout(){
-checkout.style.display="block"
-window.scrollTo(0,0)
-}
-
-function closeCheckout(){
-checkout.style.display="none"
-}
-
-function order(){
-
-let msg="Commande Deuro.tn %0A"
-msg+="Nom:"+nom.value+" %0A"
-msg+="Prenom:"+prenom.value+" %0A"
-msg+="Adresse:"+adresse.value+" %0A"
-msg+="Tel:"+tel.value+" %0A"
-
-panier.forEach(p=>{
-msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
-})
-
-window.open("https://wa.me/33754436855?text="+msg)
 }
 
 render()
