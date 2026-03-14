@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,7 +11,6 @@ header{background:#111827;color:white;padding:15px;display:flex;justify-content:
 .logo{height:40px}
 .cartIcon{background:#22c55e;width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
 .admin{display:none;background:white;width:90%;max-width:750px;margin:20px auto;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
-.admin input,.admin select{padding:10px;margin:5px;border-radius:10px;border:1px solid #ddd;}
 .searchBox{text-align:center;margin-top:20px;}
 .searchBox input,.searchBox select{padding:12px;border-radius:12px;border:1px solid #ddd;}
 .container{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;padding:30px;}
@@ -98,7 +96,6 @@ Deuro.tn
 <button class="back" onclick="closeCheckout()">Retour</button>
 </div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
@@ -107,41 +104,27 @@ Deuro.tn
 const firebaseConfig = {
 apiKey:"AIzaSyAHeplm9Z6yL_0OSkPrtf0vJnIN0a5KUws",
 authDomain:"deuro-a2bee.firebaseapp.com",
-projectId:"deuro-a2bee",
-storageBucket:"deuro-a2bee.firebasestorage.app",
-messagingSenderId:"1002857571428",
-appId:"1:1002857571428:web:66aca552c0dc3f58fc6b71"
+projectId:"deuro-a2bee"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
 
-let produits = JSON.parse(localStorage.getItem("produits")) || []
+let produits=[]
 let panier = JSON.parse(localStorage.getItem("panier")) || []
 
 async function syncFromFirebase(){
 let snap = await db.collection("produits").get()
 produits=[]
-snap.forEach(doc=>produits.push(doc.data()))
-localStorage.setItem("produits",JSON.stringify(produits))
+snap.forEach(doc=>produits.push({...doc.data(),id:doc.id}))
 render()
-}
-
-async function saveProducts(){
-localStorage.setItem("produits",JSON.stringify(produits))
-
-await db.collection("produits").get().then(s=>{
-s.forEach(d=>db.collection("produits").doc(d.id).delete())
-})
-
-for(let p of produits){
-await db.collection("produits").add(p)
-}
 }
 
 syncFromFirebase()
 
-// ==== TON SCRIPT ORIGINAL CONTINUE ====
+function saveCart(){
+localStorage.setItem("panier",JSON.stringify(panier))
+}
 
 let secret="aida"
 let typed=""
@@ -151,7 +134,6 @@ document.addEventListener("keydown",function(e){
 typed+=e.key.toLowerCase()
 if(typed.includes(secret)){
 document.getElementById("adminPanel").style.display="block"
-alert("ADMIN MODE")
 typed=""
 }
 })
@@ -160,96 +142,68 @@ function closeAdmin(){
 document.getElementById("adminPanel").style.display="none"
 }
 
-function saveCart(){
-localStorage.setItem("panier",JSON.stringify(panier))
-}
+async function addProduct(){
 
-/* TOUT LE RESTE DE TON SCRIPT RESTE IDENTIQUE */
-```
+let name=pname.value.trim()
+let price=parseFloat(pprice.value)
+let sizes=psizes.value.trim()
+let cat=pcat.value
+let files=pimg.files
 
+if(name===""||isNaN(price)||sizes===""){alert("Remplir");return}
+if(files.length===0 && editIndex<0){alert("Choisir image");return}
 
-function addProduct(){
-
-let name=document.getElementById("pname").value.trim()
-let price=parseFloat(document.getElementById("pprice").value)
-let sizes=document.getElementById("psizes").value.trim()
-let cat=document.getElementById("pcat").value
-let files=document.getElementById("pimg").files
-
-if(name==="" || isNaN(price) || sizes===""){alert("Remplir tous les champs");return}
-if(files.length===0){alert("Choisir image");return}
-
-let readers=[]
 let images=[]
 
+if(files.length>0){
 for(let file of files){
-readers.push(new Promise(res=>{
-let reader=new FileReader()
-reader.onload=e=>{
-let img=new Image()
-img.onload=function(){
-let canvas=document.createElement("canvas")
-let max=600
-let ratio=Math.min(max/img.width,max/img.height)
-canvas.width=img.width*ratio
-canvas.height=img.height*ratio
-let ctx=canvas.getContext("2d")
-ctx.drawImage(img,0,0,canvas.width,canvas.height)
-images.push(canvas.toDataURL("image/jpeg",0.7))
-res()
+let base=await toBase64(file)
+images.push(base)
 }
-img.src=e.target.result
+}else{
+images=produits[editIndex].imgs
 }
-reader.readAsDataURL(file)
-}))
-}
-
-Promise.all(readers).then(()=>{
 
 let data={name,price,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs:images}
 
-if(window.editIndex>=0){
-produits[window.editIndex]=data
-window.editIndex=-1
+if(editIndex>=0){
+await db.collection("produits").doc(produits[editIndex].id).update(data)
+editIndex=-1
 }else{
-produits.push(data)
+await db.collection("produits").add(data)
 }
 
-saveProducts()
+alert("Sauvegardé")
+syncFromFirebase()
+}
 
-document.getElementById("pname").value=""
-document.getElementById("pprice").value=""
-document.getElementById("psizes").value=""
-document.getElementById("pimg").value=""
-
-alert("Produit sauvegardé ✅")
-
-render()
-
+function toBase64(file){
+return new Promise(res=>{
+let r=new FileReader()
+r.onload=e=>res(e.target.result)
+r.readAsDataURL(file)
 })
-
 }
 
-function deleteProduct(i){
-if(!confirm("Supprimer produit ?")) return
-produits.splice(i,1)
-saveProducts()
-render()
+async function deleteProduct(i){
+if(!confirm("Supprimer ?")) return
+await db.collection("produits").doc(produits[i].id).delete()
+syncFromFirebase()
 }
 
 function editProduct(i){
 let p=produits[i]
-document.getElementById("adminPanel").style.display="block"
-document.getElementById("pname").value=p.name
-document.getElementById("pprice").value=p.price
-document.getElementById("psizes").value=p.sizes.join(",")
-document.getElementById("pcat").value=p.cat
-window.editIndex=i
+adminPanel.style.display="block"
+pname.value=p.name
+pprice.value=p.price
+psizes.value=p.sizes.join(",")
+pcat.value=p.cat
+editIndex=i
 }
 
 function render(){
 
-document.getElementById("detail").style.display="none"
+detail.style.display="none"
 
 let search=document.getElementById("search").value.toLowerCase()
 let cat=document.getElementById("filterCat").value
@@ -270,18 +224,15 @@ html+=`
 }
 
 adminHtml+=`
-<div style="border:1px solid #ddd;padding:10px;margin:5px;border-radius:10px">
-<b>${p.name}</b> - ${p.price} TND
+<div>
+${p.name} ${p.price}
 <button onclick="editProduct(${i})">Modifier</button>
 <button onclick="deleteProduct(${i})">Supprimer</button>
-</div>
-`
-
+</div>`
 })
 
-document.getElementById("shop").innerHTML=html
-document.getElementById("adminList").innerHTML=adminHtml
-
+shop.innerHTML=html
+adminList.innerHTML=adminHtml
 displayCart()
 }
 
@@ -289,8 +240,6 @@ function openDetail(i){
 
 let p=produits[i]
 let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
-
-let detail=document.getElementById("detail")
 
 detail.style.display="block"
 detail.innerHTML=`
@@ -309,11 +258,11 @@ ${p.sizes.map(s=>`<option>${s}</option>`).join("")}
 window.scrollTo(0,0)
 }
 
-function changeImg(src){document.getElementById("mainImg").src=src}
+function changeImg(src){mainImg.src=src}
 
 function addToCart(i){
 
-let size=document.getElementById("sizeChoice").value
+let size=sizeChoice.value
 
 let found=panier.find(p=>p.name===produits[i].name&&p.size===size)
 
@@ -341,27 +290,33 @@ ${p.q}
 </li>`
 })
 
-document.getElementById("cartList").innerHTML=html
-document.getElementById("total").innerText=total
-document.getElementById("cartCount").innerText=count
+cartList.innerHTML=html
+totalEl=document.getElementById("total")
+totalEl.innerText=total
+cartCount.innerText=count
 }
 
 function plus(i){panier[i].q++;saveCart();displayCart()}
 function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);saveCart();displayCart()}
 function removeItem(i){panier.splice(i,1);saveCart();displayCart()}
 
-function openCheckout(){document.getElementById("checkout").style.display="block";window.scrollTo(0,0)}
-function closeCheckout(){document.getElementById("checkout").style.display="none"}
+function openCheckout(){checkout.style.display="block";window.scrollTo(0,0)}
+function closeCheckout(){checkout.style.display="none"}
 
 function order(){
 
 if(panier.length===0){alert("Panier vide");return}
 
+let nom=document.getElementById("nom").value
+let prenom=document.getElementById("prenom").value
+let adresse=document.getElementById("adresse").value
+let tel=document.getElementById("tel").value
+
 let msg="Commande Deuro.tn %0A"
-msg+="Nom:"+nom.value+" %0A"
-msg+="Prenom:"+prenom.value+" %0A"
-msg+="Adresse:"+adresse.value+" %0A"
-msg+="Tel:"+tel.value+" %0A"
+msg+="Nom:"+nom+" %0A"
+msg+="Prenom:"+prenom+" %0A"
+msg+="Adresse:"+adresse+" %0A"
+msg+="Tel:"+tel+" %0A"
 
 panier.forEach(p=>{
 msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
@@ -370,8 +325,6 @@ msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
 window.open("https://wa.me/33754436855?text="+msg)
 
 }
-
-render()
 
 </script>
 
