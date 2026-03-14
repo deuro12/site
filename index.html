@@ -105,7 +105,10 @@ Deuro.tn
 const firebaseConfig = {
 apiKey:"AIzaSyAHeplm9Z6yL_0OSkPrtf0vJnIN0a5KUws",
 authDomain:"deuro-a2bee.firebaseapp.com",
-projectId:"deuro-a2bee"
+projectId:"deuro-a2bee",
+storageBucket:"deuro-a2bee.firebasestorage.app",
+messagingSenderId:"1002857571428",
+appId:"1:1002857571428:web:66aca552c0dc3f58fc6b71"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -114,8 +117,6 @@ const db=firebase.firestore();
 let produits=[]
 let panier = JSON.parse(localStorage.getItem("panier")) || []
 
-/* REALTIME FIX */
-
 db.collection("produits").onSnapshot(snap=>{
 produits=[]
 snap.forEach(doc=>{
@@ -123,28 +124,6 @@ produits.push({...doc.data(),id:doc.id})
 })
 render()
 })
-
-function saveCart(){
-localStorage.setItem("panier",JSON.stringify(panier))
-}
-
-let secret="aida"
-let typed=""
-window.editIndex=-1
-
-document.addEventListener("keydown",function(e){
-typed+=e.key.toLowerCase()
-if(typed.includes(secret)){
-document.getElementById("adminPanel").style.display="block"
-typed=""
-}
-})
-
-function closeAdmin(){
-document.getElementById("adminPanel").style.display="none"
-}
-
-/* IMAGE COMPRESSION FIX */
 
 function compress(file){
 return new Promise(res=>{
@@ -167,6 +146,20 @@ reader.readAsDataURL(file)
 })
 }
 
+let secret="aida"
+let typed=""
+let editIndex=-1
+
+document.addEventListener("keydown",function(e){
+typed+=e.key.toLowerCase()
+if(typed.includes(secret)){
+adminPanel.style.display="block"
+typed=""
+}
+})
+
+function closeAdmin(){adminPanel.style.display="none"}
+
 async function addProduct(){
 
 let name=pname.value.trim()
@@ -175,12 +168,11 @@ let sizes=psizes.value.trim()
 let cat=pcat.value
 let files=pimg.files
 
-if(name==="" || isNaN(price) || sizes===""){alert("Remplir");return}
+if(name===""||isNaN(price)||sizes===""){alert("Remplir");return}
 
 let images=[]
-
-for(let file of files){
-let base=await compress(file)
+for(let f of files){
+let base=await compress(f)
 images.push(base)
 }
 
@@ -194,11 +186,10 @@ await db.collection("produits").add(data)
 }
 
 alert("Produit sauvegardé")
-
 }
 
 async function deleteProduct(i){
-if(!confirm("Supprimer ?")) return
+if(!confirm("Supprimer ?"))return
 await db.collection("produits").doc(produits[i].id).delete()
 }
 
@@ -282,7 +273,7 @@ let found=panier.find(p=>p.name===produits[i].name&&p.size===size)
 if(found)found.q++
 else panier.push({name:produits[i].name,price:produits[i].price,size,q:1})
 
-saveCart()
+localStorage.setItem("panier",JSON.stringify(panier))
 displayCart()
 }
 
@@ -303,14 +294,14 @@ ${p.q}
 </li>`
 })
 
-document.getElementById("cartList").innerHTML=html
-document.getElementById("total").innerText=total
-document.getElementById("cartCount").innerText=count
+cartList.innerHTML=html
+total.innerText=total
+cartCount.innerText=count
 }
 
-function plus(i){panier[i].q++;saveCart();displayCart()}
-function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);saveCart();displayCart()}
-function removeItem(i){panier.splice(i,1);saveCart();displayCart()}
+function plus(i){panier[i].q++;localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
+function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
+function removeItem(i){panier.splice(i,1);localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
 
 function openCheckout(){checkout.style.display="block";window.scrollTo(0,0)}
 function closeCheckout(){checkout.style.display="none"}
