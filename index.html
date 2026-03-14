@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 margin:0;
-background:linear-gradient(135deg,#e3f2fd,#ffffff,#fce4ec);
+background:linear-gradient(135deg,#eef2ff,#ffffff,#fef3c7);
 }
 
 header{
@@ -24,14 +24,14 @@ font-weight:bold;
 .admin{
 background:white;
 width:90%;
-max-width:700px;
+max-width:750px;
 margin:20px auto;
 padding:20px;
 border-radius:18px;
 box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-.admin input{
+.admin input, .admin select{
 padding:10px;
 margin:5px;
 border-radius:8px;
@@ -45,6 +45,19 @@ border:none;
 padding:10px 15px;
 border-radius:10px;
 cursor:pointer;
+}
+
+.filters{
+text-align:center;
+margin-top:10px;
+}
+
+.filters input, .filters select{
+padding:10px;
+border-radius:10px;
+border:1px solid #ccc;
+width:200px;
+margin:5px;
 }
 
 .container{
@@ -107,56 +120,66 @@ margin-top:8px;
 cursor:pointer;
 }
 
-#cart{
-position:fixed;
-right:20px;
-top:100px;
-background:white;
-width:270px;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
-padding:15px;
-}
-
 </style>
 
 </head>
 
 <body>
 
-<header>Deuro.tn ADMIN SHOP 🛒</header>
+<header>Deuro.tn 🛒</header>
 
 <div class="admin">
 
 <h3>Ajouter Produit</h3>
 
-<input type="text" id="pname" placeholder="Nom produit">
+<input type="text" id="pname" placeholder="Nom">
 <input type="number" id="pprice" placeholder="Prix">
 <input type="text" id="pimg" placeholder="Lien image">
+
+<select id="pcat">
+<option value="Tshirt">Tshirt</option>
+<option value="Shoes">Shoes</option>
+<option value="Cap">Cap</option>
+<option value="Other">Other</option>
+</select>
 
 <button onclick="addProduct()">Ajouter</button>
 
 </div>
 
-<div class="container" id="shop"></div>
+<div class="filters">
 
-<div id="cart">
-<h3>Panier</h3>
-<ul id="list"></ul>
-<h4>Total : <span id="total">0</span> TND</h4>
+<input type="text" id="search" placeholder="🔎 Rechercher..." onkeyup="render()">
+
+<select id="filterCat" onchange="render()">
+<option value="All">Toutes catégories</option>
+<option value="Tshirt">Tshirt</option>
+<option value="Shoes">Shoes</option>
+<option value="Cap">Cap</option>
+<option value="Other">Other</option>
+</select>
+
 </div>
+
+<div class="container" id="shop"></div>
 
 <script>
 
 let produits=[]
-let panier=[]
-let total=0
 
 function render(){
+
+let search=document.getElementById("search").value.toLowerCase()
+let cat=document.getElementById("filterCat").value
 
 let html=""
 
 produits.forEach((p,i)=>{
+
+if(
+(p.name.toLowerCase().includes(search)) &&
+(cat=="All" || p.cat==cat)
+){
 
 html+=`
 <div class="product">
@@ -164,13 +187,7 @@ html+=`
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p><b>${p.price} TND</b></p>
-
-<select id="size${i}">
-<option>S</option>
-<option>M</option>
-<option>L</option>
-<option>XL</option>
-</select>
+<p>${p.cat}</p>
 
 <div class="qtyBox">
 <button class="qtyBtn" onclick="minus('q${i}')">-</button>
@@ -178,12 +195,14 @@ html+=`
 <button class="qtyBtn" onclick="plus('q${i}')">+</button>
 </div>
 
-<button class="addBtn" onclick="addToCart(${i})">Ajouter</button>
+<button class="addBtn">Ajouter</button>
 
 <button class="deleteBtn" onclick="deleteProduct(${i})">Supprimer</button>
 
 </div>
 `
+}
+
 })
 
 document.getElementById("shop").innerHTML=html
@@ -195,8 +214,9 @@ function addProduct(){
 let name=document.getElementById("pname").value
 let price=document.getElementById("pprice").value
 let img=document.getElementById("pimg").value
+let cat=document.getElementById("pcat").value
 
-produits.push({name,price,img})
+produits.push({name,price,img,cat})
 
 render()
 
@@ -221,37 +241,6 @@ function minus(id){
 let el=document.getElementById(id)
 if(parseInt(el.innerText)>1)
 el.innerText=parseInt(el.innerText)-1
-
-}
-
-function addToCart(i){
-
-let q=parseInt(document.getElementById("q"+i).innerText)
-let size=document.getElementById("size"+i).value
-
-panier.push({
-name:produits[i].name,
-price:produits[i].price,
-q,
-size
-})
-
-total+=produits[i].price*q
-
-displayCart()
-
-}
-
-function displayCart(){
-
-let html=""
-
-panier.forEach(p=>{
-html+=`<li>${p.name} (${p.size}) x${p.q}</li>`
-})
-
-document.getElementById("list").innerHTML=html
-document.getElementById("total").innerText=total
 
 }
 
