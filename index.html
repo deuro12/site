@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -64,7 +65,6 @@ Deuro.tn
 <hr>
 <h3>Produits</h3>
 <div id="adminList"></div>
-
 </div>
 
 <div class="searchBox">
@@ -98,10 +98,50 @@ Deuro.tn
 <button class="back" onclick="closeCheckout()">Retour</button>
 </div>
 
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script>
+
+const firebaseConfig = {
+apiKey:"AIzaSyAHeplm9Z6yL_0OSkPrtf0vJnIN0a5KUws",
+authDomain:"deuro-a2bee.firebaseapp.com",
+projectId:"deuro-a2bee",
+storageBucket:"deuro-a2bee.firebasestorage.app",
+messagingSenderId:"1002857571428",
+appId:"1:1002857571428:web:66aca552c0dc3f58fc6b71"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
 
 let produits = JSON.parse(localStorage.getItem("produits")) || []
 let panier = JSON.parse(localStorage.getItem("panier")) || []
+
+async function syncFromFirebase(){
+let snap = await db.collection("produits").get()
+produits=[]
+snap.forEach(doc=>produits.push(doc.data()))
+localStorage.setItem("produits",JSON.stringify(produits))
+render()
+}
+
+async function saveProducts(){
+localStorage.setItem("produits",JSON.stringify(produits))
+
+await db.collection("produits").get().then(s=>{
+s.forEach(d=>db.collection("produits").doc(d.id).delete())
+})
+
+for(let p of produits){
+await db.collection("produits").add(p)
+}
+}
+
+syncFromFirebase()
+
+// ==== TON SCRIPT ORIGINAL CONTINUE ====
 
 let secret="aida"
 let typed=""
@@ -120,13 +160,13 @@ function closeAdmin(){
 document.getElementById("adminPanel").style.display="none"
 }
 
-function saveProducts(){
-localStorage.setItem("produits",JSON.stringify(produits))
-}
-
 function saveCart(){
 localStorage.setItem("panier",JSON.stringify(panier))
 }
+
+/* TOUT LE RESTE DE TON SCRIPT RESTE IDENTIQUE */
+```
+
 
 function addProduct(){
 
