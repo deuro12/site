@@ -31,8 +31,6 @@ button{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;border:none
 .checkout{display:none;background:white;width:90%;max-width:500px;margin:30px auto;padding:20px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2);}
 .checkout input{width:95%;padding:12px;margin:8px;border-radius:10px;border:1px solid #ddd;}
 .loginBtn{background:#2563eb}
-.smartMsg{color:#16a34a;font-weight:bold;text-align:center;margin:10px}
-.empty{color:#888;text-align:center}
 </style>
 </head>
 
@@ -53,11 +51,15 @@ Deuro.tn
 
 <div class="admin" id="adminPanel">
 <h3>ADMIN PANEL</h3>
+<button class="back" onclick="closeAdmin()">Fermer</button><br>
 
 <input id="pname" placeholder="Nom">
 <input id="pprice" type="number" placeholder="Prix">
 <input id="psizes" placeholder="Tailles S,M,L">
+
+<!-- ⭐ NOUVEAU -->
 <textarea id="pdesc" placeholder="Description produit"></textarea>
+
 <input id="pimg" type="file" multiple>
 
 <select id="pcat">
@@ -90,11 +92,8 @@ Deuro.tn
 
 <div id="cart">
 <h3>Panier</h3>
-<div id="smartMsg" class="smartMsg"></div>
 <ul id="cartList"></ul>
-<div class="empty" id="emptyMsg"></div>
 <h4>Total : <span id="total">0</span> TND</h4>
-<button onclick="clearCart()">Vider panier</button>
 <button onclick="openCheckout()">Checkout</button>
 </div>
 
@@ -113,6 +112,7 @@ Deuro.tn
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <script>
+
 const firebaseConfig = {
 apiKey:"AIzaSyAHeplm9Z6yL_0OSkPrtf0vJnIN0a5KUws",
 authDomain:"deuro-a2bee.firebaseapp.com",
@@ -129,7 +129,7 @@ let isAdmin=false
 let secret="deuroadmin"
 let typed=""
 
-document.addEventListener("keydown",e=>{
+document.addEventListener("keydown",function(e){
 typed+=e.key.toLowerCase()
 if(typed.includes(secret)){
 loginBtn.style.display="inline-block"
@@ -144,50 +144,58 @@ logoutBtn.style.display=isAdmin?"inline-block":"none"
 })
 
 function loginAdmin(){
-let email=prompt("Email")
+let email=prompt("Email admin")
 let pass=prompt("Password")
 firebase.auth().signInWithEmailAndPassword(email,pass)
 }
 
-function logoutAdmin(){firebase.auth().signOut()}
+function logoutAdmin(){
+firebase.auth().signOut()
+}
 
 function protect(){
 if(!isAdmin){alert("Login admin requis");throw "not admin"}
 }
 
 let produits=[]
-let panier=JSON.parse(localStorage.getItem("panier"))||[]
+let panier = JSON.parse(localStorage.getItem("panier")) || []
 
-db.collection("produits").onSnapshot(s=>{
+db.collection("produits").onSnapshot(snap=>{
 produits=[]
-s.forEach(d=>produits.push({...d.data(),id:d.id}))
+snap.forEach(doc=>{
+produits.push({...doc.data(),id:doc.id})
+})
 render()
 })
 
 function compress(file){
 return new Promise(res=>{
-let r=new FileReader()
-r.onload=e=>{
+let reader=new FileReader()
+reader.onload=e=>{
 let img=new Image()
-img.onload=()=>{
-let c=document.createElement("canvas")
+img.onload=function(){
+let canvas=document.createElement("canvas")
 let max=300
 let ratio=Math.min(max/img.width,max/img.height)
-c.width=img.width*ratio
-c.height=img.height*ratio
-c.getContext("2d").drawImage(img,0,0,c.width,c.height)
-res(c.toDataURL("image/jpeg",0.4))
+canvas.width=img.width*ratio
+canvas.height=img.height*ratio
+let ctx=canvas.getContext("2d")
+ctx.drawImage(img,0,0,canvas.width,canvas.height)
+res(canvas.toDataURL("image/jpeg",0.4))
 }
 img.src=e.target.result
 }
-r.readAsDataURL(file)
+reader.readAsDataURL(file)
 })
 }
 
 let editIndex=-1
 
+function closeAdmin(){adminPanel.style.display="none"}
+
 async function addProduct(){
 protect()
+
 let name=pname.value.trim()
 let price=parseFloat(pprice.value)
 let sizes=psizes.value.trim()
@@ -195,12 +203,15 @@ let desc=pdesc.value.trim()
 let cat=pcat.value
 let files=pimg.files
 
-if(!name||!price||!sizes||!desc)return alert("Remplir")
+if(name===""||isNaN(price)||sizes===""||desc===""){alert("Remplir");return}
 
-let imgs=[]
-for(let f of files){imgs.push(await compress(f))}
+let images=[]
+for(let f of files){
+let base=await compress(f)
+images.push(base)
+}
 
-let data={name,price,desc,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs}
+let data={name,price,desc,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs:images}
 
 if(editIndex>=0){
 await db.collection("produits").doc(produits[editIndex].id).update(data)
@@ -212,23 +223,55 @@ await db.collection("produits").add(data)
 alert("Produit sauvegardé")
 }
 
-function render(){
-detail.style.display="none"
-let s=search.value.toLowerCase()
-let c=filterCat.value
+async function deleteProduct(i){
+protect()
+if(!confirm("Supprimer ?")) return
+await db.collection("produits").doc(produits[i].id).delete()
+}
 
-let html="",adminHtml=""
+function editProduct(i){
+protect()
+let p=produits[i]
+adminPanel.style.display="block"
+pname.value=p.name
+pprice.value=p.price
+psizes.value=p.sizes.join(",")
+pdesc.value=p.desc || ""
+pcat.value=p.cat
+editIndex=i
+}
+
+function render(){
+
+detail.style.display="none"
+
+let search=document.getElementById("search").value.toLowerCase()
+let cat=document.getElementById("filterCat").value
+
+let html=""
+let adminHtml=""
 
 produits.forEach((p,i)=>{
-if(p.name.toLowerCase().includes(s)&&(c==="All"||c===p.cat)){
-html+=`<div class="product" onclick="openDetail(${i})">
-<img src="${p.imgs[0]}"><h3>${p.name}</h3><p>${p.cat}</p><h4>${p.price} TND</h4></div>`
+
+if(p.name.toLowerCase().includes(search)&&(cat==="All"||cat===p.cat)){
+html+=`
+<div class="product" onclick="openDetail(${i})">
+<img src="${p.imgs[0]}">
+<h3>${p.name}</h3>
+<p>${p.cat}</p>
+<h4>${p.price} TND</h4>
+</div>`
 }
+
 if(isAdmin){
-adminHtml+=`<div><b>${p.name}</b>
-<button onclick="editProduct(${i})">Edit</button>
-<button onclick="deleteProduct(${i})">Del</button></div>`
+adminHtml+=`
+<div style="border:1px solid #ddd;padding:10px;margin:5px;border-radius:10px">
+<b>${p.name}</b> - ${p.price} TND
+<button onclick="editProduct(${i})">Modifier</button>
+<button onclick="deleteProduct(${i})">Supprimer</button>
+</div>`
 }
+
 })
 
 shop.innerHTML=html
@@ -237,68 +280,93 @@ displayCart()
 }
 
 function openDetail(i){
+
 let p=produits[i]
+let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
+
 detail.style.display="block"
 detail.innerHTML=`
 <img src="${p.imgs[0]}" id="mainImg" class="mainImg">
-<p style="color:#666">${p.desc||""}</p>
+<div class="thumbs">${thumbs}</div>
 <h2>${p.name}</h2>
 <h3>${p.price} TND</h3>
-<select id="sizeChoice">${p.sizes.map(s=>`<option>${s}</option>`)}</select><br>
+<p style="color:#555;margin:10px 0">${p.desc || ""}</p>
+<select id="sizeChoice">
+${p.sizes.map(s=>`<option>${s}</option>`).join("")}
+</select>
+<br>
 <button onclick="addToCart(${i})">Ajouter</button>
-<button class="back" onclick="render()">Retour</button>`
-scrollTo(0,0)
+<button class="back" onclick="render()">Retour</button>
+`
+
+window.scrollTo(0,0)
 }
 
+function changeImg(src){document.getElementById("mainImg").src=src}
+
 function addToCart(i){
-let size=sizeChoice.value
-let f=panier.find(p=>p.name===produits[i].name&&p.size===size)
-if(f)f.q++
+
+let size=document.getElementById("sizeChoice").value
+
+let found=panier.find(p=>p.name===produits[i].name&&p.size===size)
+
+if(found)found.q++
 else panier.push({name:produits[i].name,price:produits[i].price,size,q:1})
 
 localStorage.setItem("panier",JSON.stringify(panier))
-smartMsg.innerText="✔ Produit ajouté"
-setTimeout(()=>smartMsg.innerText="",1500)
 displayCart()
 }
 
 function displayCart(){
-let html="",t=0,c=0
-if(panier.length===0)emptyMsg.innerText="Panier vide"
-else emptyMsg.innerText=""
+
+let html="",total=0,count=0
 
 panier.forEach((p,i)=>{
-t+=p.price*p.q
-c+=p.q
-html+=`<li>${p.name}(${p.size})
-<button onclick="minus(${i})">-</button>${p.q}
-<button onclick="plus(${i})">+</button>
-<button onclick="removeItem(${i})">X</button></li>`
+total+=p.price*p.q
+count+=p.q
+html+=`
+<li>
+${p.name} (${p.size})<br>
+<button class="qtyBtn" onclick="minus(${i})">-</button>
+${p.q}
+<button class="qtyBtn" onclick="plus(${i})">+</button>
+<button class="remove" onclick="removeItem(${i})">X</button>
+</li>`
 })
 
 cartList.innerHTML=html
-total.innerText=t
-cartCount.innerText=c
+document.getElementById("total").innerText=total
+cartCount.innerText=count
 }
 
-function plus(i){panier[i].q++;save()}
-function minus(i){panier[i].q>1?panier[i].q--:panier.splice(i,1);save()}
-function removeItem(i){panier.splice(i,1);save()}
-function clearCart(){panier=[];save()}
+function plus(i){panier[i].q++;localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
+function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
+function removeItem(i){panier.splice(i,1);localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
 
-function save(){localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
-
-function openCheckout(){checkout.style.display="block"}
+function openCheckout(){checkout.style.display="block";window.scrollTo(0,0)}
 function closeCheckout(){checkout.style.display="none"}
 
 function order(){
-if(!panier.length)return alert("Panier vide")
-let msg="Commande%0A"
-panier.forEach(p=>msg+=p.name+" "+p.size+" x"+p.q+"%0A")
+
+if(panier.length===0){alert("Panier vide");return}
+
+let nom=document.getElementById("nom").value
+let prenom=document.getElementById("prenom").value
+let adresse=document.getElementById("adresse").value
+let tel=document.getElementById("tel").value
+
+let msg="Commande Deuro.tn %0A"
+msg+="Nom:"+nom+" %0A"
+msg+="Prenom:"+prenom+" %0A"
+msg+="Adresse:"+adresse+" %0A"
+msg+="Tel:"+tel+" %0A"
+
+panier.forEach(p=>{
+msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
+})
+
 window.open("https://wa.me/33754436855?text="+msg)
-panier=[]
-save()
-checkout.style.display="none"
+
 }
 
 </script>
