@@ -1,38 +1,93 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deuro.tn</title>
 
 <style>
-body{font-family:Arial;margin:0;background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);}
 
-header{background:#111827;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;}
+body{
+font-family:Arial;
+margin:0;
+background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);
+}
 
-.logoBox{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:bold;}
+header{
+background:#111827;
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.logoBox{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:24px;
+font-weight:bold;
+}
+
 .logo{height:40px}
 
 .cartIcon{
 background:#22c55e;
-width:35px;
-height:35px;
+width:38px;
+height:38px;
 border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
 }
 
-.admin{display:none;background:white;width:90%;max-width:750px;margin:20px auto;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+.cartIcon:hover{
+transform:scale(1.1);
+}
 
-.admin input,.admin select{padding:10px;margin:5px;border-radius:10px;border:1px solid #ddd;}
+.admin{
+display:none;
+background:white;
+width:90%;
+max-width:750px;
+margin:20px auto;
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
 
-.searchBox{text-align:center;margin-top:20px;}
-.searchBox input,.searchBox select{padding:12px;border-radius:12px;border:1px solid #ddd;}
+.admin input,.admin select,.admin textarea{
+padding:10px;
+margin:5px;
+border-radius:10px;
+border:1px solid #ddd;
+width:95%;
+}
 
-.container{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;padding:30px;}
+.searchBox{
+text-align:center;
+margin-top:20px;
+}
+
+.searchBox input,.searchBox select{
+padding:12px;
+border-radius:12px;
+border:1px solid #ddd;
+}
+
+.container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:25px;
+padding:30px;
+}
 
 .product{
 background:white;
@@ -50,7 +105,10 @@ transform:translateY(-10px);
 box-shadow:0 20px 40px rgba(0,0,0,0.15);
 }
 
-.product img{width:100%;border-radius:15px;}
+.product img{
+width:100%;
+border-radius:15px;
+}
 
 .detail{
 display:none;
@@ -64,9 +122,26 @@ text-align:center;
 box-shadow:0 20px 40px rgba(0,0,0,0.2);
 }
 
-.mainImg{width:100%;border-radius:20px;margin-bottom:10px;}
+.mainImg{
+width:100%;
+border-radius:20px;
+margin-bottom:10px;
+}
 
-.thumbs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.descBox{
+background:#f3f4f6;
+padding:12px;
+border-radius:12px;
+margin:10px 0;
+font-size:14px;
+}
+
+.thumbs{
+display:flex;
+gap:8px;
+justify-content:center;
+flex-wrap:wrap;
+}
 
 .thumbs img{
 width:60px;
@@ -77,22 +152,25 @@ cursor:pointer;
 border:2px solid transparent;
 }
 
-.thumbs img:hover{border:2px solid #22c55e;}
+.thumbs img:hover{
+border:2px solid #22c55e;
+}
 
-/* PANIER SLIDE */
+/* SMART CART */
 
 #cart{
 position:fixed;
-right:-320px;
-top:120px;
+right:-370px;
+top:90px;
 background:white;
-width:300px;
-border-radius:20px;
+width:340px;
+border-radius:25px;
 padding:15px;
-box-shadow:0 15px 35px rgba(0,0,0,0.2);
-max-height:70vh;
-overflow:auto;
-transition:0.4s;
+box-shadow:0 25px 60px rgba(0,0,0,0.25);
+max-height:80vh;
+display:flex;
+flex-direction:column;
+transition:0.45s;
 z-index:999;
 }
 
@@ -100,8 +178,66 @@ z-index:999;
 right:20px;
 }
 
-.qtyBtn{background:#111827;color:white;border:none;width:25px;height:25px;border-radius:6px;}
-.remove{background:red;color:white;border:none;border-radius:6px;}
+.cartHeader{
+font-size:20px;
+font-weight:bold;
+margin-bottom:10px;
+text-align:center;
+}
+
+.cartItems{
+flex:1;
+overflow:auto;
+padding-right:5px;
+}
+
+.cartCard{
+background:#f9fafb;
+border-radius:15px;
+padding:10px;
+margin-bottom:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.qtyRow{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:8px;
+margin-top:6px;
+}
+
+.qtyBtn{
+background:#111827;
+color:white;
+border:none;
+width:28px;
+height:28px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.remove{
+background:#ef4444;
+color:white;
+border:none;
+border-radius:8px;
+padding:3px 8px;
+cursor:pointer;
+}
+
+.cartFooter{
+border-top:1px solid #eee;
+padding-top:10px;
+}
+
+.totalBox{
+display:flex;
+justify-content:space-between;
+font-weight:bold;
+font-size:18px;
+margin-bottom:10px;
+}
 
 button{
 background:linear-gradient(45deg,#22c55e,#16a34a);
@@ -117,7 +253,7 @@ margin:3px;
 .back{background:#111827;}
 .loginBtn{background:#2563eb}
 
-/* CHECKOUT POPUP */
+/* CHECKOUT */
 
 .checkout{
 display:none;
@@ -155,7 +291,6 @@ border:1px solid #ddd;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -180,6 +315,7 @@ Deuro.tn
 <input id="pname" placeholder="Nom">
 <input id="pprice" type="number" placeholder="Prix">
 <input id="psizes" placeholder="Tailles S,M,L">
+<textarea id="pdesc" placeholder="Description produit"></textarea>
 <input id="pimg" type="file" multiple>
 
 <select id="pcat">
@@ -211,10 +347,16 @@ Deuro.tn
 <div class="detail" id="detail"></div>
 
 <div id="cart">
-<h3>Panier</h3>
-<ul id="cartList"></ul>
-<h4>Total : <span id="total">0</span> TND</h4>
-<button onclick="openCheckout()">Checkout</button>
+<div class="cartHeader">🛒 Panier</div>
+<div class="cartItems" id="cartList"></div>
+
+<div class="cartFooter">
+<div class="totalBox">
+<span>Total</span>
+<span id="total">0</span>
+</div>
+<button style="width:100%" onclick="openCheckout()">Checkout</button>
+</div>
 </div>
 
 <div class="checkout" id="checkout">
@@ -230,14 +372,12 @@ Deuro.tn
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <script>
 
-const firebaseConfig = {
+const firebaseConfig={
 apiKey:"AIzaSyAHeplm9Z6yL_0OSkPrtf0vJnIN0a5KUws",
 authDomain:"deuro-a2bee.firebaseapp.com",
 projectId:"deuro-a2bee",
@@ -252,22 +392,11 @@ const db=firebase.firestore();
 let isAdmin=false
 let secret="deuroadmin"
 let typed=""
-
 let cartOpen=false
 
 function toggleCart(){
 cartOpen=!cartOpen
 document.getElementById("cart").classList.toggle("open")
-}
-
-function openCart(){
-cartOpen=true
-document.getElementById("cart").classList.add("open")
-}
-
-function closeCart(){
-cartOpen=false
-document.getElementById("cart").classList.remove("open")
 }
 
 document.addEventListener("keydown",function(e){
@@ -280,14 +409,13 @@ typed=""
 
 firebase.auth().onAuthStateChanged(user=>{
 isAdmin=!!user
-
 if(isAdmin){
 adminPanel.style.display="block"
-document.getElementById("logoutBtn").style.display="inline-block"
-document.getElementById("loginBtn").style.display="none"
+logoutBtn.style.display="inline-block"
+loginBtn.style.display="none"
 }else{
 adminPanel.style.display="none"
-document.getElementById("logoutBtn").style.display="none"
+logoutBtn.style.display="none"
 }
 })
 
@@ -298,19 +426,14 @@ firebase.auth().signInWithEmailAndPassword(email,pass)
 .catch(()=>alert("Erreur login"))
 }
 
-function logoutAdmin(){
-firebase.auth().signOut()
-}
+function logoutAdmin(){firebase.auth().signOut()}
 
 function protect(){
-if(!isAdmin){
-alert("Login admin requis")
-throw "not admin"
-}
+if(!isAdmin){alert("Login admin requis");throw "not admin"}
 }
 
 let produits=[]
-let panier = JSON.parse(localStorage.getItem("panier")) || []
+let panier=JSON.parse(localStorage.getItem("panier"))||[]
 
 db.collection("produits").onSnapshot(snap=>{
 produits=[]
@@ -351,6 +474,7 @@ protect()
 let name=pname.value.trim()
 let price=parseFloat(pprice.value)
 let sizes=psizes.value.trim()
+let desc=pdesc.value.trim()
 let cat=pcat.value
 let files=pimg.files
 
@@ -362,7 +486,7 @@ let base=await compress(f)
 images.push(base)
 }
 
-let data={name,price,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs:images}
+let data={name,price,desc,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs:images}
 
 if(editIndex>=0){
 await db.collection("produits").doc(produits[editIndex].id).update(data)
@@ -387,6 +511,7 @@ adminPanel.style.display="block"
 pname.value=p.name
 pprice.value=p.price
 psizes.value=p.sizes.join(",")
+pdesc.value=p.desc||""
 pcat.value=p.cat
 editIndex=i
 }
@@ -439,6 +564,7 @@ detail.innerHTML=`
 <img src="${p.imgs[0]}" id="mainImg" class="mainImg">
 <div class="thumbs">${thumbs}</div>
 <h2>${p.name}</h2>
+<div class="descBox">${p.desc||""}</div>
 <h3>${p.price} TND</h3>
 <select id="sizeChoice">
 ${p.sizes.map(s=>`<option>${s}</option>`).join("")}
@@ -463,8 +589,7 @@ else panier.push({name:produits[i].name,price:produits[i].price,size,q:1})
 
 localStorage.setItem("panier",JSON.stringify(panier))
 displayCart()
-
-openCart()
+toggleCart()
 }
 
 function displayCart(){
@@ -474,18 +599,22 @@ let html="",total=0,count=0
 panier.forEach((p,i)=>{
 total+=p.price*p.q
 count+=p.q
+
 html+=`
-<li>
-${p.name} (${p.size})<br>
+<div class="cartCard">
+<b>${p.name}</b><br>
+Taille: ${p.size}
+<div class="qtyRow">
 <button class="qtyBtn" onclick="minus(${i})">-</button>
-${p.q}
+<span>${p.q}</span>
 <button class="qtyBtn" onclick="plus(${i})">+</button>
 <button class="remove" onclick="removeItem(${i})">X</button>
-</li>`
+</div>
+</div>`
 })
 
 cartList.innerHTML=html
-document.getElementById("total").innerText=total
+document.getElementById("total").innerText=total+" TND"
 cartCount.innerText=count
 }
 
@@ -493,13 +622,8 @@ function plus(i){panier[i].q++;localStorage.setItem("panier",JSON.stringify(pani
 function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
 function removeItem(i){panier.splice(i,1);localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
 
-function openCheckout(){
-checkout.style.display="flex"
-}
-
-function closeCheckout(){
-checkout.style.display="none"
-}
+function openCheckout(){checkout.style.display="flex"}
+function closeCheckout(){checkout.style.display="none"}
 
 checkout.addEventListener("click",function(e){
 if(e.target.id==="checkout") closeCheckout()
@@ -525,7 +649,6 @@ msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
 })
 
 window.open("https://wa.me/33754436855?text="+msg)
-
 }
 
 </script>
