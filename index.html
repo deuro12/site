@@ -5,32 +5,209 @@
 <title>Deuro.tn</title>
 
 <style>
-body{font-family:Arial;margin:0;background:linear-gradient(135deg,#eef2ff,#ffffff,#fce7f3);}
-header{background:#111827;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;}
-.logoBox{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:bold;}
-.logo{height:40px}
-.cartIcon{background:#22c55e;width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;}
-.admin{display:none;background:white;width:90%;max-width:750px;margin:20px auto;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
-.admin input,.admin select{padding:10px;margin:5px;border-radius:10px;border:1px solid #ddd;}
-.searchBox{text-align:center;margin-top:20px;}
-.searchBox input,.searchBox select{padding:12px;border-radius:12px;border:1px solid #ddd;}
-.container{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;padding:30px;}
-.product{background:white;width:240px;border-radius:20px;padding:15px;text-align:center;cursor:pointer;transition:0.3s;box-shadow:0 10px 25px rgba(0,0,0,0.08);}
-.product:hover{transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,0,0,0.15);}
-.product img{width:100%;border-radius:15px;}
-.detail{display:none;background:white;width:90%;max-width:520px;margin:30px auto;padding:25px;border-radius:25px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.2);}
-.mainImg{width:100%;border-radius:20px;margin-bottom:10px;}
-.thumbs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
-.thumbs img{width:60px;height:60px;object-fit:cover;border-radius:10px;cursor:pointer;border:2px solid transparent;}
-.thumbs img:hover{border:2px solid #22c55e;}
-#cart{position:fixed;right:20px;top:120px;background:white;width:300px;border-radius:20px;padding:15px;box-shadow:0 15px 35px rgba(0,0,0,0.2);max-height:70vh;overflow:auto;}
-.qtyBtn{background:#111827;color:white;border:none;width:25px;height:25px;border-radius:6px;}
-.remove{background:red;color:white;border:none;border-radius:6px;}
-button{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;border:none;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:bold;margin:3px;}
-.back{background:#111827;}
-.checkout{display:none;background:white;width:90%;max-width:500px;margin:30px auto;padding:20px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2);}
-.checkout input{width:95%;padding:12px;margin:8px;border-radius:10px;border:1px solid #ddd;}
-.loginBtn{background:#2563eb}
+
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6fb;
+}
+
+header{
+background:white;
+padding:15px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logoBox{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:26px;
+font-weight:bold;
+color:#111827;
+}
+
+.logo{height:45px}
+
+.cartIcon{
+background:#22c55e;
+color:white;
+width:40px;
+height:40px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+}
+
+.searchBox{
+text-align:center;
+padding:20px;
+}
+
+.searchBox input,.searchBox select{
+padding:12px;
+border-radius:12px;
+border:1px solid #ddd;
+margin:5px;
+width:200px;
+}
+
+.container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:25px;
+padding:20px;
+}
+
+.product{
+background:white;
+width:240px;
+border-radius:20px;
+padding:15px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+box-shadow:0 10px 25px rgba(0,0,0,0.07);
+position:relative;
+}
+
+.product:hover{
+transform:translateY(-8px);
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
+}
+
+.product img{
+width:100%;
+border-radius:15px;
+}
+
+.stockBadge{
+position:absolute;
+top:10px;
+left:10px;
+background:#ef4444;
+color:white;
+padding:4px 10px;
+border-radius:10px;
+font-size:12px;
+}
+
+.promoBadge{
+position:absolute;
+top:10px;
+right:10px;
+background:#22c55e;
+color:white;
+padding:4px 10px;
+border-radius:10px;
+font-size:12px;
+}
+
+.oldPrice{
+text-decoration:line-through;
+color:#999;
+font-size:14px;
+}
+
+button{
+background:linear-gradient(45deg,#22c55e,#16a34a);
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+margin-top:5px;
+}
+
+button:disabled{
+background:#aaa;
+cursor:not-allowed;
+}
+
+#cart{
+position:fixed;
+right:20px;
+top:110px;
+background:white;
+width:300px;
+border-radius:20px;
+padding:15px;
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
+max-height:70vh;
+overflow:auto;
+}
+
+.qtyBtn{
+background:#111827;
+color:white;
+border:none;
+width:25px;
+height:25px;
+border-radius:6px;
+}
+
+.remove{
+background:red;
+color:white;
+border:none;
+border-radius:6px;
+}
+
+.modalOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:2000;
+}
+
+.modal{
+background:white;
+padding:30px;
+border-radius:25px;
+width:90%;
+max-width:500px;
+animation:pop 0.3s;
+}
+
+@keyframes pop{
+from{transform:scale(0.7);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+
+.admin{
+display:none;
+background:white;
+width:90%;
+max-width:750px;
+margin:20px auto;
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.admin input,.admin select{
+padding:10px;
+margin:5px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
 </style>
 </head>
 
@@ -41,20 +218,16 @@ button{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;border:none
 <img src="deuro.tn.png" class="logo">
 Deuro.tn
 </div>
-
-<div>
-<button class="loginBtn" id="loginBtn" onclick="loginAdmin()" style="display:none">Login</button>
-<button class="back" id="logoutBtn" onclick="logoutAdmin()" style="display:none">Logout</button>
 <span class="cartIcon" id="cartCount">0</span>
-</div>
 </header>
 
 <div class="admin" id="adminPanel">
 <h3>ADMIN PANEL</h3>
-<button class="back" onclick="closeAdmin()">Fermer</button><br>
 
 <input id="pname" placeholder="Nom">
 <input id="pprice" type="number" placeholder="Prix">
+<input id="ppromo" type="number" placeholder="Prix Promo">
+<input id="pstock" type="number" placeholder="Stock">
 <input id="psizes" placeholder="Tailles S,M,L">
 <input id="pimg" type="file" multiple>
 
@@ -84,7 +257,6 @@ Deuro.tn
 </div>
 
 <div class="container" id="shop"></div>
-<div class="detail" id="detail"></div>
 
 <div id="cart">
 <h3>Panier</h3>
@@ -93,76 +265,35 @@ Deuro.tn
 <button onclick="openCheckout()">Checkout</button>
 </div>
 
-<div class="checkout" id="checkout">
-<h3>Livraison</h3>
-<input id="nom" placeholder="Nom">
-<input id="prenom" placeholder="Prenom">
-<input id="adresse" placeholder="Adresse">
-<input id="tel" placeholder="Telephone">
+<div class="modalOverlay" id="checkoutModal">
+<div class="modal">
+
+<h2>Livraison</h2>
+
+<input id="nom" placeholder="Nom"><br>
+<input id="prenom" placeholder="Prenom"><br>
+<input id="adresse" placeholder="Adresse"><br>
+<input id="tel" placeholder="Telephone"><br>
+
 <button onclick="order()">Commander WhatsApp</button>
-<button class="back" onclick="closeCheckout()">Retour</button>
+<button onclick="closeCheckout()">Fermer</button>
+
+</div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <script>
 
 const firebaseConfig = {
 apiKey:"AIzaSyAHeplm9Z6yL_0OSkPrtf0vJnIN0a5KUws",
 authDomain:"deuro-a2bee.firebaseapp.com",
-projectId:"deuro-a2bee",
-storageBucket:"deuro-a2bee.firebasestorage.app",
-messagingSenderId:"1002857571428",
-appId:"1:1002857571428:web:66aca552c0dc3f58fc6b71"
+projectId:"deuro-a2bee"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
-
-let isAdmin=false
-let secret="deuroadmin"
-let typed=""
-
-document.addEventListener("keydown",function(e){
-typed+=e.key.toLowerCase()
-if(typed.includes(secret)){
-document.getElementById("loginBtn").style.display="inline-block"
-typed=""
-}
-})
-
-firebase.auth().onAuthStateChanged(user=>{
-isAdmin=!!user
-
-if(isAdmin){
-adminPanel.style.display="block"
-document.getElementById("logoutBtn").style.display="inline-block"
-document.getElementById("loginBtn").style.display="none"
-}else{
-adminPanel.style.display="none"
-document.getElementById("logoutBtn").style.display="none"
-}
-})
-
-function loginAdmin(){
-let email=prompt("Email admin")
-let pass=prompt("Password")
-firebase.auth().signInWithEmailAndPassword(email,pass)
-.catch(()=>alert("Erreur login"))
-}
-
-function logoutAdmin(){
-firebase.auth().signOut()
-}
-
-function protect(){
-if(!isAdmin){
-alert("Login admin requis")
-throw "not admin"
-}
-}
 
 let produits=[]
 let panier = JSON.parse(localStorage.getItem("panier")) || []
@@ -175,149 +306,95 @@ produits.push({...doc.data(),id:doc.id})
 render()
 })
 
-function compress(file){
-return new Promise(res=>{
-let reader=new FileReader()
-reader.onload=e=>{
-let img=new Image()
-img.onload=function(){
-let canvas=document.createElement("canvas")
-let max=300
-let ratio=Math.min(max/img.width,max/img.height)
-canvas.width=img.width*ratio
-canvas.height=img.height*ratio
-let ctx=canvas.getContext("2d")
-ctx.drawImage(img,0,0,canvas.width,canvas.height)
-res(canvas.toDataURL("image/jpeg",0.4))
-}
-img.src=e.target.result
-}
-reader.readAsDataURL(file)
-})
-}
-
-let editIndex=-1
-
-function closeAdmin(){adminPanel.style.display="none"}
-
 async function addProduct(){
-protect()
 
 let name=pname.value.trim()
 let price=parseFloat(pprice.value)
+let promo=parseFloat(ppromo.value)||0
+let stock=parseInt(pstock.value)||0
 let sizes=psizes.value.trim()
 let cat=pcat.value
 let files=pimg.files
 
-if(name===""||isNaN(price)||sizes===""){alert("Remplir");return}
-
 let images=[]
+
 for(let f of files){
-let base=await compress(f)
-images.push(base)
+let reader=new FileReader()
+images.push(await new Promise(res=>{
+reader.onload=e=>res(e.target.result)
+reader.readAsDataURL(f)
+}))
 }
 
-let data={name,price,sizes:sizes.split(",").map(s=>s.trim()),cat,imgs:images}
+let data={
+name,
+price,
+promo,
+stock,
+sizes:sizes.split(",").map(s=>s.trim()),
+cat,
+imgs:images
+}
 
-if(editIndex>=0){
-await db.collection("produits").doc(produits[editIndex].id).update(data)
-editIndex=-1
-}else{
 await db.collection("produits").add(data)
-}
 
-alert("Produit sauvegardé")
-}
-
-async function deleteProduct(i){
-protect()
-if(!confirm("Supprimer ?")) return
-await db.collection("produits").doc(produits[i].id).delete()
-}
-
-function editProduct(i){
-protect()
-let p=produits[i]
-adminPanel.style.display="block"
-pname.value=p.name
-pprice.value=p.price
-psizes.value=p.sizes.join(",")
-pcat.value=p.cat
-editIndex=i
+alert("Produit ajouté")
 }
 
 function render(){
-
-detail.style.display="none"
 
 let search=document.getElementById("search").value.toLowerCase()
 let cat=document.getElementById("filterCat").value
 
 let html=""
-let adminHtml=""
 
 produits.forEach((p,i)=>{
 
 if(p.name.toLowerCase().includes(search)&&(cat==="All"||cat===p.cat)){
+
 html+=`
-<div class="product" onclick="openDetail(${i})">
+<div class="product">
+
+${p.stock<=0 ? `<div class="stockBadge">Rupture</div>`:""}
+${p.promo>0 ? `<div class="promoBadge">Promo</div>`:""}
+
 <img src="${p.imgs[0]}">
 <h3>${p.name}</h3>
-<p>${p.cat}</p>
-<h4>${p.price} TND</h4>
-</div>`
+
+${p.promo>0 ?
+`<div class="oldPrice">${p.price} TND</div>
+<h4>${p.promo} TND</h4>`
+:
+`<h4>${p.price} TND</h4>`
 }
 
-if(isAdmin){
-adminHtml+=`
-<div style="border:1px solid #ddd;padding:10px;margin:5px;border-radius:10px">
-<b>${p.name}</b> - ${p.price} TND
-<button onclick="editProduct(${i})">Modifier</button>
-<button onclick="deleteProduct(${i})">Supprimer</button>
+<button ${p.stock<=0?"disabled":""} onclick="addToCart(${i})">
+${p.stock<=0?"Rupture":"Ajouter"}
+</button>
+
 </div>`
 }
 
 })
 
 shop.innerHTML=html
-adminList.innerHTML=adminHtml
 displayCart()
 }
-
-function openDetail(i){
-
-let p=produits[i]
-let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
-
-detail.style.display="block"
-detail.innerHTML=`
-<img src="${p.imgs[0]}" id="mainImg" class="mainImg">
-<div class="thumbs">${thumbs}</div>
-<h2>${p.name}</h2>
-<h3>${p.price} TND</h3>
-<select id="sizeChoice">
-${p.sizes.map(s=>`<option>${s}</option>`).join("")}
-</select>
-<br>
-<button onclick="addToCart(${i})">Ajouter</button>
-<button class="back" onclick="render()">Retour</button>
-`
-
-window.scrollTo(0,0)
-}
-
-function changeImg(src){document.getElementById("mainImg").src=src}
 
 function addToCart(i){
 
-let size=document.getElementById("sizeChoice").value
-let found=panier.find(p=>p.name===produits[i].name&&p.size===size)
+if(produits[i].stock<=0)return
+
+let found=panier.find(p=>p.name===produits[i].name)
 
 if(found)found.q++
-else panier.push({name:produits[i].name,price:produits[i].price,size,q:1})
+else panier.push({name:produits[i].name,price:produits[i].promo||produits[i].price,q:1})
+
+produits[i].stock--
 
 localStorage.setItem("panier",JSON.stringify(panier))
 displayCart()
+render()
 }
 
 function displayCart(){
@@ -327,9 +404,10 @@ let html="",total=0,count=0
 panier.forEach((p,i)=>{
 total+=p.price*p.q
 count+=p.q
+
 html+=`
 <li>
-${p.name} (${p.size})<br>
+${p.name}<br>
 <button class="qtyBtn" onclick="minus(${i})">-</button>
 ${p.q}
 <button class="qtyBtn" onclick="plus(${i})">+</button>
@@ -342,33 +420,27 @@ document.getElementById("total").innerText=total
 cartCount.innerText=count
 }
 
-function plus(i){panier[i].q++;localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
-function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
-function removeItem(i){panier.splice(i,1);localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
+function plus(i){panier[i].q++;displayCart()}
+function minus(i){if(panier[i].q>1)panier[i].q--;else panier.splice(i,1);displayCart()}
+function removeItem(i){panier.splice(i,1);displayCart()}
 
-function openCheckout(){checkout.style.display="block";window.scrollTo(0,0)}
-function closeCheckout(){checkout.style.display="none"}
+function openCheckout(){
+checkoutModal.style.display="flex"
+}
+
+function closeCheckout(){
+checkoutModal.style.display="none"
+}
 
 function order(){
 
-if(panier.length===0){alert("Panier vide");return}
-
-let nom=document.getElementById("nom").value
-let prenom=document.getElementById("prenom").value
-let adresse=document.getElementById("adresse").value
-let tel=document.getElementById("tel").value
-
 let msg="Commande Deuro.tn %0A"
-msg+="Nom:"+nom+" %0A"
-msg+="Prenom:"+prenom+" %0A"
-msg+="Adresse:"+adresse+" %0A"
-msg+="Tel:"+tel+" %0A"
 
 panier.forEach(p=>{
-msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
+msg+=p.name+" x"+p.q+" %0A"
 })
 
-window.open("https://wa.me/33754436855?text="+msg)
+window.open("https://wa.me/216XXXXXXXX?text="+msg)
 
 }
 
