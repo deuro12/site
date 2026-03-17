@@ -359,6 +359,35 @@ z-index:2000;
 opacity:1;
 bottom:50px;
 }
+
+
+  .toast.show{
+opacity:1;
+bottom:50px;
+}
+
+/* ===== BOUTON INSTAGRAM ===== */
+
+.instaBtn{
+width:100%;
+padding:12px;
+font-size:16px;
+font-weight:bold;
+border:none;
+border-radius:12px;
+cursor:pointer;
+color:white;
+background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+transition:0.3s;
+box-shadow:0 8px 20px rgba(0,0,0,0.25);
+}
+
+.instaBtn:hover{
+transform:translateY(-2px);
+box-shadow:0 12px 30px rgba(0,0,0,0.35);
+}
+
+</style>
 </style>
 </head>
 
@@ -438,8 +467,10 @@ Deuro.tn
 <input id="prenom" placeholder="Prenom">
 <input id="adresse" placeholder="Adresse">
 <input id="tel" placeholder="Telephone">
-<button onclick="order()">Commander WhatsApp</button>
-<button class="back" onclick="closeCheckout()">Fermer</button>
+<button class="instaBtn" onclick="order()">
+📩 Commander sur Instagram
+</button>
+  <button class="back" onclick="closeCheckout()">Fermer</button>
 </div>
 </div>
 
