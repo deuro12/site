@@ -508,6 +508,9 @@ Deuro.tn
 <span>Total</span>
 <span id="total">0</span>
 </div>
+  <button class="back" style="width:100%" onclick="clearCart()">
+🗑️ Vider panier
+</button>
 <button style="width:100%" onclick="openCheckout()">Checkout</button>
 </div>
 </div>
@@ -759,7 +762,13 @@ let size=document.getElementById("sizeChoice").value
 let found=panier.find(p=>p.name===produits[i].name&&p.size===size)
 
 if(found)found.q++
-else panier.push({name:produits[i].name,price:produits[i].price,size,q:1})
+else panier.push({
+name:produits[i].name,
+price:produits[i].price,
+size,
+img:produits[i].imgs[0],
+q:1
+})
 
 localStorage.setItem("panier",JSON.stringify(panier))
 displayCart()
@@ -777,7 +786,26 @@ count+=p.q
 
 html+=`
 <div class="cartCard">
+
+<div style="display:flex;gap:10px;align-items:center">
+
+<img src="${p.img}" style="width:55px;height:55px;border-radius:10px;object-fit:cover">
+
+<div style="flex:1">
 <b>${p.name}</b><br>
+Taille: ${p.size}
+</div>
+
+</div>
+
+<div class="qtyRow">
+<button class="qtyBtn" onclick="minus(${i})">-</button>
+<span>${p.q}</span>
+<button class="qtyBtn" onclick="plus(${i})">+</button>
+<button class="remove" onclick="removeItem(${i})">X</button>
+</div>
+
+</div>`
 Taille: ${p.size}
 <div class="qtyRow">
 <button class="qtyBtn" onclick="minus(${i})">-</button>
@@ -872,6 +900,15 @@ displayCart()
 
 function closeSuccess(){
 document.getElementById("orderSuccess").style.display="none"
+}
+  function clearCart(){
+
+if(!confirm("Vider le panier ?")) return
+
+panier=[]
+localStorage.setItem("panier","[]")
+displayCart()
+
 }
 </script>
 <div id="toast" class="toast">Produit ajouté au panier ✅</div>
