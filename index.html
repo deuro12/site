@@ -406,6 +406,34 @@ z-index:3000;
 opacity:1;
 top:50px;
 }
+  .orderSuccess{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+z-index:5000;
+justify-content:center;
+align-items:center;
+}
+
+.orderBox{
+background:white;
+padding:30px;
+border-radius:20px;
+width:90%;
+max-width:420px;
+text-align:center;
+box-shadow:0 30px 80px rgba(0,0,0,0.4);
+animation:pop 0.3s;
+}
+
+.orderBox button{
+margin-top:15px;
+width:100%;
+}
 </style>
 </style>
 </head>
@@ -800,7 +828,9 @@ navigator.clipboard.writeText(msg)
 alert("Message commande copié ✅\nColle le message sur Instagram")
 showSuccess()
 window.open("https://ig.me/m/deuro.tn","_blank")
-
+setTimeout(()=>{
+showOrderSuccess()
+},4000)
 }
 function showToast(){
 let t=document.getElementById("toast")
@@ -818,11 +848,40 @@ setTimeout(()=>{
 s.classList.remove("show")
 },2500)
 }
+  function showOrderSuccess(){
+
+let html="<b>Résumé :</b><br><br>"
+
+panier.forEach(p=>{
+html+=p.name+" - Taille "+p.size+" x"+p.q+"<br>"
+})
+
+document.getElementById("orderResume").innerHTML=html
+
+document.getElementById("orderSuccess").style.display="flex"
+
+panier=[]
+localStorage.setItem("panier","[]")
+displayCart()
+}
+
+function closeSuccess(){
+document.getElementById("orderSuccess").style.display="none"
+}
 </script>
 <div id="toast" class="toast">Produit ajouté au panier ✅</div>
 <div id="successToast" class="successToast">
 ✅ Commande envoyée sur Instagram
-</div>  
+</div>
+  <div id="orderSuccess" class="orderSuccess">
+<div class="orderBox">
+<h2>✅ Commande envoyée avec succès</h2>
+
+<div id="orderResume"></div>
+
+<button onclick="closeSuccess()">Continuer shopping</button>
+</div>
+</div>
 </body>
 </html>
 
