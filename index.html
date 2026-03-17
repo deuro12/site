@@ -592,9 +592,11 @@ displayCart()
 function openDetail(i){
 
 let p=produits[i]
+
 let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
 
 detail.style.display="block"
+
 detail.innerHTML=`
 <img src="${p.imgs[0]}" id="mainImg" class="mainImg">
 <div class="thumbs">${thumbs}</div>
@@ -608,6 +610,8 @@ ${p.sizes.map(s=>`<option>${s}</option>`).join("")}
 <button onclick="addToCart(${i})">Ajouter</button>
 <button class="back" onclick="render()">Retour</button>
 `
+
+detail.scrollIntoView({behavior:"smooth"})
 
 }
 
