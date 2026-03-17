@@ -727,21 +727,21 @@ let prenom=document.getElementById("prenom").value
 let adresse=document.getElementById("adresse").value
 let tel=document.getElementById("tel").value
 
-let msg="COMMANDE DEURO %0A"
-msg+="Nom: "+nom+" %0A"
-msg+="Prenom: "+prenom+" %0A"
-msg+="Adresse: "+adresse+" %0A"
-msg+="Tel: "+tel+" %0A%0A"
+let msg="COMMANDE DEURO\n"
+msg+="Nom: "+nom+"\n"
+msg+="Prenom: "+prenom+"\n"
+msg+="Adresse: "+adresse+"\n"
+msg+="Tel: "+tel+"\n\n"
 
 panier.forEach(p=>{
-msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
+msg+=p.name+" Taille:"+p.size+" x"+p.q+"\n"
 })
 
-navigator.clipboard.writeText(decodeURIComponent(msg))
+navigator.clipboard.writeText(msg)
 
-alert("Message commande copié ✅\nColle le message sur Instagram")
+alert("✅ Message commande copié\n➡️ Colle le message dans Instagram")
 
-window.open("https://instagram.com/TON_PSEUDO")
+window.open("https://ig.me/m/deuro.tn")
 
 }
 
