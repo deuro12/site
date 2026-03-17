@@ -857,9 +857,10 @@ navigator.clipboard.writeText(msg)
 
 window.open("https://ig.me/m/deuro.tn","_blank")
 
-// ⭐ IMPORTANT — on appelle DIRECT
+// ⭐ attendre retour client sur site
+window.onfocus = function(){
 showOrderSuccess()
-
+window.onfocus=null
 }
 function showToast(){
 let t=document.getElementById("toast")
