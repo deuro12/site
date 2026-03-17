@@ -874,7 +874,7 @@ setTimeout(()=>{
 s.classList.remove("show")
 },2500)
 }
-  function showOrderSuccess(){
+ function showOrderSuccess(){
 
 let html="<b>Résumé :</b><br><br>"
 
@@ -883,6 +883,8 @@ html+=p.name+" - Taille "+p.size+" x"+p.q+"<br>"
 })
 
 document.getElementById("orderResume").innerHTML=html
+
+checkout.style.display="none"   // ⭐⭐⭐ AJOUT ICI
 
 document.getElementById("orderSuccess").style.display="flex"
 
