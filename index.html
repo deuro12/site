@@ -722,20 +722,9 @@ alert("Panier vide")
 return
 }
 
-let nom=document.getElementById("nom").value
-let prenom=document.getElementById("prenom").value
-let adresse=document.getElementById("adresse").value
-let tel=document.getElementById("tel").value
+window.open("https://ig.me/m/deuro.tn")
 
-let msg="COMMANDE DEURO %0A"
-msg+="Nom: "+nom+" %0A"
-msg+="Prenom: "+prenom+" %0A"
-msg+="Adresse: "+adresse+" %0A"
-msg+="Tel: "+tel+" %0A%0A"
-
-panier.forEach(p=>{
-msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
-})
+}
 
 navigator.clipboard.writeText(decodeURIComponent(msg))
 
