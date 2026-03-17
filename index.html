@@ -9,8 +9,16 @@
 body{
 font-family:Arial;
 margin:0;
-background:linear-gradient(135deg,#0ea5e9,#2563eb,#7c3aed);
+background:linear-gradient(120deg,#020617,#0f172a,#1e293b,#020617);
+background-size:300% 300%;
+animation:bgmove 12s ease infinite;
 min-height:100vh;
+}
+
+@keyframes bgmove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 header{
 background:#111827;
