@@ -737,22 +737,11 @@ panier.forEach(p=>{
 msg+=p.name+" Taille:"+p.size+" x"+p.q+"\n"
 })
 
-try{
 navigator.clipboard.writeText(msg)
-}catch(e){
-console.log("copy error")
-}
 
 alert("Message commande copié ✅\nColle le message sur Instagram")
 
 window.open("https://ig.me/m/deuro.tn","_blank")
-
-}
-navigator.clipboard.writeText(decodeURIComponent(msg))
-
-alert("Message commande copié ✅\nColle le message sur Instagram")
-
-window.open("https://instagram.com/deuro.tn")
 
 }
 function showToast(){
