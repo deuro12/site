@@ -560,7 +560,7 @@ let isAdmin=false
 let secret="deuroadmin"
 let typed=""
 let cartOpen=false
-
+let waitingOrderReturn=false
 function toggleCart(){
 cartOpen=!cartOpen
 document.getElementById("cart").classList.toggle("open")
@@ -854,14 +854,10 @@ msg+=p.name+" Taille:"+p.size+" x"+p.q+"\n"
 })
 
 navigator.clipboard.writeText(msg)
-
+waitingOrderReturn=true
 window.open("https://ig.me/m/deuro.tn","_blank")
 
-// ⭐ attendre retour client sur site
-window.onfocus = function(){
-showOrderSuccess()
-window.onfocus=null
-}
+
 function showToast(){
 let t=document.getElementById("toast")
 t.classList.add("show")
@@ -907,6 +903,14 @@ localStorage.setItem("panier","[]")
 displayCart()
 
 }
+  window.addEventListener("focus",function(){
+
+if(waitingOrderReturn){
+showOrderSuccess()
+waitingOrderReturn=false
+}
+
+})
 </script>
 <div id="toast" class="toast">Produit ajouté au panier ✅</div>
 <div id="successToast" class="successToast">
