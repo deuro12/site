@@ -781,15 +781,18 @@ function displayCart(){
 let html="",total=0,count=0
 
 panier.forEach((p,i)=>{
+
 total+=p.price*p.q
 count+=p.q
+
+let image = p.img ? p.img : ""
 
 html+=`
 <div class="cartCard">
 
 <div style="display:flex;gap:10px;align-items:center">
 
-<img src="${p.img}" style="width:55px;height:55px;border-radius:10px;object-fit:cover">
+${image ? `<img src="${image}" style="width:55px;height:55px;border-radius:10px;object-fit:cover">` : ""}
 
 <div style="flex:1">
 <b>${p.name}</b><br>
@@ -806,19 +809,12 @@ Taille: ${p.size}
 </div>
 
 </div>`
-Taille: ${p.size}
-<div class="qtyRow">
-<button class="qtyBtn" onclick="minus(${i})">-</button>
-<span>${p.q}</span>
-<button class="qtyBtn" onclick="plus(${i})">+</button>
-<button class="remove" onclick="removeItem(${i})">X</button>
-</div>
-</div>`
 })
 
 cartList.innerHTML=html
 document.getElementById("total").innerText=total+" TND"
 cartCount.innerText=count
+
 }
 
 function plus(i){panier[i].q++;localStorage.setItem("panier",JSON.stringify(panier));displayCart()}
