@@ -386,7 +386,26 @@ box-shadow:0 8px 20px rgba(0,0,0,0.25);
 transform:translateY(-2px);
 box-shadow:0 12px 30px rgba(0,0,0,0.35);
 }
+.successToast{
+position:fixed;
+top:30px;
+left:50%;
+transform:translateX(-50%);
+background:#16a34a;
+color:white;
+padding:14px 24px;
+border-radius:12px;
+font-weight:bold;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+opacity:0;
+transition:0.4s;
+z-index:3000;
+}
 
+.successToast.show{
+opacity:1;
+top:50px;
+}
 </style>
 </style>
 </head>
@@ -464,6 +483,9 @@ Deuro.tn
 <div class="checkoutBox">
 <h3>Livraison</h3>
 <p class="instaInfo">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
+style="width:18px;vertical-align:middle;margin-right:6px">
+
 📩 Après avoir cliqué sur <b>Commander</b>, le message de votre commande sera copié automatiquement et Instagram s’ouvrira.<br><br>
 
 👉 Il suffit simplement de <b>coller le message dans la conversation (DM)</b> puis envoyer — votre commande sera transmise automatiquement ✅
@@ -776,7 +798,7 @@ msg+=p.name+" Taille:"+p.size+" x"+p.q+"\n"
 navigator.clipboard.writeText(msg)
 
 alert("Message commande copié ✅\nColle le message sur Instagram")
-
+showSuccess()
 window.open("https://ig.me/m/deuro.tn","_blank")
 
 }
@@ -788,8 +810,19 @@ setTimeout(()=>{
 t.classList.remove("show")
 },2000)
 }
+ function showSuccess(){
+let s=document.getElementById("successToast")
+s.classList.add("show")
+
+setTimeout(()=>{
+s.classList.remove("show")
+},2500)
+}
 </script>
 <div id="toast" class="toast">Produit ajouté au panier ✅</div>
+<div id="successToast" class="successToast">
+✅ Commande envoyée sur Instagram
+</div>  
 </body>
 </html>
 
