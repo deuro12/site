@@ -210,19 +210,19 @@ border:2px solid #22c55e;
 #cart{
 position:fixed;
 right:-370px;
-top:90px;
+top:80px;
 background:white;
-width:340px;
-border-radius:25px;
-padding:15px;
-box-shadow:0 25px 60px rgba(0,0,0,0.25);
-max-height:80vh;
+width:360px;
+border-radius:30px;
+padding:20px;
+box-shadow:0 30px 80px rgba(0,0,0,0.25);
+max-height:85vh;
 display:flex;
 flex-direction:column;
-transition:0.45s;
+transition:0.5s;
 z-index:999;
+border:1px solid #e5e7eb;
 }
-
 #cart.open{
 right:20px;
 }
@@ -241,29 +241,33 @@ padding-right:5px;
 }
 
 .cartCard{
-background:#f9fafb;
-border-radius:15px;
-padding:10px;
-margin-bottom:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.05);
-}
-
-.qtyRow{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:8px;
-margin-top:6px;
+background:#f8fafc;
+border-radius:18px;
+padding:12px;
+margin-bottom:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+transition:0.3s;
 }
 
 .qtyBtn{
 background:#111827;
 color:white;
 border:none;
-width:28px;
-height:28px;
-border-radius:8px;
+width:34px;
+height:34px;
+border-radius:10px;
 cursor:pointer;
+font-size:16px;
+}
+.qtyBtn{
+background:#111827;
+color:white;
+border:none;
+width:34px;
+height:34px;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
 }
 
 .remove{
@@ -275,9 +279,11 @@ padding:3px 8px;
 cursor:pointer;
 }
 
-.cartFooter{
-border-top:1px solid #eee;
-padding-top:10px;
+.cartFooter button{
+background:linear-gradient(45deg,#22c55e,#16a34a);
+font-size:16px;
+padding:12px;
+border-radius:14px;
 }
 
 .totalBox{
