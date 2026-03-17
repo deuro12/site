@@ -717,24 +717,32 @@ detail.style.display="none"
   
 function order(){
 
-if(panier.length===0){alert("Panier vide");return}
+if(panier.length===0){
+alert("Panier vide")
+return
+}
 
 let nom=document.getElementById("nom").value
 let prenom=document.getElementById("prenom").value
 let adresse=document.getElementById("adresse").value
 let tel=document.getElementById("tel").value
 
-let msg="Commande Deuro.tn %0A"
-msg+="Nom:"+nom+" %0A"
-msg+="Prenom:"+prenom+" %0A"
-msg+="Adresse:"+adresse+" %0A"
-msg+="Tel:"+tel+" %0A"
+let msg="COMMANDE DEURO %0A"
+msg+="Nom: "+nom+" %0A"
+msg+="Prenom: "+prenom+" %0A"
+msg+="Adresse: "+adresse+" %0A"
+msg+="Tel: "+tel+" %0A%0A"
 
 panier.forEach(p=>{
 msg+=p.name+" Taille:"+p.size+" x"+p.q+" %0A"
 })
 
-window.open("https://wa.me/33754436855?text="+msg)
+navigator.clipboard.writeText(decodeURIComponent(msg))
+
+alert("Message commande copié ✅\nColle le message sur Instagram")
+
+window.open("https://instagram.com/deuro.tn")
+
 }
 function showToast(){
 let t=document.getElementById("toast")
