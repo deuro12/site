@@ -825,12 +825,11 @@ msg+=p.name+" Taille:"+p.size+" x"+p.q+"\n"
 
 navigator.clipboard.writeText(msg)
 
-alert("Message commande copié ✅\nColle le message sur Instagram")
-showSuccess()
 window.open("https://ig.me/m/deuro.tn","_blank")
-setTimeout(()=>{
+
+// ⭐ IMPORTANT — on appelle DIRECT
 showOrderSuccess()
-},4000)
+
 }
 function showToast(){
 let t=document.getElementById("toast")
