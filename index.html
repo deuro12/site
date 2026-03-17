@@ -722,10 +722,10 @@ alert("Panier vide")
 return
 }
 
-let nom=document.getElementById("nom").value
-let prenom=document.getElementById("prenom").value
-let adresse=document.getElementById("adresse").value
-let tel=document.getElementById("tel").value
+let nom=document.getElementById("nom").value || ""
+let prenom=document.getElementById("prenom").value || ""
+let adresse=document.getElementById("adresse").value || ""
+let tel=document.getElementById("tel").value || ""
 
 let msg="COMMANDE DEURO\n"
 msg+="Nom: "+nom+"\n"
@@ -737,14 +737,17 @@ panier.forEach(p=>{
 msg+=p.name+" Taille:"+p.size+" x"+p.q+"\n"
 })
 
+try{
 navigator.clipboard.writeText(msg)
-
-alert("✅ Message commande copié\n➡️ Colle le message dans Instagram")
-
-window.open("https://ig.me/m/deuro.tn")
-
+}catch(e){
+console.log("copy error")
 }
 
+alert("Message commande copié ✅\nColle le message sur Instagram")
+
+window.open("https://ig.me/m/deuro.tn","_blank")
+
+}
 navigator.clipboard.writeText(decodeURIComponent(msg))
 
 alert("Message commande copié ✅\nColle le message sur Instagram")
