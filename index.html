@@ -75,21 +75,30 @@ transform:scale(1.1);
 
 .admin{
 display:none;
-background:white;
+background:#111827;
 width:90%;
 max-width:750px;
 margin:20px auto;
 padding:20px;
 border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
+box-shadow:0 10px 30px rgba(0,0,0,0.6);
+border:1px solid rgba(255,255,255,0.1);
+color:#ffffff;
 }
 
 .admin input,.admin select,.admin textarea{
 padding:10px;
 margin:5px;
 border-radius:10px;
-border:1px solid #ddd;
+border:1px solid rgba(255,255,255,0.15);
 width:95%;
+background:#1e2330;
+color:#ffffff;
+}
+
+.admin input::placeholder,
+.admin textarea::placeholder{
+color:#9ca3af;
 }
 
 .searchBox{
