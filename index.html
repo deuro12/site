@@ -636,13 +636,13 @@ reader.onload=e=>{
 let img=new Image()
 img.onload=function(){
 let canvas=document.createElement("canvas")
-let max=300
+let max=1200
 let ratio=Math.min(max/img.width,max/img.height)
 canvas.width=img.width*ratio
 canvas.height=img.height*ratio
 let ctx=canvas.getContext("2d")
 ctx.drawImage(img,0,0,canvas.width,canvas.height)
-res(canvas.toDataURL("image/jpeg",0.4))
+res(canvas.toDataURL("image/jpeg",0.85))
 }
 img.src=e.target.result
 }
