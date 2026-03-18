@@ -7,17 +7,27 @@
 <style>
 
 body{
-font-family:Arial;
-margin:0;
-background:linear-gradient(135deg,#f8fafc,#f1f5f9,#e2e8f0);
-min-height:100vh;
+  font-family:Arial;
+  margin:0;
+  min-height:100vh;
+  background-color:#f1f5f9;
+  position:relative;
 }
 
-@keyframes bgmove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:url("logo.finale.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0.28;
+  z-index:0;
+  pointer-events:none;
 }
+
+
 header{
 background:#111827;
 color:white;
