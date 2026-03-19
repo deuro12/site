@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deuro.tn</title>
 
@@ -742,24 +744,28 @@ displayCart()
 }
 
 function openDetail(i){
-
 let p=produits[i]
-
-let thumbs=p.imgs.map(img=>`<img src="${img}" onclick="changeImg('${img}')">`).join("")
 
 detail.style.display="flex"
 
 detail.innerHTML=`
 <div class="detailBox">
 
-<img src="${p.imgs[0]}" id="mainImg" class="mainImg">
-
-<div class="thumbs">${thumbs}</div>
+<div class="swiper" style="border-radius:18px;margin-bottom:10px;">
+  <div class="swiper-wrapper">
+    ${p.imgs.map(img=>`
+      <div class="swiper-slide">
+        <img src="${img}" style="width:100%;height:280px;object-fit:cover;border-radius:18px;">
+      </div>
+    `).join("")}
+  </div>
+  <div class="swiper-pagination"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
 
 <h2>${p.name}</h2>
-
 <div class="descBox">${p.desc||""}</div>
-
 <h3>${p.price} TND</h3>
 
 <select id="sizeChoice">
@@ -773,6 +779,12 @@ ${p.sizes.map(s=>`<option>${s}</option>`).join("")}
 
 </div>
 `
+
+new Swiper(".swiper",{
+  loop:true,
+  pagination:{el:".swiper-pagination",clickable:true},
+  navigation:{nextEl:".swiper-button-next",prevEl:".swiper-button-prev"},
+})
 }
 function changeImg(src){document.getElementById("mainImg").src=src}
 
