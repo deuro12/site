@@ -499,6 +499,25 @@ padding:10px;
 }
 
 }
+ .promoBar{
+width:100%;
+background:linear-gradient(90deg,#22c55e,#16a34a);
+color:white;
+overflow:hidden;
+white-space:nowrap;
+}
+
+.promoText{
+display:inline-block;
+padding:8px 0;
+font-weight:600;
+animation:scrollPromo 18s linear infinite;
+}
+
+@keyframes scrollPromo{
+0%{transform:translateX(100%)}
+100%{transform:translateX(-100%)}
+}
 </style>
 </style>
 </head>
@@ -506,6 +525,11 @@ padding:10px;
 <body>
 
 <header>
+ <div class="promoBar">
+<div class="promoText">
+🚚 Livraison gratuite à partir de 129 TND dans toute la Tunisie 🇹🇳 • 🚚 Livraison gratuite à partir de 129 TND dans toute la Tunisie 🇹🇳 • 🚚 Livraison gratuite à partir de 129 TND dans toute la Tunisie 🇹🇳
+</div>
+</div>
 <div class="logoBox">
 <img src="logo.finale.png" class="logo">
 Deuro.tn
