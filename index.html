@@ -943,20 +943,41 @@ let prenom=document.getElementById("prenom").value || ""
 let adresse=document.getElementById("adresse").value || ""
 let tel=document.getElementById("tel").value || ""
 
-let msg="COMMANDE DEURO\n"
-msg+="Nom: "+nom+"\n"
-msg+="Prenom: "+prenom+"\n"
-msg+="Adresse: "+adresse+"\n"
-msg+="Tel: "+tel+"\n\n"
+let total=0
+
+let msg="🛒 COMMANDE DEURO\n"
+msg+="====================\n\n"
+
+msg+="👤 Nom: "+nom+"\n"
+msg+="👤 Prenom: "+prenom+"\n"
+msg+="📍 Adresse: "+adresse+"\n"
+msg+="📞 Tel: "+tel+"\n\n"
+
+msg+="📦 Détails commande :\n"
 
 panier.forEach(p=>{
-msg+=p.name+" Taille:"+p.size+" x"+p.q+"\n"
+
+let sousTotal = p.price * p.q
+total += sousTotal
+
+msg+="------------------\n"
+msg+="Produit : "+p.name+"\n"
+msg+="Taille : "+p.size+"\n"
+msg+="Prix : "+p.price+" TND\n"
+msg+="Quantité : "+p.q+"\n"
+msg+="Sous-total : "+sousTotal+" TND\n"
+
 })
+
+msg+="\n====================\n"
+msg+="💰 TOTAL : "+total+" TND\n"
+msg+="====================\n"
 
 navigator.clipboard.writeText(msg)
 waitingOrderReturn=true
 window.open("https://ig.me/m/deuro.tn","_blank")
-} 
+
+}
 
 function showToast(){
 let t=document.getElementById("toast")
