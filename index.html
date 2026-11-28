@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deuro.tn</title>
 <meta name="description" content="Deuro.tn : mode, chaussures, accessoires, maison et plus. Paiement à la livraison partout en Tunisie.">
-<meta name="theme-color" content="#0e1a2b">
+<meta name="theme-color" content="#0b0d10">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Cairo:wght@400;600;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <style>
 :root{--ink:#0e1a2b;--paper:#fff;--soft:#f4f6fa;--line:#e2e6ee;--mute:#66728a;--brand:#e63946;--brand2:#c92a37;--gold:#ffb703;--ok:#12a36b;--off:105%;--dx:26px;--ease:cubic-bezier(.32,.72,0,1)}
@@ -129,12 +129,112 @@ footer b{color:#fff;font-size:20px}footer a{color:#fff;font-weight:600}
 .page h3{margin:0 0 12px;font-size:24px}.page h4{margin:18px 0 2px;font-size:16px}.page p{margin:0 0 4px;color:var(--mute)}.page a{color:var(--brand);font-weight:600}
 @media(max-width:700px){.modal{grid-template-columns:1fr}.modal .swiper{height:300px;min-height:0}.grid{grid-template-columns:repeat(2,1fr);gap:22px 12px}.tools input{width:100%}.brand{font-size:19px}.trust{grid-template-columns:1fr}header{padding:10px 12px;gap:8px}.pill{padding:0 12px}#drawer{border-radius:0}.hero::after{width:240px;height:240px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== THÈME CLASSIQUE : noir, ivoire, or champagne ===== */
+:root{--ink:#111418;--paper:#fff;--soft:#f6f4ef;--line:#e8e4db;--mute:#7b756a;--brand:#8f2d3b;--brand2:#7a2432;--gold:#b08d57}
+::selection{background:var(--gold);color:#fff}
+.bar{background:#0b0d10;color:var(--gold);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px}
+header{padding:12px 24px}
+.brand,.hero h1,.modal h2,.page h3,.checkout h3,.dHead,footer b{font-family:"Playfair Display",Cairo,Georgia,serif}
+.brand{font-size:24px;letter-spacing:.02em}
+.brand img{border-radius:4px}
+.lang{background:none;border:1px solid var(--line)}
+.pill{border-radius:4px;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+#cartCount{border-radius:4px;background:var(--ink);color:var(--gold)}
+.hero{background:linear-gradient(135deg,#0b0d10 0%,#1b2029 100%)}
+.hero::after{display:none}
+.hero>div{padding:84px 24px 76px}
+.hero h1{font-weight:700;letter-spacing:-.01em;line-height:1.05}
+.hero h1 span{font-style:italic;font-weight:600;color:var(--gold)}
+.hero h1::after{content:"";display:block;width:64px;height:2px;background:var(--gold);margin-top:26px}
+.hero p{color:#b9b4aa;font-size:17px}
+[dir=rtl] .hero h1 span{font-style:normal}
+.trust{padding:30px 24px}
+.trust div{border-inline-start:2px solid var(--gold);padding-inline-start:14px}
+.tools{padding-top:34px}
+.chip{border-radius:4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--gold)}
+.seg{border-radius:4px;background:none;border:1px solid var(--line)}
+.seg button{border-radius:3px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.seg button.on{background:var(--ink);color:var(--gold)}
+.lang button.on{background:var(--ink);color:var(--gold)}
+.tools input,.tools select{border-radius:4px}
+.grid{gap:38px 22px}
+.thumb{border-radius:2px;background:var(--soft)}
+.thumb .alt{position:absolute;inset:0;opacity:0;transition:opacity .45s}
+.card:hover .alt{opacity:1}
+.badge{border-radius:2px;background:var(--brand);color:#fff;letter-spacing:.06em}
+.badge.out{background:var(--ink)}
+.card h3{font-weight:600;letter-spacing:.01em}
+.cat{text-transform:uppercase;letter-spacing:.08em;font-size:11px}
+.price{letter-spacing:.02em}
+.btn{border-radius:4px;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.btn.red,.insta{background:var(--ink)}
+.btn.red:hover,.insta:hover{background:var(--gold)}
+.size{border-radius:4px}.size.on{background:var(--ink);color:var(--gold)}
+.modal,.checkout,.page{border-radius:6px}
+.modal .swiper{--swiper-theme-color:var(--gold)}
+#drawer,[dir=rtl] #drawer{border-radius:0}
+.track{border-radius:2px;height:4px}.track i{background:var(--gold);border-radius:2px}.track i.full{background:var(--ink)}
+.line img{border-radius:2px}
+.qty button{border-radius:4px}
+.checkout input,.checkout select{border-radius:4px}
+.note{border-radius:4px;border-inline-start:2px solid var(--gold)}
+footer{background:#0b0d10;color:#a39e93;padding:52px 24px}
+footer b{font-size:26px;letter-spacing:.04em}
+.flinks button{font-weight:400;letter-spacing:.06em;text-transform:uppercase;font-size:12px;text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
+.toast{border-radius:4px;border-inline-start:3px solid var(--gold)}
+[dir=rtl] .bar,[dir=rtl] .pill,[dir=rtl] .chip,[dir=rtl] .seg button,[dir=rtl] .btn,[dir=rtl] .cat,[dir=rtl] .flinks button{text-transform:none;letter-spacing:0}
+[dir=rtl] .btn{font-size:15px}[dir=rtl] .chip,[dir=rtl] .seg button,[dir=rtl] .pill{font-size:14px}[dir=rtl] .cat{font-size:13px}
+
+/* ===== ANIMATIONS ===== */
+@keyframes up{from{opacity:0;transform:translateY(28px)}}
+@keyframes grow{from{width:0}}
+@keyframes shine{to{background-position:200% 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{50%{transform:translateY(-14px)}}
+@keyframes pulse{50%{transform:scale(1.08)}}
+@keyframes sweep{to{inset-inline-start:130%}}
+@keyframes splashOut{to{opacity:0;visibility:hidden}}
+.heroIn{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:30px}
+.heroTxt h1,.heroTxt p{animation:up .9s var(--ease) both}
+.heroTxt p{animation-delay:.35s}
+.hero h1 span:last-child{background:linear-gradient(90deg,#b08d57,#f3dfb0,#b08d57);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+.hero h1::after{animation:grow 1s .7s var(--ease) both}
+.heroLogo{position:relative;display:grid;place-items:center;min-height:300px;animation:up 1.1s .3s var(--ease) both}
+.heroLogo img{position:relative;width:min(240px,60%);max-height:260px;object-fit:contain;animation:float 5.5s ease-in-out infinite;filter:drop-shadow(0 24px 40px rgba(176,141,87,.28))}
+.ring{position:absolute;width:min(340px,92%);aspect-ratio:1;border:1px solid rgba(176,141,87,.45);border-radius:50%;animation:spin 26s linear infinite}
+.ring::after{content:"";position:absolute;top:-5px;left:50%;width:9px;height:9px;margin-left:-4px;background:var(--gold);border-radius:50%;box-shadow:0 0 14px var(--gold)}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+header{transition:padding .3s,box-shadow .3s}
+header.sc{padding-top:6px;padding-bottom:6px;box-shadow:0 8px 28px rgba(17,20,24,.08)}
+.btn.red,.insta{position:relative;overflow:hidden}
+.btn.red::after,.insta::after{content:"";position:absolute;top:0;inset-inline-start:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);pointer-events:none}
+.btn.red:hover::after,.insta:hover::after{animation:sweep .8s}
+.badge:not(.out){animation:pulse 2.4s ease-in-out infinite}
+.chip,.size,.pill,.seg button{transition:transform .2s,background .25s,color .25s,border-color .25s}
+.chip:active,.size:active,.pill:active{transform:scale(.95)}
+#splash{position:fixed;inset:0;z-index:1000;background:#0b0d10;display:grid;place-content:center;justify-items:center;gap:16px;transition:opacity .6s,visibility .6s;animation:splashOut .6s 3s forwards}
+#splash.hide{opacity:0;visibility:hidden}
+#splash span{font:700 28px "Playfair Display",Georgia,serif;color:#fff;letter-spacing:.04em;animation:up .8s both}
+@media(max-width:800px){.heroIn{grid-template-columns:1fr}.heroLogo{min-height:210px}.heroLogo img{width:150px}.ring{width:210px}}
+
+/* ===== LOGO : pièce recadrée en cercle (supprime le fond noir) ===== */
+:root{--zoom:1.62}
+.coin{display:block;position:relative;aspect-ratio:1;border-radius:50%;overflow:hidden;flex:none}
+.coin img{position:static;display:block;width:100%;height:100%;max-height:none;object-fit:cover;transform:scale(var(--zoom));animation:none;filter:none;border:0;border-radius:0}
+.coin.hd{width:42px;box-shadow:0 0 0 1px var(--gold)}
+.coin.sp{width:120px;box-shadow:0 0 0 1px var(--gold);animation:pulse 1.4s ease-in-out infinite}
+.coin.hl{width:min(250px,62%);animation:float 5.5s ease-in-out infinite;box-shadow:0 26px 50px rgba(176,141,87,.32),0 0 0 2px rgba(176,141,87,.6)}
+@media(max-width:800px){.coin.hl{width:160px}}
 </style>
 </head>
 <body>
+<div id="splash"><div class="coin sp"><img src="logo.finale.png" alt="" onerror="this.parentNode.style.display='none'"></div><span>Deuro.tn</span></div>
 <div class="bar" id="bar"></div>
 <header>
-  <div class="brand"><img src="logo.finale.png" alt="" onerror="this.style.display='none'">Deuro.tn</div>
+  <div class="brand"><span class="coin hd"><img src="logo.finale.png" alt="" onerror="this.parentNode.style.display='none'"></span>Deuro.tn</div>
   <div class="lang" role="group" aria-label="Langue">
     <button data-l="fr">FR</button><button data-l="en">EN</button><button data-l="ar">عربي</button>
   </div>
@@ -161,9 +261,11 @@ footer b{color:#fff;font-size:20px}footer a{color:#fff;font-weight:600}
   <div id="adminList"></div>
 </section>
 
-<section class="hero"><div>
+<section class="hero"><div class="heroIn"><div class="heroTxt">
   <h1><span style="color:#fff;display:inline" data-i="heroA"></span><span>Just Deuro.</span></h1>
   <p data-i="heroP"></p>
+</div>
+<div class="heroLogo"><div class="ring"></div><div class="coin hl"><img src="logo.finale.png" alt="Deuro.tn" onerror="this.parentNode.parentNode.style.display='none'"></div></div>
 </div></section>
 <section class="trust">
   <div><b data-i="t1t"></b><span data-i="t1d"></span></div>
@@ -212,7 +314,7 @@ footer b{color:#fff;font-size:20px}footer a{color:#fff;font-weight:600}
     <input id="adresse" data-ph="adr" autocomplete="street-address">
     <p class="note" data-i="note"></p>
     <button class="btn insta" onclick="order()" data-i="send"></button>
-    <button class="btn ghost" onclick="closeCheckout()" data-i="back"></button>
+    <button class="btn ghost" onclick="closeCheckout();toggleCart(true)" data-i="back"></button>
   </div>
 </div>
 
@@ -382,13 +484,14 @@ function render(){
   let list=produits.filter(p=>(cat==="All"||p.cat===cat)&&(p.name||"").toLowerCase().includes(q)&&gOk(p));
   if(sort==="asc")list.sort((a,b)=>a.price-b.price);else if(sort==="desc")list.sort((a,b)=>b.price-a.price);
   else list.sort((a,b)=>(b.created||0)-(a.created||0));
-  $("shop").innerHTML=list.length?list.map(p=>{
+  $("shop").innerHTML=list.length?list.map((p,ix)=>{
     const sale=p.oldPrice>p.price,pct=sale?Math.round(100-p.price/p.oldPrice*100):0;
-    return `<button class="card" onclick="openDetail('${p.id}')">
-      <div class="thumb"><img src="${(p.imgs||[])[0]||""}" alt="${esc(p.name)}" loading="lazy">
+    return `<button class="card rv" style="transition-delay:${(ix%4)*70}ms" onclick="openDetail('${p.id}')">
+      <div class="thumb"><img src="${(p.imgs||[])[0]||""}" alt="${esc(p.name)}" loading="lazy">${(p.imgs||[])[1]?`<img class="alt" src="${p.imgs[1]}" alt="" loading="lazy">`:""}
       ${p.soldOut?`<span class="badge out">${t("out")}</span>`:sale?`<span class="badge">-${pct}%</span>`:""}</div>
       <h3>${esc(p.name)}</h3><div class="cat">${esc(catName(p.cat))}${gTxt(p)}</div>
       <span class="price">${fmt(p.price)}</span>${sale?`<span class="old">${fmt(p.oldPrice)}</span>`:""}</button>`}).join(""):`<div class="empty">${t("none")}</div>`;
+  observe();
 }
 function setCat(c){cat=c;render()}
 
@@ -470,7 +573,7 @@ function displayCart(newIdx=-1){
 }
 
 // ===== COMMANDE (message toujours en français pour la boutique) =====
-function openCheckout(){if(!panier.length)return toast(t("emptyCart"));$("checkout").classList.add("show")}
+function openCheckout(){if(!panier.length)return toast(t("emptyCart"));toggleCart(false);setTimeout(()=>$("checkout").classList.add("show"),220)}
 function closeCheckout(){$("checkout").classList.remove("show")}
 async function order(){
   const v=i=>$(i).value.trim(),nom=v("nom"),prenom=v("prenom"),tel=v("tel"),gouv=v("gouv"),adresse=v("adresse");
@@ -490,7 +593,18 @@ window.addEventListener("focus",()=>{
   panier=[];save();displayCart();
 });
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDetail();closeCheckout();closePage();toggleCart(false)}});
+let io;
+function observe(){
+  const els=document.querySelectorAll(".rv:not(.in)");
+  if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("in"));return}
+  io=io||new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.1});
+  els.forEach(e=>io.observe(e));
+}
+document.querySelectorAll(".trust div,.tools,footer").forEach(e=>e.classList.add("rv"));
+window.addEventListener("scroll",()=>document.querySelector("header").classList.toggle("sc",scrollY>30),{passive:true});
+window.addEventListener("load",()=>setTimeout(()=>$("splash").classList.add("hide"),700));
 applyLang();
+observe();
 </script>
 </body>
 </html>
