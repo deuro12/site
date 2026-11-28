@@ -228,12 +228,42 @@ header.sc{padding-top:6px;padding-bottom:6px;box-shadow:0 8px 28px rgba(17,20,24
 .coin.sp{width:120px;box-shadow:0 0 0 1px var(--gold);animation:pulse 1.4s ease-in-out infinite}
 .coin.hl{width:min(250px,62%);animation:float 5.5s ease-in-out infinite;box-shadow:0 26px 50px rgba(176,141,87,.32),0 0 0 2px rgba(176,141,87,.6)}
 @media(max-width:800px){.coin.hl{width:160px}}
+
+/* ===== BARRE LATÉRALE ===== */
+.burger{width:42px;padding:0;flex-direction:column;justify-content:center;gap:4px}
+.burger span{display:block;width:18px;height:2px;background:var(--ink);transition:width .3s}
+.burger:hover span:nth-child(2){width:11px}
+.tools{scroll-margin-top:70px}
+#navScrim{position:fixed;inset:0;background:rgba(14,26,43,.5);backdrop-filter:blur(3px);z-index:119;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+#navScrim.show{opacity:1;visibility:visible}
+#nav{position:fixed;top:0;bottom:0;inset-inline-start:0;width:min(330px,88%);z-index:120;background:#0b0d10;color:#fff;display:flex;flex-direction:column;transform:translateX(calc(var(--off) * -1));transition:transform .5s var(--ease);box-shadow:0 0 60px rgba(0,0,0,.4);overflow:auto}
+#nav.open{transform:none}
+.nHead{display:flex;align-items:center;gap:12px;padding:22px 20px;border-bottom:1px solid rgba(255,255,255,.1)}
+.nHead b{font:700 22px "Playfair Display",Cairo,serif;letter-spacing:.03em;margin-inline-end:auto}
+.nHead .close{color:#a39e93;align-self:auto}
+#nav nav{flex:1;padding:12px 0}
+.nItem{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;color:#fff;text-align:start;padding:15px 24px;font-size:16px;font-weight:600;letter-spacing:.04em;position:relative;transition:background .25s,padding .25s,color .25s}
+.nItem::before{content:"";position:absolute;inset-inline-start:0;top:12px;bottom:12px;width:2px;background:var(--gold);transform:scaleY(0);transition:transform .25s}
+.nItem:hover{background:rgba(255,255,255,.05);padding-inline-start:30px;color:var(--gold)}
+.nItem:hover::before{transform:scaleY(1)}
+.nItem.sm{font-size:14px;font-weight:400;color:#c9c4b9}
+.chev{width:8px;height:8px;border-inline-end:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .3s}
+.nItem.open .chev{transform:rotate(225deg)}
+.nSub{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease)}
+.nSub.open{grid-template-rows:1fr}
+.nSub>div{overflow:hidden;min-height:0}
+#navCats button{display:block;width:100%;text-align:start;background:none;border:0;color:#c9c4b9;padding:11px 24px;padding-inline-start:44px;font-size:14px;transition:color .2s,padding .2s}
+#navCats button:hover{color:var(--gold);padding-inline-start:50px}
+.nLabel{padding:22px 24px 6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.nInsta{padding:20px 24px;border-top:1px solid rgba(255,255,255,.1);color:#fff;font-weight:600;text-decoration:none;font-size:14px}
+[dir=rtl] .nItem,[dir=rtl] .nLabel{letter-spacing:0;text-transform:none}
 </style>
 </head>
 <body>
 <div id="splash"><div class="coin sp"><img src="logo.finale.png" alt="" onerror="this.parentNode.style.display='none'"></div><span>Deuro.tn</span></div>
 <div class="bar" id="bar"></div>
 <header>
+  <button class="pill burger" onclick="toggleNav(true)" aria-label="Menu"><span></span><span></span><span></span></button>
   <div class="brand"><span class="coin hd"><img src="logo.finale.png" alt="" onerror="this.parentNode.style.display='none'"></span>Deuro.tn</div>
   <div class="lang" role="group" aria-label="Langue">
     <button data-l="fr">FR</button><button data-l="en">EN</button><button data-l="ar">عربي</button>
@@ -304,6 +334,25 @@ header.sc{padding-top:6px;padding-bottom:6px;box-shadow:0 8px 28px rgba(17,20,24
   </div>
 </aside>
 
+<div id="navScrim" onclick="toggleNav(false)"></div>
+<aside id="nav" aria-label="Menu">
+  <div class="nHead"><span class="coin hd"><img src="logo.finale.png" alt="" onerror="this.parentNode.style.display='none'"></span><b>Deuro.tn</b><button class="close" onclick="toggleNav(false)" data-i="close"></button></div>
+  <nav>
+    <button class="nItem" onclick="goHome()" data-i="nHome"></button>
+    <button class="nItem" id="catToggle" onclick="toggleCats()"><span data-i="nCats"></span><i class="chev"></i></button>
+    <div class="nSub" id="navSub"><div id="navCats"></div></div>
+    <button class="nItem" onclick="goPromo()" data-i="nPromo"></button>
+    <button class="nItem" onclick="goNew()" data-i="nNew"></button>
+    <button class="nItem" onclick="goGender('homme')" data-i="gH"></button>
+    <button class="nItem" onclick="goGender('femme')" data-i="gF"></button>
+    <div class="nLabel" data-i="nInfo"></div>
+    <button class="nItem sm" onclick="navPage('contact')" data-i="lContact"></button>
+    <button class="nItem sm" onclick="navPage('cgv')" data-i="lCgv"></button>
+    <button class="nItem sm" onclick="navPage('mentions')" data-i="lMent"></button>
+  </nav>
+  <a class="nInsta" href="https://ig.me/m/deuro.tn" target="_blank" rel="noopener">Instagram @deuro.tn</a>
+</aside>
+
 <div class="overlay" id="checkout" onclick="if(event.target===this)closeCheckout()">
   <div class="checkout">
     <h3 data-i="cTitle"></h3>
@@ -340,9 +389,9 @@ const FREE_SHIP=129, SHIP_COST=8, INSTA="deuro.tn";
 const GOUV=[["Tunis","تونس"],["Ariana","أريانة"],["Ben Arous","بن عروس"],["Manouba","منوبة"],["Nabeul","نابل"],["Bizerte","بنزرت"],["Béja","باجة"],["Jendouba","جندوبة"],["Le Kef","الكاف"],["Siliana","سليانة"],["Zaghouan","زغوان"],["Sousse","سوسة"],["Monastir","المنستير"],["Mahdia","المهدية"],["Sfax","صفاقس"],["Kairouan","القيروان"],["Kasserine","القصرين"],["Sidi Bouzid","سيدي بوزيد"],["Gabès","قابس"],["Médenine","مدنين"],["Tataouine","تطاوين"],["Gafsa","قفصة"],["Tozeur","توزر"],["Kébili","قبلي"]];
 const CATN={"Vêtements":{en:"Clothing",ar:"ملابس"},"Chaussures":{en:"Shoes",ar:"أحذية"},"Accessoires":{en:"Accessories",ar:"إكسسوارات"},"Maison":{en:"Home",ar:"المنزل"},"Électronique":{en:"Electronics",ar:"إلكترونيات"},"Beauté":{en:"Beauty",ar:"جمال وعناية"},"Autres":{en:"Other",ar:"أخرى"},Tshirt:{fr:"T-shirts",en:"T-shirts",ar:"تيشرتات"},Shoes:{fr:"Chaussures",en:"Shoes",ar:"أحذية"},Cap:{fr:"Casquettes",en:"Caps",ar:"قبعات"},Other:{fr:"Autres",en:"Other",ar:"أخرى"}};
 const T={
-fr:{bar:"Livraison gratuite dès {n} dans toute la Tunisie · Paiement à la livraison",cart:"Panier",heroA:"Tout en un.",heroP:"Mode, chaussures, accessoires, maison et plus encore. Commandez en quelques clics, payez en espèces à la réception.",search:"Rechercher un produit",sNew:"Nouveautés",sAsc:"Prix croissant",sDesc:"Prix décroissant",all:"Tout",t1t:"Livraison en Tunisie",t1d:"Dans tous les gouvernorats",t2t:"Paiement à la livraison",t2d:"Aucune carte bancaire requise",t3t:"Commande simple",t3d:"Confirmation par téléphone",f1:"Livraison dans toute la Tunisie · Paiement en espèces",dTitle:"Votre panier",close:"Fermer",shipLeft:"Plus que {n} pour la livraison gratuite",shipFree:"Livraison gratuite débloquée",shipL:"Livraison",free:"Gratuite",total:"Total",order:"Commander",clear:"Vider le panier",emptyCart:"Votre panier est vide.",cTitle:"Informations de livraison",nom:"Nom",prenom:"Prénom",tel:"Téléphone",gouv:"Gouvernorat",adr:"Adresse complète",note:"Le message de commande est copié automatiquement, puis Instagram s'ouvre. Collez-le dans la discussion et envoyez-le : nous confirmons ensuite par téléphone. Paiement en espèces à la livraison.",send:"Envoyer la commande sur Instagram",back:"Retour",add:"Ajouter au panier",out:"Épuisé",added:"Ajouté au panier",none:"Aucun produit trouvé.",err:"Impossible de charger les produits. Réessayez plus tard.",fill:"Merci de remplir tous les champs",badTel:"Numéro de téléphone invalide (8 chiffres)",okT:"Commande prête à envoyer",okN:"Si vous n'avez pas encore collé le message dans Instagram, ouvrez la discussion et envoyez-le pour valider.",insta:"Ouvrir Instagram",cont:"Continuer mes achats",rm:"Retirer",confirmClear:"Vider le panier ?",cur:"TND",sz:"Taille",pt:"Pointure",gen:"Genre",gAll:"Tous",gH:"Homme",gF:"Femme",lContact:"Contact",lCgv:"CGV",lMent:"Mentions légales"},
-en:{bar:"Free delivery from {n} across Tunisia · Cash on delivery",cart:"Cart",heroA:"All in one.",heroP:"Fashion, shoes, accessories, home and more. Order in a few clicks and pay in cash when it arrives.",search:"Search products",sNew:"Newest",sAsc:"Price: low to high",sDesc:"Price: high to low",all:"All",t1t:"Delivery across Tunisia",t1d:"To every governorate",t2t:"Cash on delivery",t2d:"No bank card needed",t3t:"Easy ordering",t3d:"Confirmed by phone",f1:"Delivery across Tunisia · Cash payment",dTitle:"Your cart",close:"Close",shipLeft:"{n} left for free delivery",shipFree:"Free delivery unlocked",shipL:"Delivery",free:"Free",total:"Total",order:"Place order",clear:"Empty cart",emptyCart:"Your cart is empty.",cTitle:"Delivery details",nom:"Last name",prenom:"First name",tel:"Phone",gouv:"Governorate",adr:"Full address",note:"Your order message is copied automatically, then Instagram opens. Paste it into the chat and send it: we will confirm by phone. Cash payment on delivery.",send:"Send order on Instagram",back:"Back",add:"Add to cart",out:"Sold out",added:"Added to cart",none:"No products found.",err:"Could not load products. Please try again later.",fill:"Please fill in all fields",badTel:"Invalid phone number (8 digits)",okT:"Order ready to send",okN:"If you have not pasted the message into Instagram yet, open the chat and send it to confirm.",insta:"Open Instagram",cont:"Continue shopping",rm:"Remove",confirmClear:"Empty the cart?",cur:"TND",sz:"Size",pt:"Shoe size",gen:"For",gAll:"All",gH:"Men",gF:"Women",lContact:"Contact",lCgv:"Terms of sale",lMent:"Legal notice"},
-ar:{bar:"توصيل مجاني ابتداءً من {n} في كامل تونس · الدفع عند الاستلام",cart:"السلة",heroA:"كل شيء في مكان واحد.",heroP:"أزياء، أحذية، إكسسوارات، أدوات منزلية والمزيد. اطلب بسهولة وادفع نقدًا عند الاستلام.",search:"ابحث عن منتج",sNew:"الأحدث",sAsc:"السعر: من الأقل",sDesc:"السعر: من الأعلى",all:"الكل",t1t:"توصيل لكامل تونس",t1d:"إلى جميع الولايات",t2t:"الدفع عند الاستلام",t2d:"لا حاجة لبطاقة بنكية",t3t:"طلب سهل",t3d:"نؤكد طلبك عبر الهاتف",f1:"توصيل لكامل تونس · الدفع نقدًا",dTitle:"سلتك",close:"إغلاق",shipLeft:"بقي {n} للحصول على التوصيل المجاني",shipFree:"تم تفعيل التوصيل المجاني",shipL:"التوصيل",free:"مجاني",total:"المجموع",order:"أطلب الآن",clear:"إفراغ السلة",emptyCart:"سلتك فارغة.",cTitle:"معلومات التوصيل",nom:"اللقب",prenom:"الاسم",tel:"رقم الهاتف",gouv:"الولاية",adr:"العنوان الكامل",note:"يتم نسخ رسالة الطلب تلقائيًا ثم يفتح إنستغرام. الصقها في المحادثة وأرسلها، وسنؤكد طلبك عبر الهاتف. الدفع نقدًا عند الاستلام.",send:"إرسال الطلب عبر إنستغرام",back:"رجوع",add:"أضف إلى السلة",out:"نفد المخزون",added:"تمت الإضافة إلى السلة",none:"لا توجد منتجات.",err:"تعذّر تحميل المنتجات. أعد المحاولة لاحقًا.",fill:"المرجو ملء جميع الحقول",badTel:"رقم هاتف غير صالح (8 أرقام)",okT:"طلبك جاهز للإرسال",okN:"إذا لم تلصق الرسالة بعد في إنستغرام، افتح المحادثة وأرسلها لتأكيد الطلب.",insta:"فتح إنستغرام",cont:"متابعة التسوق",rm:"حذف",confirmClear:"إفراغ السلة؟",cur:"د.ت",sz:"المقاس",pt:"رقم الحذاء",gen:"الفئة",gAll:"الكل",gH:"رجال",gF:"نساء",lContact:"اتصل بنا",lCgv:"شروط البيع",lMent:"إشعار قانوني"}
+fr:{bar:"Livraison gratuite dès {n} dans toute la Tunisie · Paiement à la livraison",cart:"Panier",heroA:"Tout en un.",heroP:"Mode, chaussures, accessoires, maison et plus encore. Commandez en quelques clics, payez en espèces à la réception.",search:"Rechercher un produit",sNew:"Nouveautés",sAsc:"Prix croissant",sDesc:"Prix décroissant",all:"Tout",t1t:"Livraison en Tunisie",t1d:"Dans tous les gouvernorats",t2t:"Paiement à la livraison",t2d:"Aucune carte bancaire requise",t3t:"Commande simple",t3d:"Confirmation par téléphone",f1:"Livraison dans toute la Tunisie · Paiement en espèces",dTitle:"Votre panier",close:"Fermer",shipLeft:"Plus que {n} pour la livraison gratuite",shipFree:"Livraison gratuite débloquée",shipL:"Livraison",free:"Gratuite",total:"Total",order:"Commander",clear:"Vider le panier",emptyCart:"Votre panier est vide.",cTitle:"Informations de livraison",nom:"Nom",prenom:"Prénom",tel:"Téléphone",gouv:"Gouvernorat",adr:"Adresse complète",note:"Le message de commande est copié automatiquement, puis Instagram s'ouvre. Collez-le dans la discussion et envoyez-le : nous confirmons ensuite par téléphone. Paiement en espèces à la livraison.",send:"Envoyer la commande sur Instagram",back:"Retour",add:"Ajouter au panier",out:"Épuisé",added:"Ajouté au panier",none:"Aucun produit trouvé.",err:"Impossible de charger les produits. Réessayez plus tard.",fill:"Merci de remplir tous les champs",badTel:"Numéro de téléphone invalide (8 chiffres)",okT:"Commande prête à envoyer",okN:"Si vous n'avez pas encore collé le message dans Instagram, ouvrez la discussion et envoyez-le pour valider.",insta:"Ouvrir Instagram",cont:"Continuer mes achats",rm:"Retirer",confirmClear:"Vider le panier ?",cur:"TND",sz:"Taille",pt:"Pointure",gen:"Genre",gAll:"Tous",gH:"Homme",gF:"Femme",lContact:"Contact",lCgv:"CGV",lMent:"Mentions légales",menu:"Menu",nHome:"Accueil",nCats:"Catégories",nPromo:"Promotions",nNew:"Nouveautés",nInfo:"Informations"},
+en:{bar:"Free delivery from {n} across Tunisia · Cash on delivery",cart:"Cart",heroA:"All in one.",heroP:"Fashion, shoes, accessories, home and more. Order in a few clicks and pay in cash when it arrives.",search:"Search products",sNew:"Newest",sAsc:"Price: low to high",sDesc:"Price: high to low",all:"All",t1t:"Delivery across Tunisia",t1d:"To every governorate",t2t:"Cash on delivery",t2d:"No bank card needed",t3t:"Easy ordering",t3d:"Confirmed by phone",f1:"Delivery across Tunisia · Cash payment",dTitle:"Your cart",close:"Close",shipLeft:"{n} left for free delivery",shipFree:"Free delivery unlocked",shipL:"Delivery",free:"Free",total:"Total",order:"Place order",clear:"Empty cart",emptyCart:"Your cart is empty.",cTitle:"Delivery details",nom:"Last name",prenom:"First name",tel:"Phone",gouv:"Governorate",adr:"Full address",note:"Your order message is copied automatically, then Instagram opens. Paste it into the chat and send it: we will confirm by phone. Cash payment on delivery.",send:"Send order on Instagram",back:"Back",add:"Add to cart",out:"Sold out",added:"Added to cart",none:"No products found.",err:"Could not load products. Please try again later.",fill:"Please fill in all fields",badTel:"Invalid phone number (8 digits)",okT:"Order ready to send",okN:"If you have not pasted the message into Instagram yet, open the chat and send it to confirm.",insta:"Open Instagram",cont:"Continue shopping",rm:"Remove",confirmClear:"Empty the cart?",cur:"TND",sz:"Size",pt:"Shoe size",gen:"For",gAll:"All",gH:"Men",gF:"Women",lContact:"Contact",lCgv:"Terms of sale",lMent:"Legal notice",menu:"Menu",nHome:"Home",nCats:"Categories",nPromo:"Sales",nNew:"New in",nInfo:"Information"},
+ar:{bar:"توصيل مجاني ابتداءً من {n} في كامل تونس · الدفع عند الاستلام",cart:"السلة",heroA:"كل شيء في مكان واحد.",heroP:"أزياء، أحذية، إكسسوارات، أدوات منزلية والمزيد. اطلب بسهولة وادفع نقدًا عند الاستلام.",search:"ابحث عن منتج",sNew:"الأحدث",sAsc:"السعر: من الأقل",sDesc:"السعر: من الأعلى",all:"الكل",t1t:"توصيل لكامل تونس",t1d:"إلى جميع الولايات",t2t:"الدفع عند الاستلام",t2d:"لا حاجة لبطاقة بنكية",t3t:"طلب سهل",t3d:"نؤكد طلبك عبر الهاتف",f1:"توصيل لكامل تونس · الدفع نقدًا",dTitle:"سلتك",close:"إغلاق",shipLeft:"بقي {n} للحصول على التوصيل المجاني",shipFree:"تم تفعيل التوصيل المجاني",shipL:"التوصيل",free:"مجاني",total:"المجموع",order:"أطلب الآن",clear:"إفراغ السلة",emptyCart:"سلتك فارغة.",cTitle:"معلومات التوصيل",nom:"اللقب",prenom:"الاسم",tel:"رقم الهاتف",gouv:"الولاية",adr:"العنوان الكامل",note:"يتم نسخ رسالة الطلب تلقائيًا ثم يفتح إنستغرام. الصقها في المحادثة وأرسلها، وسنؤكد طلبك عبر الهاتف. الدفع نقدًا عند الاستلام.",send:"إرسال الطلب عبر إنستغرام",back:"رجوع",add:"أضف إلى السلة",out:"نفد المخزون",added:"تمت الإضافة إلى السلة",none:"لا توجد منتجات.",err:"تعذّر تحميل المنتجات. أعد المحاولة لاحقًا.",fill:"المرجو ملء جميع الحقول",badTel:"رقم هاتف غير صالح (8 أرقام)",okT:"طلبك جاهز للإرسال",okN:"إذا لم تلصق الرسالة بعد في إنستغرام، افتح المحادثة وأرسلها لتأكيد الطلب.",insta:"فتح إنستغرام",cont:"متابعة التسوق",rm:"حذف",confirmClear:"إفراغ السلة؟",cur:"د.ت",sz:"المقاس",pt:"رقم الحذاء",gen:"الفئة",gAll:"الكل",gH:"رجال",gF:"نساء",lContact:"اتصل بنا",lCgv:"شروط البيع",lMent:"إشعار قانوني",menu:"القائمة",nHome:"الرئيسية",nCats:"الفئات",nPromo:"العروض",nNew:"الجديد",nInfo:"معلومات"}
 };
 
 // ===== INFOS LÉGALES : à remplir (les lignes vides ne s'affichent pas) =====
@@ -474,14 +523,15 @@ function setG(g){genreF=g;render()}
 function render(){
   $("seg").innerHTML=[["all","gAll"],["homme","gH"],["femme","gF"]].map(x=>`<button class="${genreF===x[0]?"on":""}" onclick="setG('${x[0]}')">${t(x[1])}</button>`).join("");
   const cats=[...new Set([...CATS,...produits.map(p=>p.cat).filter(Boolean)])].filter(c=>produits.some(p=>p.cat===c));
-  $("chips").innerHTML=["All",...cats].map(c=>`<button class="chip ${c===cat?"on":""}" onclick="setCat(this.dataset.c)" data-c="${esc(c)}">${c==="All"?t("all"):esc(catName(c))}</button>`).join("");
+  $("navCats").innerHTML=["All",...cats].map(c=>`<button onclick="goCat(this.dataset.c)" data-c="${esc(c)}">${c==="All"?t("all"):esc(catName(c))}</button>`).join("");
+  $("chips").innerHTML=["All",...(produits.some(p=>p.oldPrice>p.price)||promoF?["__promo"]:[]),...cats].map(c=>c==="__promo"?`<button class="chip ${promoF?"on":""}" onclick="togglePromo()">${t("nPromo")}</button>`:`<button class="chip ${c===cat?"on":""}" onclick="setCat(this.dataset.c)" data-c="${esc(c)}">${c==="All"?t("all"):esc(catName(c))}</button>`).join("");
   $("adminList").innerHTML=isAdmin?produits.map(p=>`<div class="aitem"><span>${esc(p.name)} · ${num(p.price)} TND · ${esc(p.cat)}</span><span>
     <button class="btn ghost" style="height:34px" onclick="editProduct('${p.id}')">Modifier</button>
     <button class="btn" style="height:34px;background:var(--brand)" onclick="deleteProduct('${p.id}')">Supprimer</button></span></div>`).join(""):"";
   displayCart();
   if(!loaded)return;
   const q=$("search").value.toLowerCase().trim(),sort=$("sort").value;
-  let list=produits.filter(p=>(cat==="All"||p.cat===cat)&&(p.name||"").toLowerCase().includes(q)&&gOk(p));
+  let list=produits.filter(p=>(cat==="All"||p.cat===cat)&&(p.name||"").toLowerCase().includes(q)&&gOk(p)&&(!promoF||p.oldPrice>p.price));
   if(sort==="asc")list.sort((a,b)=>a.price-b.price);else if(sort==="desc")list.sort((a,b)=>b.price-a.price);
   else list.sort((a,b)=>(b.created||0)-(a.created||0));
   $("shop").innerHTML=list.length?list.map((p,ix)=>{
@@ -592,7 +642,19 @@ window.addEventListener("focus",()=>{
   closeCheckout();toggleCart(false);$("orderSuccess").classList.add("show");
   panier=[];save();displayCart();
 });
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDetail();closeCheckout();closePage();toggleCart(false)}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDetail();closeCheckout();closePage();toggleNav(false);toggleCart(false)}});
+let promoF=false;
+function togglePromo(){promoF=!promoF;render()}
+function toggleNav(o){$("nav").classList.toggle("open",o);$("navScrim").classList.toggle("show",o);document.body.classList.toggle("lock",o)}
+function toggleCats(){$("catToggle").classList.toggle("open");$("navSub").classList.toggle("open")}
+function toShop(){toggleNav(false);setTimeout(()=>document.querySelector(".tools").scrollIntoView({behavior:"smooth"}),260)}
+function resetF(){cat="All";genreF="all";promoF=false;$("search").value="";$("sort").value="new"}
+function goHome(){resetF();render();toggleNav(false);window.scrollTo({top:0,behavior:"smooth"})}
+function goPromo(){resetF();promoF=true;render();toShop()}
+function goNew(){resetF();render();toShop()}
+function goGender(g){resetF();genreF=g;render();toShop()}
+function goCat(c){resetF();cat=c;render();toShop()}
+function navPage(k){toggleNav(false);setTimeout(()=>openPage(k),260)}
 let io;
 function observe(){
   const els=document.querySelectorAll(".rv:not(.in)");
